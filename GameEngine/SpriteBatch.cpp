@@ -29,11 +29,11 @@ void SpriteBatch::begin(GlyphSortType sortType /* GlyphSortType::TEXTURE */) {
 }
 
 void SpriteBatch::end() {
-    sortGlyphs();
+    //sortGlyphs();
     createRenderBatches();
 }
 
-void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color) {
+void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color, float test) {
 
     Glyph* newGlyph = new Glyph;
 
@@ -66,10 +66,10 @@ void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuin
 		newGlyph->bottomRight.color = colorForTextures;
 		newGlyph->topRight.color = colorForTextures;
 	}
-	newGlyph->topLeft.test = 1.1f;
-	newGlyph->bottomLeft.test = 1.1f;
-	newGlyph->bottomRight.test = 1.1f;
-	newGlyph->topRight.test = 1.1f;
+	newGlyph->topLeft.test = 1;
+	newGlyph->bottomLeft.test = 1;
+	newGlyph->bottomRight.test = 1;
+	newGlyph->topRight.test = 2;
     _glyphs.push_back(newGlyph);
 }
 
@@ -169,6 +169,7 @@ void SpriteBatch::createVertexArray() {
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
+	glEnableVertexAttribArray(3);
 
     //This is the position attribute pointer
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
@@ -176,7 +177,7 @@ void SpriteBatch::createVertexArray() {
     glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void*)offsetof(Vertex, color));
     //This is the UV attribute pointer
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
-
+	
 	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, test));
 
     glBindVertexArray(0);

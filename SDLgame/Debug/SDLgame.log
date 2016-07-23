@@ -1,9 +1,2 @@
-﻿  main.cpp
-  Generating Code...
-  Compiling...
-  MainGame.cpp
-c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(64): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(97): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
-  Generating Code...
-  SDLgame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\SDLgame.exe
+﻿  SDLgame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\SDLgame.exe
   SDLgame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\SDLgame.pdb (Partial PDB)

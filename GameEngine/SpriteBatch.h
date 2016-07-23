@@ -55,7 +55,7 @@ public:
     void end();
 
     // Adds a glyph to the spritebatch
-    void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color);
+    void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color, float test);
 
     // Renders the entire SpriteBatch to the screen
     void renderBatch();

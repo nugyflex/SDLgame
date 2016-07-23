@@ -4,6 +4,7 @@
 in vec2 fragmentPosition;
 in vec4 fragmentColor;
 in vec2 fragmentUV;
+in float fragTest;
 
 //This is the 3 component float vector that gets outputted to the screen
 //for each pixel.
@@ -20,12 +21,11 @@ float rand(vec2 n)
 }
 
 void main() {
-
+	vec4 textureColor = texture(mySampler, fragmentUV);
 	if (renderLighting == 1)
-	{
-		vec4 textureColor = texture(mySampler, fragmentUV);
+	{	
 		color = textureColor+fragmentColor;
-		vec4 light1color = vec4(1, 0, 0, 1);
+		vec4 light1color = vec4(0.1, 0.1, 1, 1);
 		vec4 light2color = vec4(0, 1, 0, 1);
 		//getDistance(fragmentPosition.x, fragmentPosition.y, _distance);
 		//cos(x) returns a number between -1 and 1. To convert it into the range 0 to 1
@@ -42,11 +42,19 @@ void main() {
 		float r = 200;
 		float newLightIntensity1 = lightIntensity/(((d/r)+1)*((d/r)+1));
 		float newLightIntensity2 = 1/(((d2/r)+1)*((d2/r)+1));
-		float newLightIntensity = newLightIntensity2 + newLightIntensity1;
+		float newLightIntensity = 0;
+		if (fragTest == 1)
+		{
+			newLightIntensity2 = 0;
+		}
+		if (fragTest == 0)
+		{
+			newLightIntensity1 = 0;
+		}
 		float staticRand = rand(vec2(1,100));
 		vec4 newLightColor = (light1color*newLightIntensity1) + (light2color*newLightIntensity2) + 0.1;
 		color = color * newLightColor;
-		color.a = 1;
+		color.a = textureColor.a;
 	}
 	else
 	{
@@ -56,6 +64,6 @@ void main() {
 	}
 	//ambient
 	color = color*0.5;
-	color.a = 1;
+	color.a = textureColor.a;
 	//-------
 }

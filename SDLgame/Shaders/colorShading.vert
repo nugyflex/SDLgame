@@ -10,6 +10,7 @@ in float test;
 out vec2 fragmentPosition;
 out vec4 fragmentColor;
 out vec2 fragmentUV;
+out float fragTest;
 
 uniform mat4 P;
 
@@ -20,14 +21,9 @@ void main() {
     gl_Position.z = 0.0;
     //Indicate that the coordinates are normalized
     gl_Position.w = 1.0;
-    
-	if (test == 1.1)
-	{
-		fragmentPosition = vertexPosition;
-	}
-    
-    
-    fragmentColor = vertexColor;
+	fragmentPosition = vertexPosition;    
+    fragTest = test;
+    fragmentColor = vertexColor;  
     
     fragmentUV = vec2(vertexUV.x, 1.0 - vertexUV.y);
 }

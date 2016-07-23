@@ -14,7 +14,7 @@ namespace GameEngine {
 		return 0;
 	}
 	void drawRect(int x, int y, int width, int height, Color color, SpriteBatch* spriteBatch) {
-		spriteBatch->draw(glm::vec4(x, y, width, height), glm::vec4(1,1,1,1), NULL, 0.0f, color);
+		spriteBatch->draw(glm::vec4(x, y, width, height), glm::vec4(1,1,1,1), NULL, 0.0f, color, 2);
 	}
 	void drawLine(glm::vec2 point1, glm::vec2 point2, glm::mat4 cameraMatrix) {
 		glBegin(GL_LINES);

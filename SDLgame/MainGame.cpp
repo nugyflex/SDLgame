@@ -197,15 +197,15 @@ void MainGame::drawGame() {
 	static GameEngine::GLTexture newTexture = GameEngine::ResourceManager::getTexture("Textures/jimmyJump_pack/PNG/AngryCloud.png");
     GameEngine::Color color;
     color.r = 255;
-    color.g = 0;
-    color.b = 0;
+    color.g = 255;
+    color.b = 255;
     color.a = 255;
-
+	_spriteBatch.draw(pos1, uv1, newTexture.id, 0.0f, color, 2);
 	GLint renderLighting = _colorProgram.getUniformLocation("renderLighting");
-	glUniform1f(renderLighting, 0);
-    _spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
-	GameEngine::drawRect(0, 0, 600, 600, color, &_spriteBatch);
-	_spriteBatch.draw(pos1, uv1, newTexture.id, 0.0f, color);
+	glUniform1f(renderLighting, 1);
+    _spriteBatch.draw(pos, uv, texture.id, 0.0f, color, 1);
+	GameEngine::drawRect(300, 0, 600, 600, color, &_spriteBatch);
+	
     _spriteBatch.end();
 
     _spriteBatch.renderBatch();
@@ -217,37 +217,7 @@ void MainGame::drawGame() {
 
     //disable the shader
     _colorProgram.unuse();
-	_colorProgram.use();
-	glUniform1f(renderLighting, 1);
-	/////////////////////////////////////////
-	glClear(GL_STENCIL_BUFFER_BIT);
-	glEnable(GL_STENCIL_TEST);
-	glStencilFunc(GL_NEVER, 1, 0xFF);
-	glStencilOp(GL_REPLACE, GL_KEEP, GL_KEEP);
-	glClear(GL_STENCIL_BUFFER_BIT);
 
-	glBegin(GL_POLYGON);
-	glVertex2f(0, 0);
-	glVertex2f(100, 100);
-	glVertex2f(0,100);
-	glVertex2f(-100, 0);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	glVertex2f(0, 0);
-	glVertex2f(200, 10);
-	glVertex2f(0, 100);
-	glVertex2f(-100, 0);
-	glEnd();
-
-	glStencilFunc(GL_EQUAL, 0, 1);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-	/////////////////////////////////////////
-
-	_spriteBatch.renderBatch();
-	
-	_colorProgram.unuse();
-	glDisable(GL_STENCIL_TEST);
     //Swap our buffer and draw everything to the screen!
     _window.swapBuffer();
 }    
