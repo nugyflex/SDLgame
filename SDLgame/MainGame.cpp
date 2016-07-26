@@ -1,4 +1,4 @@
-#include "MainGame.h"
+﻿#include "MainGame.h"
 #include <GameEngine/Errors.h>
 #include <GameEngine/ResourceManager.h>
 
@@ -186,7 +186,15 @@ void MainGame::drawGame() {
 	glUniform2f(lightLocation, lightPos.x, lightPos.y);
 	GLint lightIntensity = _colorProgram.getUniformLocation("lightIntensity");
 	glUniform1f(lightIntensity, 1);
-
+	//layout(std140) uniform MyBlock
+	//{
+	//	float myDataArray[size];
+	//};
+	//GLint lightsUniform = _colorProgram.getUniformLocation("lights"); // Getting location
+	//float x[9];
+	//glUniform1f(lightsUniform, x);
+	//glGetUniformBlockIndex​(_colorProgram, "MyBlock");
+	glTexBufferRange​(GLenum target​, GL_R32F​, GLuint buffer​, GLintptr offset​, GLsizeiptr size​);
     _spriteBatch.begin();
 
     glm::vec4 pos(-100.0f, -100.0f, 500.0f, 500.0f);

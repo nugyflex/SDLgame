@@ -14,6 +14,7 @@ uniform sampler2D mySampler;
 uniform vec2 lightPos;
 uniform float lightIntensity;
 uniform float renderLighting;
+
 float rand(vec2 n)
 {
   return 0.5 + 0.5 * 
