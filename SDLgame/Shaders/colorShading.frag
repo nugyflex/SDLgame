@@ -11,6 +11,7 @@ in float fragTest;
 out vec4 color;
 
 uniform sampler2D mySampler;
+uniform sampler1D test1;
 uniform vec2 lightPos;
 uniform float lightIntensity;
 uniform float renderLighting;
@@ -23,7 +24,7 @@ float rand(vec2 n)
 
 void main() {
 	vec4 textureColor = texture(mySampler, fragmentUV);
-	if (renderLighting == 1)
+	if (texelFetch(test1, 0, 0) == vec4(1,1,1,1) && renderLighting == 1)
 	{	
 		color = textureColor+fragmentColor;
 		vec4 light1color = vec4(0.1, 0.1, 1, 1);
@@ -37,7 +38,7 @@ void main() {
 		//color = vec4(fragmentColor.r * tintensity/_distance,
 		//             fragmentColor.g * tintensity/_distance,
 		//             fragmentColor.b * tintensity/_distance/20, fragmentColor.a) * textureColor;
-		 // compute the current distance from light  
+		// compute the current distance from light  
 		float d = distance(lightPos, fragmentPosition);
 		float d2 = distance(vec2(100,100), fragmentPosition);
 		float r = 200;
@@ -66,5 +67,6 @@ void main() {
 	//ambient
 	color = color*0.5;
 	color.a = textureColor.a;
+	color = texelFetch(test1, 0, 0);
 	//-------
 }

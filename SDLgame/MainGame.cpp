@@ -194,7 +194,18 @@ void MainGame::drawGame() {
 	//float x[9];
 	//glUniform1f(lightsUniform, x);
 	//glGetUniformBlockIndex​(_colorProgram, "MyBlock");
-	glTexBufferRange​(GLenum target​, GL_R32F​, GLuint buffer​, GLintptr offset​, GLsizeiptr size​);
+	std::vector<glm::vec4> data;
+	data.push_back(glm::vec4(1, 1, 1, 1));
+	data.push_back(glm::vec4(1, 1, 1, 1));
+	data.push_back(glm::vec4(1, 1, 1, 1));
+	data.push_back(glm::vec4(1, 1, 1, 1));
+	data.push_back(glm::vec4(1, 1, 1, 1));
+	glTexImage1D(GL_TEXTURE_1D, 0, GL_RGBA, 5, 0, GL_RGBA, GL_FLOAT, &data);
+	glBindTexture(GL_TEXTURE_1D, 50);
+	GLint test1 = _colorProgram.getUniformLocation("test1");
+	//Tell the shader that the texture is in texture unit 0
+	glUniform1i(test1, 50);
+	
     _spriteBatch.begin();
 
     glm::vec4 pos(-100.0f, -100.0f, 500.0f, 500.0f);
@@ -220,7 +231,6 @@ void MainGame::drawGame() {
 
     //unbind the texture
     glBindTexture(GL_TEXTURE_2D, 0);
-
 
 
     //disable the shader
