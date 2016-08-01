@@ -32,7 +32,31 @@ void SpriteBatch::end() {
     //sortGlyphs();
     createRenderBatches();
 }
+void SpriteBatch::drawLine(glm::vec2 _p1, glm::vec2 _p2, const Color& color) {
 
+	Glyph* newGlyph = new Glyph;
+	glm::vec4 uvRect = glm::vec4(1, 1, 1, 1);
+	newGlyph->texture = NULL;
+	newGlyph->depth = 1;
+
+	newGlyph->topLeft.color = color;
+	newGlyph->topLeft.setPosition(_p1.x, _p1.y);
+	newGlyph->topLeft.setUV(uvRect.x, uvRect.y + uvRect.w);
+
+	newGlyph->bottomLeft.color = color;
+	newGlyph->bottomLeft.setPosition(_p2.x, _p2.y);
+	newGlyph->bottomLeft.setUV(uvRect.x, uvRect.y);
+
+	newGlyph->bottomRight.color = color;
+	newGlyph->bottomRight.setPosition(_p2.x+10, _p2.y+10);
+	newGlyph->bottomRight.setUV(uvRect.x + uvRect.z, uvRect.y);
+
+	newGlyph->topRight.color = color;
+	newGlyph->topRight.setPosition(_p1.x+10, _p1.y+10);
+	newGlyph->topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
+
+	_glyphs.push_back(newGlyph);
+}
 void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color) {
 
     Glyph* newGlyph = new Glyph;

@@ -10,12 +10,15 @@
 #include <GameEngine/Window.h>
 #include <GameEngine/InputManager.h>
 #include <GameEngine/Timing.h>
+#include <GameEngine/CollisionDetection.h>
 
 #include <GameEngine/SpriteBatch.h>
 
 #include <GameEngine/Camera2D.h>
 
 #include <vector>
+
+#include "LightCollection.h"
 
 enum class GameState {PLAY, EXIT};
 
@@ -55,5 +58,10 @@ private:
 	std::vector<GameEngine::Light> lightVector;
 	bool lastPressed = false;
 	int maxLights;
+	LightCollection Lights;
+	float flareYVel = 0;
+	glm::vec4 rect1 = glm::vec4(-500, -50, 1000, 100);
+	glm::vec4 flare = glm::vec4(0, 100, 20, 20);
+	GameEngine::CollisionDetection cd;
 };
 

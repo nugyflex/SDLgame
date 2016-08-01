@@ -1,8 +1,2 @@
-﻿  MainGame.cpp
-c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(48): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(74): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(107): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
-c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(153): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(296): warning C4018: '<': signed/unsigned mismatch
-  SDLgame.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\SDLgame.exe
-  SDLgame.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\SDLgame.pdb (Partial PDB)
+﻿  SDLgame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\SDLgame.exe
+  SDLgame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\SDLgame.pdb (Partial PDB)

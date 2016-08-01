@@ -8,6 +8,7 @@ namespace GameEngine {
 		float y;
 		float radius;
 		glm::vec3 color;
+		int ID;
 	};
 	extern int init();
 	extern void drawRect(int x, int y, int width, int height, Color color, SpriteBatch* spriteBatch);

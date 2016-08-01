@@ -19,9 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LightCollection.h" />
     <ClInclude Include="MainGame.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="LightCollection.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
   </ItemGroup>

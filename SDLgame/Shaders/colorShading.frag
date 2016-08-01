@@ -29,7 +29,7 @@ void main() {
 	color.a = textureColor.a;
 	//ambient
 	color = color*0.5;
-	color.a = textureColor.a + lightArraySize;
+	color.a = textureColor.a;
 
 
 

@@ -12,7 +12,7 @@ MainGame::MainGame() :
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f),
-	maxLights(10)
+	maxLights(100)
 {
     _camera.init(_screenWidth, _screenHeight);
 }
@@ -43,14 +43,8 @@ void MainGame::initSystems() {
     _spriteBatch.init();
     _fpsLimiter.init(_maxFPS);
 	GameEngine::Light newLight;
-	for (int i = 0; i < 0; i++)
-	{
-		newLight.x = -200-(i * 20);
-		newLight.y = -100;
-		newLight.radius = 10;
-		newLight.color = glm::vec3(1, 1, 1);
-		lightVector.push_back(newLight);;
-	}
+	Lights.setMaxLights(100);
+	Lights.addLight(flare.x, flare.y, 1, 0.1, 0.1, 30);
 }
 
 void MainGame::initShaders() {
@@ -150,7 +144,7 @@ void MainGame::processInput() {
 		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
 		//std::cout << mouseCoords.x << " " << mouseCoords.y << std::endl;
 		if (!lastPressed) {
-			addLight(mouseCoords.x, -mouseCoords.y, ((double)rand() / (RAND_MAX)), ((double)rand() / (RAND_MAX)), ((double)rand() / (RAND_MAX)), ((double)rand() / (RAND_MAX)) * 100 + 20);
+			Lights.addLight(mouseCoords.x, -mouseCoords.y, ((double)rand() / (RAND_MAX)), ((double)rand() / (RAND_MAX)), ((double)rand() / (RAND_MAX)), ((double)rand() / (RAND_MAX)) * 100 + 20);
 		}
 		lastPressed = true;
 	}
@@ -160,6 +154,12 @@ void MainGame::processInput() {
 //Draws the game using the almighty OpenGL
 void MainGame::drawGame() {
 
+
+	flareYVel -= 0.1;
+	flare.y += flareYVel;
+	Lights.changeLightPosition(0, flare.x, flare.y);
+	cd.correctPosition(&flare, &rect1, &glm::vec2(0, flareYVel));
+	//std::cout << flare.x << "," << flare.y << "," << flare.z << "," << flare.w << std::endl;
     //Set the base depth to 1.0
     glClearDepth(1.0);
     //Clear the color and depth buffer
@@ -229,35 +229,7 @@ void MainGame::drawGame() {
 	//glActiveTexture(GL_TEXTURE0);
 
 	//-----------------PASSING LIGHTS INTO SHADER-----------------//
-
-	const int size = 100;
-	float lightColourArray[size*3];
-	//std::cout << "lights: " << lightVector.size() << std::endl;
-	for (unsigned int i = 0; i < lightVector.size(); i++)
-	{
-		lightColourArray[i * 3] = lightVector[i].color.r;
-		lightColourArray[(i * 3) + 1] = lightVector[i].color.g;
-		lightColourArray[(i * 3) + 2] = lightVector[i].color.b;
-	}
-	float lightPositionArray[size*2];
-	for (unsigned int i = 0; i < lightVector.size(); i++)
-	{
-		lightPositionArray[i * 2] = lightVector[i].x;
-		lightPositionArray[(i * 2) + 1] = lightVector[i].y;
-	}
-	float lightRadiusArray[size];
-	for (unsigned int i = 0; i < lightVector.size(); i++)
-	{
-		lightRadiusArray[i] = lightVector[i].radius;
-	}
-	GLint lightArraySize = _colorProgram.getUniformLocation("lightArraySize");
-	glUniform1i(lightArraySize, lightVector.size());
-	GLint lightColours = _colorProgram.getUniformLocation("lightColours");
-	glUniform1fv(lightColours, size*3, lightColourArray );
-	GLint lightPositions = _colorProgram.getUniformLocation("lightPositions");
-	glUniform1fv(lightPositions, size*2, lightPositionArray);
-	GLint lightRadii = _colorProgram.getUniformLocation("lightRadii");
-	glUniform1fv(lightRadii, size, lightRadiusArray);
+	Lights.addLightsToShader(&_colorProgram);
 	//------------------------------------------------------------//
     _spriteBatch.begin();
     glm::vec4 pos(-100.0f, -100.0f, 500.0f, 500.0f);
@@ -269,13 +241,14 @@ void MainGame::drawGame() {
 		newTexture = GameEngine::ResourceManager::getTexture("Textures/jimmyJump_pack/PNG/AngryCloud.png");
     GameEngine::Color color;
     color.r = 255;
-    color.g = 255;
+    color.g = 0;
     color.b = 255;
     color.a = 255;
 	_spriteBatch.draw(pos1, uv1, newTexture.id, 0.0f, color);
 
     _spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
 	GameEngine::drawRect(300, 0, 600, 600, color, &_spriteBatch);
+	_spriteBatch.drawLine(glm::vec2(0, 0), glm::vec2(500, -100), color);
 	
     _spriteBatch.end();
 

@@ -1,0 +1,74 @@
+#include "LightCollection.h"
+#include <iostream>
+LightCollection::LightCollection()
+{
+
+}
+LightCollection::~LightCollection()
+{
+
+}
+void LightCollection::setMaxLights(int _maxlights) {
+	maxLights = _maxlights;
+}
+void LightCollection::addLight(float x, float y, float r, float g, float b, float radius) {
+	if (lightVector.size() < maxLights)
+	{
+		GameEngine::Light newLight;
+		newLight.x = x;
+		newLight.y = y;
+		newLight.radius = radius;
+		newLight.color = glm::vec3(r, g, b);
+		newLight.ID = lastLightID + 1;
+		lastLightID++;
+		lightVector.push_back(newLight);
+		std::cout << "lights: " << lightVector.size() << std::endl;
+	}
+	else {
+		std::cout << "Maximum amount of lights reached!" << std::endl;
+	}
+}
+void LightCollection::addLightsToShader(GameEngine::GLSLProgram* _shaderProgram) {
+	const int size = 100;
+	float lightColourArray[size * 3];
+	//std::cout << "lights: " << lightVector.size() << std::endl;
+	for (unsigned int i = 0; i < lightVector.size(); i++)
+	{
+		lightColourArray[i * 3] = lightVector[i].color.r;
+		lightColourArray[(i * 3) + 1] = lightVector[i].color.g;
+		lightColourArray[(i * 3) + 2] = lightVector[i].color.b;
+	}
+	float lightPositionArray[size * 2];
+	for (unsigned int i = 0; i < lightVector.size(); i++)
+	{
+		lightPositionArray[i * 2] = lightVector[i].x;
+		lightPositionArray[(i * 2) + 1] = lightVector[i].y;
+	}
+	float lightRadiusArray[size];
+	for (unsigned int i = 0; i < lightVector.size(); i++)
+	{
+		lightRadiusArray[i] = lightVector[i].radius;
+	}
+	GLint lightArraySize = _shaderProgram->getUniformLocation("lightArraySize");
+	glUniform1i(lightArraySize, lightVector.size());
+	GLint lightColours = _shaderProgram->getUniformLocation("lightColours");
+	glUniform1fv(lightColours, size * 3, lightColourArray);
+	GLint lightPositions = _shaderProgram->getUniformLocation("lightPositions");
+	glUniform1fv(lightPositions, size * 2, lightPositionArray);
+	GLint lightRadii = _shaderProgram->getUniformLocation("lightRadii");
+	glUniform1fv(lightRadii, size, lightRadiusArray);
+}
+int LightCollection::getVectorIndexByID(int _ID) {
+	for (int i = 0; i < lightVector.size(); i++) {
+		if (lightVector[i].ID == _ID) {
+			return i;
+		}
+	}
+	std::cout << "No Light found with ID " << _ID << std::endl;
+	return 0;
+}
+void LightCollection::changeLightPosition(int _ID, float _x, float _y) {
+	int index = getVectorIndexByID(_ID);
+	lightVector[index].x = _x;
+	lightVector[index].y = _y;
+}
