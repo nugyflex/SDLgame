@@ -1,7 +1,7 @@
 ﻿#include "MainGame.h"
 #include <GameEngine/Errors.h>
 #include <GameEngine/ResourceManager.h>
-
+#include <math.h>
 #include <iostream>
 #include <string>
 
@@ -41,6 +41,15 @@ void MainGame::initSystems() {
 
     _spriteBatch.init();
     _fpsLimiter.init(_maxFPS);
+	GameEngine::Light newLight;
+	for (int i = 0; i < 50; i++)
+	{
+		newLight.x = -200-(i * 20);
+		newLight.y = -100;
+		newLight.radius = 10;
+		newLight.color = glm::vec3(1, 1, 1);
+		lightVector.push_back(newLight);;
+	}
 }
 
 void MainGame::initShaders() {
@@ -139,7 +148,17 @@ void MainGame::processInput() {
 		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
 		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
 		std::cout << mouseCoords.x << " " << mouseCoords.y << std::endl;
+		if (!lastPressed) {
+			GameEngine::Light newLight;
+			newLight.x = mouseCoords.x;
+			newLight.y = -mouseCoords.y;
+			newLight.radius = 10;
+			newLight.color = glm::vec3(1, 1, 1);
+			lightVector.push_back(newLight);;
+		}
+		lastPressed = true;
 	}
+	else { lastPressed = false; }
 }
 
 //Draws the game using the almighty OpenGL
@@ -182,10 +201,10 @@ void MainGame::drawGame() {
 
     glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 
-	GLint lightLocation = _colorProgram.getUniformLocation("lightPos");
-	glUniform2f(lightLocation, lightPos.x, lightPos.y);
-	GLint lightIntensity = _colorProgram.getUniformLocation("lightIntensity");
-	glUniform1f(lightIntensity, 1);
+	//GLint lightLocation = _colorProgram.getUniformLocation("lightPos");
+	//glUniform2f(lightLocation, lightPos.x, lightPos.y);
+	//GLint lightIntensity = _colorProgram.getUniformLocation("lightIntensity");
+	//glUniform1f(lightIntensity, 1);
 	//layout(std140) uniform MyBlock
 	//{
 	//	float myDataArray[size];
@@ -194,35 +213,72 @@ void MainGame::drawGame() {
 	//float x[9];
 	//glUniform1f(lightsUniform, x);
 	//glGetUniformBlockIndex​(_colorProgram, "MyBlock");
-	std::vector<glm::vec4> data;
-	data.push_back(glm::vec4(1, 1, 1, 1));
-	data.push_back(glm::vec4(1, 1, 1, 1));
-	data.push_back(glm::vec4(1, 1, 1, 1));
-	data.push_back(glm::vec4(1, 1, 1, 1));
-	data.push_back(glm::vec4(1, 1, 1, 1));
-	glTexImage1D(GL_TEXTURE_1D, 0, GL_RGBA, 5, 0, GL_RGBA, GL_FLOAT, &data);
-	glBindTexture(GL_TEXTURE_1D, 50);
-	GLint test1 = _colorProgram.getUniformLocation("test1");
-	//Tell the shader that the texture is in texture unit 0
-	glUniform1i(test1, 50);
-	
-    _spriteBatch.begin();
+	//GameEngine::Color color1;
+	//color1.r = 255;
+	//color1.g = 255;
+	//color1.b = 255;
+	//color1.a = 255;
+	//std::vector<GameEngine::Color> data;
+	//for (unsigned int i = 0; i < 5; i++)
+	//{
+	//	data.push_back(color1);
+	//}
+	//GLuint texture1;
+	//glGenTextures( 1, &texture1);
+	//glActiveTexture(GL_TEXTURE0+ texture1);
+	//glBindTexture(GL_TEXTURE_1D, texture1);
+	//glTexImage1D(GL_TEXTURE_1D, 0, GL_RGBA, 5, 0, GL_RGBA, GL_UNSIGNED_BYTE, &data);
+	//GLint test1 = _colorProgram.getUniformLocation("test1");
+	//glUniform1i(test1, texture1);
+	//glActiveTexture(GL_TEXTURE0);
 
+	//-----------------PASSING LIGHTS INTO SHADER-----------------//
+
+	const int size = 1000;
+	float lightColourArray[size*3];
+	std::cout << "lights: " << lightVector.size() << std::endl;
+	for (unsigned int i = 0; i < lightVector.size(); i++)
+	{
+		lightColourArray[i * 3] = lightVector[i].color.r;
+		lightColourArray[(i * 3) + 1] = lightVector[i].color.g;
+		lightColourArray[(i * 3) + 2] = lightVector[i].color.b;
+	}
+	float lightPositionArray[size*2];
+	for (unsigned int i = 0; i < lightVector.size(); i++)
+	{
+		lightPositionArray[i * 2] = lightVector[i].x;
+		lightPositionArray[(i * 2) + 1] = lightVector[i].y;
+	}
+	float lightRadiusArray[size];
+	for (unsigned int i = 0; i < lightVector.size(); i++)
+	{
+		lightRadiusArray[i] = lightVector[i].radius;
+	}
+	GLint lightArraySize = _colorProgram.getUniformLocation("lightArraySize");
+	glUniform1i(lightArraySize, lightVector.size());
+	GLint lightColours = _colorProgram.getUniformLocation("lightColours");
+	glUniform1fv(lightColours, size, lightColourArray );
+	GLint lightPositions = _colorProgram.getUniformLocation("lightPositions");
+	glUniform1fv(lightPositions, size, lightPositionArray);
+	GLint lightRadii = _colorProgram.getUniformLocation("lightRadii");
+	glUniform1fv(lightRadii, size, lightRadiusArray);
+	//------------------------------------------------------------//
+    _spriteBatch.begin();
     glm::vec4 pos(-100.0f, -100.0f, 500.0f, 500.0f);
     glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
 	static GameEngine::GLTexture texture = GameEngine::ResourceManager::getTexture("Textures/jimmyJump_pack/PNG/CharacterRight_Standing.png");
 	glm::vec4 pos1(-1000.0f, 1000.0f, 2000.0f, -2000.0f);
 	glm::vec4 uv1(0.0f, 0.0f, 1.0f, 1.0f);
-	static GameEngine::GLTexture newTexture = GameEngine::ResourceManager::getTexture("Textures/jimmyJump_pack/PNG/AngryCloud.png");
+	static GameEngine::GLTexture 
+		newTexture = GameEngine::ResourceManager::getTexture("Textures/jimmyJump_pack/PNG/AngryCloud.png");
     GameEngine::Color color;
     color.r = 255;
     color.g = 255;
     color.b = 255;
     color.a = 255;
-	_spriteBatch.draw(pos1, uv1, newTexture.id, 0.0f, color, 2);
-	GLint renderLighting = _colorProgram.getUniformLocation("renderLighting");
-	glUniform1f(renderLighting, 1);
-    _spriteBatch.draw(pos, uv, texture.id, 0.0f, color, 1);
+	_spriteBatch.draw(pos1, uv1, newTexture.id, 0.0f, color);
+
+    _spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
 	GameEngine::drawRect(300, 0, 600, 600, color, &_spriteBatch);
 	
     _spriteBatch.end();

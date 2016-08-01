@@ -52,6 +52,7 @@ private:
     float _fps;
     float _time;
 	glm::vec2 lightPos = glm::vec2(0,0);
-
+	std::vector<GameEngine::Light> lightVector;
+	bool lastPressed = false;
 };
 

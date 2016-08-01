@@ -33,7 +33,7 @@ void SpriteBatch::end() {
     createRenderBatches();
 }
 
-void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color, float test) {
+void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color) {
 
     Glyph* newGlyph = new Glyph;
 
@@ -66,10 +66,6 @@ void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuin
 		newGlyph->bottomRight.color = colorForTextures;
 		newGlyph->topRight.color = colorForTextures;
 	}
-	newGlyph->topLeft.test = 1;
-	newGlyph->bottomLeft.test = 1;
-	newGlyph->bottomRight.test = 1;
-	newGlyph->topRight.test = 2;
     _glyphs.push_back(newGlyph);
 }
 
@@ -177,8 +173,6 @@ void SpriteBatch::createVertexArray() {
     glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void*)offsetof(Vertex, color));
     //This is the UV attribute pointer
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
-	
-	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, test));
 
     glBindVertexArray(0);
 

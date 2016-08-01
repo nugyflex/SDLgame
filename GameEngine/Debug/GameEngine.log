@@ -1,28 +1,9 @@
-﻿  picoPNG.cpp
-  Window.cpp
-  Timing.cpp
+﻿  Timing.cpp
 c:\users\jack\documents\github\sdlgame\gameengine\timing.cpp(24): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
 c:\users\jack\documents\github\sdlgame\gameengine\timing.cpp(41): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
 c:\users\jack\documents\github\sdlgame\gameengine\timing.cpp(44): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
-  TextureCache.cpp
-  SpriteBatch.cpp
-c:\users\jack\documents\github\sdlgame\gameengine\spritebatch.cpp(25): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdlgame\gameengine\spritebatch.cpp(82): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdlgame\gameengine\spritebatch.cpp(121): warning C4018: '<': signed/unsigned mismatch
-  Sprite.cpp
-  ResourceManager.cpp
-  InputManager.cpp
-  ImageLoader.cpp
-  IOManager.cpp
-c:\users\jack\documents\github\sdlgame\gameengine\iomanager.cpp(18): warning C4244: 'initializing': conversion from 'std::streamoff' to 'int', possible loss of data
-c:\users\jack\documents\github\sdlgame\gameengine\iomanager.cpp(22): warning C4244: '-=': conversion from 'std::streamoff' to 'int', possible loss of data
-  GameEngine.cpp
-  GLSLProgram.cpp
-  Errors.cpp
-  Camera2D.cpp
-  Generating Code...
 glew32.lib(glew32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
 glew32.lib(glew32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
 opengl32.lib(OPENGL32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
 opengl32.lib(OPENGL32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
-  GameEngine.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\GameEngine.lib
+  GameEngine.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\GameEngine.lib
