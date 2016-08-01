@@ -6,12 +6,13 @@
 #include <string>
 
 //Constructor, just initializes private member variables
-MainGame::MainGame() : 
-    _screenWidth(1024),
-    _screenHeight(768), 
-    _time(0.0f),
-    _gameState(GameState::PLAY),
-    _maxFPS(60.0f)
+MainGame::MainGame() :
+	_screenWidth(1024),
+	_screenHeight(768),
+	_time(0.0f),
+	_gameState(GameState::PLAY),
+	_maxFPS(60.0f),
+	maxLights(10)
 {
     _camera.init(_screenWidth, _screenHeight);
 }
@@ -42,7 +43,7 @@ void MainGame::initSystems() {
     _spriteBatch.init();
     _fpsLimiter.init(_maxFPS);
 	GameEngine::Light newLight;
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < 0; i++)
 	{
 		newLight.x = -200-(i * 20);
 		newLight.y = -100;
@@ -147,14 +148,9 @@ void MainGame::processInput() {
 	if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
 		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
 		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
-		std::cout << mouseCoords.x << " " << mouseCoords.y << std::endl;
+		//std::cout << mouseCoords.x << " " << mouseCoords.y << std::endl;
 		if (!lastPressed) {
-			GameEngine::Light newLight;
-			newLight.x = mouseCoords.x;
-			newLight.y = -mouseCoords.y;
-			newLight.radius = 10;
-			newLight.color = glm::vec3(1, 1, 1);
-			lightVector.push_back(newLight);;
+			addLight(mouseCoords.x, -mouseCoords.y, ((double)rand() / (RAND_MAX)), ((double)rand() / (RAND_MAX)), ((double)rand() / (RAND_MAX)), ((double)rand() / (RAND_MAX)) * 100 + 20);
 		}
 		lastPressed = true;
 	}
@@ -234,9 +230,9 @@ void MainGame::drawGame() {
 
 	//-----------------PASSING LIGHTS INTO SHADER-----------------//
 
-	const int size = 1000;
+	const int size = 100;
 	float lightColourArray[size*3];
-	std::cout << "lights: " << lightVector.size() << std::endl;
+	//std::cout << "lights: " << lightVector.size() << std::endl;
 	for (unsigned int i = 0; i < lightVector.size(); i++)
 	{
 		lightColourArray[i * 3] = lightVector[i].color.r;
@@ -257,9 +253,9 @@ void MainGame::drawGame() {
 	GLint lightArraySize = _colorProgram.getUniformLocation("lightArraySize");
 	glUniform1i(lightArraySize, lightVector.size());
 	GLint lightColours = _colorProgram.getUniformLocation("lightColours");
-	glUniform1fv(lightColours, size, lightColourArray );
+	glUniform1fv(lightColours, size*3, lightColourArray );
 	GLint lightPositions = _colorProgram.getUniformLocation("lightPositions");
-	glUniform1fv(lightPositions, size, lightPositionArray);
+	glUniform1fv(lightPositions, size*2, lightPositionArray);
 	GLint lightRadii = _colorProgram.getUniformLocation("lightRadii");
 	glUniform1fv(lightRadii, size, lightRadiusArray);
 	//------------------------------------------------------------//
@@ -295,3 +291,18 @@ void MainGame::drawGame() {
     //Swap our buffer and draw everything to the screen!
     _window.swapBuffer();
 }    
+void MainGame::addLight(float x, float y, float r, float g, float b, float radius) {
+	if (lightVector.size() < maxLights)
+	{
+		GameEngine::Light newLight;
+		newLight.x = x;
+		newLight.y = y;
+		newLight.radius = radius;
+		newLight.color = glm::vec3(r, g, b);
+		lightVector.push_back(newLight);
+		std::cout << "lights: " << lightVector.size() << std::endl;
+	}
+	else {
+		std::cout << "Maximum amount of lights reached!" << std::endl;
+	}
+}

@@ -27,7 +27,7 @@ public:
     ~MainGame();
 
     void run();
-
+	void addLight(float x, float y, float r, float g, float b, float radius);
 private:
     void initSystems();
     void initShaders();
@@ -54,5 +54,6 @@ private:
 	glm::vec2 lightPos = glm::vec2(0,0);
 	std::vector<GameEngine::Light> lightVector;
 	bool lastPressed = false;
+	int maxLights;
 };
 
