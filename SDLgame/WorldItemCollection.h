@@ -13,7 +13,7 @@ public:
 	void drawItems();
 	void runItems();
 	void linkToLights(LightCollection* _lc);
-	glm::vec4 getRect(int _index);
+	BoundingBox* getBoundingBox(int _index);
 private:
-	std::vector<WorldItem> worldItemVector;
+	std::vector<WorldItem*> worldItemVector;
 };

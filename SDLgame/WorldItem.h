@@ -1,28 +1,24 @@
 #pragma once
 #include <glm.hpp>
+#include <GameEngine/BoundingBox.h>
 class WorldItem {
 public:
 	WorldItem();
 	~WorldItem();
 	void init(float _x, float _y, float _w, float _h);
-	glm::vec2 getPosition();
-	glm::vec2 getVel();
-	glm::vec2 getSize();
-	glm::vec4 getRect();
+	BoundingBox* getBoundingBox();
 	void setLightID(int _ID);
-	void setSize(glm::vec2 _size);
-	void setVel(glm::vec2 _vel);
-	void addToVel(glm::vec2 _vel);
-	void setPosition(glm::vec2 _vel);
-	void addToPosition(glm::vec2 _vel);
-	void setLightOffset(glm::vec2 _offset);
+	void setSize(float _x, float _y);
+	void setVel(float _x, float _y);
+	void addToVel(float _x, float _y);
+	void setPosition(float _x, float _y);
+	void addToPosition(float _x, float _y);
+	void setLightOffset(float _x, float _y);
 	glm::vec2 getLightOffset();
 	int getLightID();
-	virtual void run() {};
+	virtual void run();
 protected:
-	glm::vec2 position;
-	glm::vec2 vel;
-	glm::vec2 size;
+	BoundingBox boundingBox;
 	glm::vec2 lightOffset;
 	int lightID;
 };

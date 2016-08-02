@@ -5,5 +5,5 @@ class Flare : public WorldItem {
 public:
 	Flare();
 	~Flare();
-	void run() override;
+	void run();
 };

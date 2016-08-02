@@ -2,6 +2,7 @@
 #include "Math.h"
 #include <vector>
 #include <glm.hpp>
+#include "BoundingBox.h"
 namespace GameEngine {
 	class CollisionDetection
 	{
@@ -19,6 +20,6 @@ namespace GameEngine {
 		bool test8(glm::vec4* _rect1, glm::vec4* _rect2);
 		int getSide(glm::vec4* _rect1, glm::vec4* _rect2);
 		void correctPosition(glm::vec4* _rect1, glm::vec4* _rect2);
-		void correctPosition(glm::vec4* _rect1, glm::vec4* _rect2, glm::vec2 *_vel);
+		void correctPosition(BoundingBox* bb, glm::vec4* _rect2);
 	};
 }

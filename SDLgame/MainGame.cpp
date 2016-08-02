@@ -156,7 +156,7 @@ void MainGame::drawGame() {
 	Lights.changeRadius(0, ((double)rand() / (RAND_MAX))*200 + 50);
 	WorldItems.linkToLights(&Lights);
 	WorldItems.runItems();
-	cd.correctPosition(&WorldItems.getRect(0), &rect1, &flareVel);
+	cd.correctPosition(WorldItems.getBoundingBox(0), &rect1);
 	//std::cout << flare.x << "," << flare.y << "," << flare.z << "," << flare.w << std::endl;
     //Set the base depth to 1.0
     glClearDepth(1.0);

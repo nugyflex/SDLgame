@@ -4,50 +4,47 @@ WorldItem::WorldItem() {}
 WorldItem::~WorldItem() {}
 void WorldItem::init(float _x, float _y, float _w, float _h)
 {
-	setPosition(glm::vec2(_x, _y));
-	setSize(glm::vec2(_w, _h));
-	setVel(glm::vec2(0, 0));
+	setPosition(_x, _y);
+	setSize(_w, _h);
+	setVel(0, 0);
 }
-glm::vec2 WorldItem::getPosition()
+BoundingBox* WorldItem::getBoundingBox()
 {
-	return position;
-}
-glm::vec2 WorldItem::getVel()
-{
-	return vel;
-}
-glm::vec2 WorldItem::getSize()
-{
-	return size;
-}
-glm::vec4 WorldItem::getRect()
-{
-	return glm::vec4(position.x, position.y, size.x, size.y);
+	return &boundingBox;
 }
 void WorldItem::setLightID(int _ID) {
 	lightID = _ID;
 }
-void WorldItem::setSize(glm::vec2 _size) {
-	size = _size;
+void WorldItem::setSize(float _width, float _height) {
+	boundingBox.w = _width;
+	boundingBox.h = _height;
 }
-void WorldItem::setVel(glm::vec2 _vel) {
-	vel = _vel;
+void WorldItem::setVel(float _xVel, float _yVel) {
+	boundingBox.xv = _xVel;
+	boundingBox.yv = _yVel;
 }
-void WorldItem::addToVel(glm::vec2 _vel) {
-	vel += _vel;
+void WorldItem::addToVel(float _xVel, float _yVel) {
+	boundingBox.xv += _xVel;
+	boundingBox.yv += _yVel;
 }
-void WorldItem::setPosition(glm::vec2 _position) {
-	position = _position;
+void WorldItem::setPosition(float _x, float _y) {
+	boundingBox.x = _x;
+	boundingBox.y = _y;
 }
-void WorldItem::addToPosition(glm::vec2 _position) {
-	position += _position;
+void WorldItem::addToPosition(float _x, float _y) {
+	boundingBox.x += _x;
+	boundingBox.y += _y;
 }
 int WorldItem::getLightID() {
 	return	lightID;
 }
-void WorldItem::setLightOffset(glm::vec2 _offset) {
-	lightOffset = _offset;
+void WorldItem::setLightOffset(float _x, float _y) {
+	lightOffset.x = _x;
+	lightOffset.y = _y;
 }
 glm::vec2 WorldItem::getLightOffset() {
 	return lightOffset;
+}
+void WorldItem::run() {
+
 }
