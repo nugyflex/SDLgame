@@ -11,7 +11,7 @@ LightCollection::~LightCollection()
 void LightCollection::setMaxLights(int _maxlights) {
 	maxLights = _maxlights;
 }
-void LightCollection::addLight(float x, float y, float r, float g, float b, float radius) {
+int LightCollection::addLight(float x, float y, float r, float g, float b, float radius) {
 	if (lightVector.size() < maxLights)
 	{
 		GameEngine::Light newLight;
@@ -23,9 +23,11 @@ void LightCollection::addLight(float x, float y, float r, float g, float b, floa
 		lastLightID++;
 		lightVector.push_back(newLight);
 		std::cout << "lights: " << lightVector.size() << std::endl;
+		return newLight.ID;
 	}
 	else {
 		std::cout << "Maximum amount of lights reached!" << std::endl;
+		return 0;
 	}
 }
 void LightCollection::addLightsToShader(GameEngine::GLSLProgram* _shaderProgram) {
@@ -67,8 +69,11 @@ int LightCollection::getVectorIndexByID(int _ID) {
 	std::cout << "No Light found with ID " << _ID << std::endl;
 	return 0;
 }
-void LightCollection::changeLightPosition(int _ID, float _x, float _y) {
+void LightCollection::changePosition(int _ID, float _x, float _y) {
 	int index = getVectorIndexByID(_ID);
 	lightVector[index].x = _x;
 	lightVector[index].y = _y;
+}
+void LightCollection::changeRadius(int _ID, float _radius) {
+	lightVector[getVectorIndexByID(_ID)].radius = _radius;
 }

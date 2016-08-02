@@ -19,6 +19,7 @@
 #include <vector>
 
 #include "LightCollection.h"
+#include "WorldItemCollection.h"
 
 enum class GameState {PLAY, EXIT};
 
@@ -59,9 +60,9 @@ private:
 	bool lastPressed = false;
 	int maxLights;
 	LightCollection Lights;
-	float flareYVel = 0;
+	glm::vec2 flareVel = glm::vec2(0, 0);
 	glm::vec4 rect1 = glm::vec4(-500, -50, 1000, 100);
-	glm::vec4 flare = glm::vec4(0, 100, 20, 20);
 	GameEngine::CollisionDetection cd;
+	WorldItemCollection WorldItems;
 };
 

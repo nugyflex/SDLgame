@@ -13,7 +13,7 @@ uniform float lightRadii[100];
 out vec4 color;
 
 uniform sampler2D mySampler;
-
+uniform float ambientLight;
 void main() {
 	vec4 textureColor = texture(mySampler, fragmentUV);
 	color = textureColor+fragmentColor;
@@ -28,7 +28,7 @@ void main() {
 	color = color * newLightColor;
 	color.a = textureColor.a;
 	//ambient
-	color = color*0.5;
+	color = color*ambientLight;
 	color.a = textureColor.a;
 
 

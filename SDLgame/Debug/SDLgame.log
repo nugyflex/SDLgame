@@ -1,2 +1,5 @@
-﻿  SDLgame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\SDLgame.exe
-  SDLgame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\SDLgame.pdb (Partial PDB)
+﻿  WorldItemCollection.cpp
+c:\users\jack\documents\github\sdlgame\sdlgame\worlditemcollection.cpp(18): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\sdlgame\worlditemcollection.cpp(25): warning C4018: '<': signed/unsigned mismatch
+  SDLgame.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\SDLgame.exe
+  SDLgame.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\SDLgame.pdb (Partial PDB)

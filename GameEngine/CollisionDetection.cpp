@@ -1,5 +1,5 @@
 #include  "CollisionDetection.h"
-
+#include <iostream>
 
 namespace GameEngine {
 	CollisionDetection::CollisionDetection() {}
@@ -203,8 +203,8 @@ namespace GameEngine {
 			}
 		}
 	}
-	void CollisionDetection::correctPosition(glm::vec4* _rect1, glm::vec4* _rect2, glm::vec2* _vel) {
-		//left = 1, bottom = 2, right = 3, top = 4
+	void CollisionDetection::correctPosition(glm::vec4* _rect1, glm::vec4* _rect2, glm::vec2 *_vel) {
+		//left = 1, bottom = 2, right = 3, top = 
 		if (CheckRectangleIntersect(_rect1, _rect2))
 		{
 			switch (getSide(_rect1, _rect2))
@@ -218,14 +218,17 @@ namespace GameEngine {
 				_rect1->x = (_rect2->x + _rect2->z);
 				break;
 			case 2:
-				if (_vel->y > 0) { _vel->y = 0; }
+				std::cout << "yVEL: " << _vel->y << std::endl;
+				if (_vel->y < 0) { _vel->y = 0; }
 				_rect1->y = (_rect2->y + _rect2->w);
+				std::cout << "yVEL: " << _vel->y << std::endl;
 				break;
 			case 4:
-				if (_vel->y > 0) { _vel->y = 0; }
+				if (_vel->y < 0) { _vel->y = 0; }
 				_rect1->y = (_rect2->y - _rect1->w);
 				break;
 			}
+			*_vel = glm::vec2(_vel->x, _vel->y);
 		}
 	}
 }

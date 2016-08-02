@@ -44,7 +44,7 @@ void MainGame::initSystems() {
     _fpsLimiter.init(_maxFPS);
 	GameEngine::Light newLight;
 	Lights.setMaxLights(100);
-	Lights.addLight(flare.x, flare.y, 1, 0.1, 0.1, 30);
+	WorldItems.addItem(flare, 0, 200, Lights.addLight(0, 0, 1, 0.1, 0.1, 30));
 }
 
 void MainGame::initShaders() {
@@ -153,12 +153,10 @@ void MainGame::processInput() {
 
 //Draws the game using the almighty OpenGL
 void MainGame::drawGame() {
-
-
-	flareYVel -= 0.1;
-	flare.y += flareYVel;
-	Lights.changeLightPosition(0, flare.x, flare.y);
-	cd.correctPosition(&flare, &rect1, &glm::vec2(0, flareYVel));
+	Lights.changeRadius(0, ((double)rand() / (RAND_MAX))*200 + 50);
+	WorldItems.linkToLights(&Lights);
+	WorldItems.runItems();
+	cd.correctPosition(&WorldItems.getRect(0), &rect1, &flareVel);
 	//std::cout << flare.x << "," << flare.y << "," << flare.z << "," << flare.w << std::endl;
     //Set the base depth to 1.0
     glClearDepth(1.0);
@@ -183,7 +181,8 @@ void MainGame::drawGame() {
 	glEnd();*/
     //Enable the shader
     _colorProgram.use();
-
+	GLint ambientLight = _colorProgram.getUniformLocation("ambientLight");
+	glUniform1f(ambientLight, 0.1);
     //We are using texture unit 0
     glActiveTexture(GL_TEXTURE0);
     //Get the uniform location
@@ -197,37 +196,6 @@ void MainGame::drawGame() {
 
     glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 
-	//GLint lightLocation = _colorProgram.getUniformLocation("lightPos");
-	//glUniform2f(lightLocation, lightPos.x, lightPos.y);
-	//GLint lightIntensity = _colorProgram.getUniformLocation("lightIntensity");
-	//glUniform1f(lightIntensity, 1);
-	//layout(std140) uniform MyBlock
-	//{
-	//	float myDataArray[size];
-	//};
-	//GLint lightsUniform = _colorProgram.getUniformLocation("lights"); // Getting location
-	//float x[9];
-	//glUniform1f(lightsUniform, x);
-	//glGetUniformBlockIndex​(_colorProgram, "MyBlock");
-	//GameEngine::Color color1;
-	//color1.r = 255;
-	//color1.g = 255;
-	//color1.b = 255;
-	//color1.a = 255;
-	//std::vector<GameEngine::Color> data;
-	//for (unsigned int i = 0; i < 5; i++)
-	//{
-	//	data.push_back(color1);
-	//}
-	//GLuint texture1;
-	//glGenTextures( 1, &texture1);
-	//glActiveTexture(GL_TEXTURE0+ texture1);
-	//glBindTexture(GL_TEXTURE_1D, texture1);
-	//glTexImage1D(GL_TEXTURE_1D, 0, GL_RGBA, 5, 0, GL_RGBA, GL_UNSIGNED_BYTE, &data);
-	//GLint test1 = _colorProgram.getUniformLocation("test1");
-	//glUniform1i(test1, texture1);
-	//glActiveTexture(GL_TEXTURE0);
-
 	//-----------------PASSING LIGHTS INTO SHADER-----------------//
 	Lights.addLightsToShader(&_colorProgram);
 	//------------------------------------------------------------//
@@ -238,7 +206,7 @@ void MainGame::drawGame() {
 	glm::vec4 pos1(-1000.0f, 1000.0f, 2000.0f, -2000.0f);
 	glm::vec4 uv1(0.0f, 0.0f, 1.0f, 1.0f);
 	static GameEngine::GLTexture 
-		newTexture = GameEngine::ResourceManager::getTexture("Textures/jimmyJump_pack/PNG/AngryCloud.png");
+	newTexture = GameEngine::ResourceManager::getTexture("Textures/jimmyJump_pack/PNG/AngryCloud.png");
     GameEngine::Color color;
     color.r = 255;
     color.g = 0;

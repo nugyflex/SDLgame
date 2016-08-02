@@ -6,10 +6,11 @@ class LightCollection {
 public:
 	LightCollection();
 	~LightCollection();
-	void addLight(float x, float y, float r, float g, float b, float radius);
+	int addLight(float x, float y, float r, float g, float b, float radius);
 	void addLightsToShader(GameEngine::GLSLProgram* _shaderProgram);
 	void setMaxLights(int _maxlights);
-	void changeLightPosition(int _ID, float _x, float _y);
+	void changePosition(int _ID, float _x, float _y);
+	void changeRadius(int _ID, float radius);
 private:
 	int maxLights;
 	int lastLightID = 0;
