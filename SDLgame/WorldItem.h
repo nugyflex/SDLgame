@@ -1,6 +1,7 @@
 #pragma once
 #include <glm.hpp>
-#include <GameEngine/BoundingBox.h>
+#include <GameEngine\BoundingBox.h>
+#include <GameEngine\GameEngine.h>
 class WorldItem {
 public:
 	WorldItem();
@@ -17,6 +18,7 @@ public:
 	glm::vec2 getLightOffset();
 	int getLightID();
 	virtual void run();
+	virtual GameEngine::Light getLight();
 protected:
 	BoundingBox boundingBox;
 	glm::vec2 lightOffset;

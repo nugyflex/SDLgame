@@ -48,3 +48,7 @@ glm::vec2 WorldItem::getLightOffset() {
 void WorldItem::run() {
 
 }
+GameEngine::Light WorldItem::getLight() {
+	GameEngine::Light x;
+	return x;
+}

@@ -11,6 +11,27 @@ LightCollection::~LightCollection()
 void LightCollection::setMaxLights(int _maxlights) {
 	maxLights = _maxlights;
 }
+int LightCollection::addLight(float x, float y, float r, float g, float b, float radius, glm::vec2 _flickerRange) {
+	if (lightVector.size() < maxLights)
+	{
+		GameEngine::Light newLight;
+		newLight.x = x;
+		newLight.y = y;
+		newLight.radius = radius;
+		newLight.color = glm::vec3(r, g, b);
+		newLight.flicker = true;
+		newLight.flickerRange = _flickerRange;
+		newLight.ID = lastLightID + 1;
+		lastLightID++;
+		lightVector.push_back(newLight);
+		std::cout << "lights: " << lightVector.size() << std::endl;
+		return newLight.ID;
+	}
+	else {
+		std::cout << "Maximum amount of lights reached!" << std::endl;
+		return 0;
+	}
+}
 int LightCollection::addLight(float x, float y, float r, float g, float b, float radius) {
 	if (lightVector.size() < maxLights)
 	{
@@ -19,11 +40,26 @@ int LightCollection::addLight(float x, float y, float r, float g, float b, float
 		newLight.y = y;
 		newLight.radius = radius;
 		newLight.color = glm::vec3(r, g, b);
+		newLight.flicker = false;
 		newLight.ID = lastLightID + 1;
 		lastLightID++;
 		lightVector.push_back(newLight);
 		std::cout << "lights: " << lightVector.size() << std::endl;
 		return newLight.ID;
+	}
+	else {
+		std::cout << "Maximum amount of lights reached!" << std::endl;
+		return 0;
+	}
+}
+int LightCollection::addLight(GameEngine::Light _light) {
+	if (lightVector.size() < maxLights)
+	{
+		_light.ID = lastLightID + 1;
+		lastLightID++;
+		lightVector.push_back(_light);
+		std::cout << "lights: " << lightVector.size() << std::endl;
+		return _light.ID;
 	}
 	else {
 		std::cout << "Maximum amount of lights reached!" << std::endl;
@@ -76,4 +112,15 @@ void LightCollection::changePosition(int _ID, float _x, float _y) {
 }
 void LightCollection::changeRadius(int _ID, float _radius) {
 	lightVector[getVectorIndexByID(_ID)].radius = _radius;
+}
+void LightCollection::runFlicker() {
+	for (int i = 0; i < lightVector.size(); i++) {
+		if (lightVector[i].flicker) {
+			lightVector[i].radius = ((double)rand() / (RAND_MAX)) * (lightVector[i].flickerRange.y - lightVector[i].flickerRange.x) + lightVector[i].flickerRange.x;
+		}
+	}
+}
+void LightCollection::removeLight(int _ID) {
+	int index = getVectorIndexByID(_ID);
+	lightVector.erase(lightVector.begin() + _ID);
 }

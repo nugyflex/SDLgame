@@ -1,15 +1,17 @@
 #pragma once
-#include "Flare.h"
 #include <vector>
 #include <string>
 #include "LightCollection.h"
-enum WorldItemType { flare, default};
+#include "Flare.h"
+#include "GlowStick.h"
+enum WorldItemType { flare, glowStick, default};
 class WorldItemCollection {
 public:
 	WorldItemCollection();
 	~WorldItemCollection();
-	void addItem(WorldItemType _type, float x, float y);
+	void addItem(WorldItemType _type, float x, float y); 
 	void addItem(WorldItemType _type, float x, float y, int _lightID);
+	void addItem(WorldItemType _type, float x, float y, LightCollection* _lc);
 	void drawItems();
 	void runItems();
 	void linkToLights(LightCollection* _lc);

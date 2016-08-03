@@ -6,4 +6,5 @@ public:
 	Flare();
 	~Flare();
 	void run();
+	GameEngine::Light getLight();
 };

@@ -144,7 +144,7 @@ void MainGame::processInput() {
 		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
 		//std::cout << mouseCoords.x << " " << mouseCoords.y << std::endl;
 		if (!lastPressed) {
-			WorldItems.addItem(flare, mouseCoords.x, -mouseCoords.y, Lights.addLight(0, 0, 1, 0.1, 0.1, 30));
+			WorldItems.addItem(flare, mouseCoords.x, -mouseCoords.y, &Lights);
 			//Lights.addLight(mouseCoords.x, -mouseCoords.y, ((double)rand() / (RAND_MAX)), ((double)rand() / (RAND_MAX)), ((double)rand() / (RAND_MAX)), ((double)rand() / (RAND_MAX)) * 100 + 20);
 		}
 		lastPressed = true;
@@ -159,7 +159,7 @@ void MainGame::drawGame() {
 	WorldItems.runItems();
 	for (int i = 0; i < WorldItems.getVectorSize(); i++)
 	{
-		Lights.changeRadius(WorldItems.getLightID(i), ((double)rand() / (RAND_MAX)) * 200 + 50);
+		Lights.runFlicker();
 		for (int j = 0; j < Platforms.getVectorSize(); j++)
 		{
 			cd.correctPosition(WorldItems.getBoundingBox(i), Platforms.getBoundingBox(j));

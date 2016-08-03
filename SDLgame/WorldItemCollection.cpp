@@ -1,18 +1,28 @@
 #include "WorldItemCollection.h"
 WorldItemCollection::WorldItemCollection(){}
 WorldItemCollection::~WorldItemCollection(){}
-void WorldItemCollection::addItem(WorldItemType _type, float _x, float _y, int _lightID) {
+void WorldItemCollection::addItem(WorldItemType _type, float _x, float _y, LightCollection* _lc) {
+	int lightID = 0;
+	GameEngine::Light tempLight;
 	switch (_type)
 	{ 
 	case flare:
 		worldItemVector.push_back(new Flare());
+		tempLight = worldItemVector[worldItemVector.size() - 1]->getLight();
+		lightID = _lc->addLight(tempLight);
+		break;
+	case glowStick:
+		worldItemVector.push_back(new GlowStick());
+		tempLight = worldItemVector[worldItemVector.size() - 1]->getLight();
+		lightID = _lc->addLight(tempLight);
 		break;
 	case default:
+		
 		break;
 	}
 	worldItemVector[worldItemVector.size() - 1]->init(0, 0, 10, 10);
 	worldItemVector[worldItemVector.size() - 1]->setPosition(_x, _y);
-	worldItemVector[worldItemVector.size() - 1]->setLightID(_lightID);
+	worldItemVector[worldItemVector.size() - 1]->setLightID(lightID);
 }
 void WorldItemCollection::runItems() {
 	for (int i = 0; i < worldItemVector.size(); i++)
