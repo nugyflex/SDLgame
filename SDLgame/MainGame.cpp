@@ -42,10 +42,9 @@ void MainGame::initSystems() {
 
     _spriteBatch.init();
     _fpsLimiter.init(_maxFPS);
-	GameEngine::Light newLight;
 	Lights.setMaxLights(100);
-	WorldItems.addItem(flare, 0, 200, Lights.addLight(0, 0, 1, 0.1, 0.1, 30));
-	Platforms.addPlatform(0, 0, 100, 10);
+	Platforms.addPlatform(-200, 0, 400, 20);
+	Platforms.addPlatform(-400, 100, 400, 20);
 }
 
 void MainGame::initShaders() {
@@ -145,7 +144,8 @@ void MainGame::processInput() {
 		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
 		//std::cout << mouseCoords.x << " " << mouseCoords.y << std::endl;
 		if (!lastPressed) {
-			Lights.addLight(mouseCoords.x, -mouseCoords.y, ((double)rand() / (RAND_MAX)), ((double)rand() / (RAND_MAX)), ((double)rand() / (RAND_MAX)), ((double)rand() / (RAND_MAX)) * 100 + 20);
+			WorldItems.addItem(flare, mouseCoords.x, -mouseCoords.y, Lights.addLight(0, 0, 1, 0.1, 0.1, 30));
+			//Lights.addLight(mouseCoords.x, -mouseCoords.y, ((double)rand() / (RAND_MAX)), ((double)rand() / (RAND_MAX)), ((double)rand() / (RAND_MAX)), ((double)rand() / (RAND_MAX)) * 100 + 20);
 		}
 		lastPressed = true;
 	}
@@ -154,10 +154,17 @@ void MainGame::processInput() {
 
 //Draws the game using the almighty OpenGL
 void MainGame::drawGame() {
-	Lights.changeRadius(0, ((double)rand() / (RAND_MAX))*200 + 50);
+	
 	WorldItems.linkToLights(&Lights);
 	WorldItems.runItems();
-	cd.correctPosition(WorldItems.getBoundingBox(0), &rect1);
+	for (int i = 0; i < WorldItems.getVectorSize(); i++)
+	{
+		Lights.changeRadius(WorldItems.getLightID(i), ((double)rand() / (RAND_MAX)) * 200 + 50);
+		for (int j = 0; j < Platforms.getVectorSize(); j++)
+		{
+			cd.correctPosition(WorldItems.getBoundingBox(i), Platforms.getBoundingBox(j));
+		}
+	}
 	//std::cout << flare.x << "," << flare.y << "," << flare.z << "," << flare.w << std::endl;
     //Set the base depth to 1.0
     glClearDepth(1.0);

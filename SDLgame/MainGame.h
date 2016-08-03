@@ -61,8 +61,6 @@ private:
 	bool lastPressed = false;
 	int maxLights;
 	LightCollection Lights;
-	glm::vec2 flareVel = glm::vec2(0, 0);
-	glm::vec4 rect1 = glm::vec4(-500, -50, 1000, 100);
 	GameEngine::CollisionDetection cd;
 	WorldItemCollection WorldItems;
 	PlatformCollection Platforms;

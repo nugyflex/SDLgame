@@ -203,29 +203,30 @@ namespace GameEngine {
 			}
 		}
 	}
-	void CollisionDetection::correctPosition(BoundingBox* bb, glm::vec4* _rect2) {
+	void CollisionDetection::correctPosition(BoundingBox* bb1, BoundingBox* bb2) {
 		//left = 1, bottom = 2, right = 3, top = 
-		glm::vec4 rect = glm::vec4(bb->x, bb->y, bb->w, bb->h);
-		if (CheckRectangleIntersect(&rect, _rect2))
+		glm::vec4 rect = glm::vec4(bb1->x, bb1->y, bb1->w, bb1->h);
+		glm::vec4 rect2 = glm::vec4(bb2->x, bb2->y, bb2->w, bb2->h);
+		if (CheckRectangleIntersect(&rect, &rect2))
 		{
-			switch (getSide(&rect, _rect2))
+			switch (getSide(&rect, &rect2))
 			{
 			case 1:
-				if (bb->xv > 0) { bb->xv = 0; }
-				bb->x = _rect2->x - bb->w;
+				if (bb1->xv > 0) { bb1->xv = 0; }
+				bb1->x = bb2->x - bb1->w;
 				break;
 			case 3:
-				if (bb->xv < 0) { bb->xv = 0; }
-				bb->x = (_rect2->x + _rect2->z);
+				if (bb1->xv < 0) { bb1->xv = 0; }
+				bb1->x = (bb2->x + bb2->w);
 				break;
 			case 2:
-				if (bb->yv < 0) { bb->yv = 0; }
-				bb->y = (_rect2->y + _rect2->w);
+				if (bb1->yv < 0) { bb1->yv = 0; }
+				bb1->y = (bb2->y + bb2->h);
 				break;
 			case 4:
-				std::cout << bb->yv << std::endl;
-				if (bb->yv > 0) { bb->yv = 0; }
-				bb->y = (_rect2->y - bb->h);
+				std::cout << bb1->yv << std::endl;
+				if (bb1->yv > 0) { bb1->yv = 0; }
+				bb1->y = (bb2->y - bb1->h);
 				break;
 			}
 		}

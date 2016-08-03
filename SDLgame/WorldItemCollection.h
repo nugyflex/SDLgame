@@ -13,6 +13,8 @@ public:
 	void drawItems();
 	void runItems();
 	void linkToLights(LightCollection* _lc);
+	int getLightID(int _index) { return worldItemVector[_index]->getLightID(); };
+	int getVectorSize() { return worldItemVector.size(); }
 	BoundingBox* getBoundingBox(int _index);
 private:
 	std::vector<WorldItem*> worldItemVector;
