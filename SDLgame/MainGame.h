@@ -20,6 +20,7 @@
 
 #include "LightCollection.h"
 #include "WorldItemCollection.h"
+#include "PlatformCollection.h"
 
 enum class GameState {PLAY, EXIT};
 
@@ -64,5 +65,6 @@ private:
 	glm::vec4 rect1 = glm::vec4(-500, -50, 1000, 100);
 	GameEngine::CollisionDetection cd;
 	WorldItemCollection WorldItems;
+	PlatformCollection Platforms;
 };
 

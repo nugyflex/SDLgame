@@ -45,6 +45,7 @@ void MainGame::initSystems() {
 	GameEngine::Light newLight;
 	Lights.setMaxLights(100);
 	WorldItems.addItem(flare, 0, 200, Lights.addLight(0, 0, 1, 0.1, 0.1, 30));
+	Platforms.addPlatform(0, 0, 100, 10);
 }
 
 void MainGame::initShaders() {
@@ -217,7 +218,7 @@ void MainGame::drawGame() {
     _spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
 	GameEngine::drawRect(300, 0, 600, 600, color, &_spriteBatch);
 	_spriteBatch.drawLine(glm::vec2(0, 0), glm::vec2(500, -100), color);
-	
+	Platforms.drawPlatforms(&_spriteBatch);
     _spriteBatch.end();
 
     _spriteBatch.renderBatch();
