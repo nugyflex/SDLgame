@@ -1,7 +1,7 @@
 #pragma once
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
-
+#include "BoundingBox.h"
 namespace GameEngine {
 
     //Camera class for 2D
@@ -25,7 +25,7 @@ namespace GameEngine {
         glm::vec2 getPosition() { return _position; }
         float getScale() { return _scale; }
         glm::mat4 getCameraMatrix() { return _cameraMatrix; }
-
+		void followObject(BoundingBox* _bb);
     private:
         int _screenWidth, _screenHeight;
         bool _needsMatrixUpdate;
@@ -33,6 +33,8 @@ namespace GameEngine {
         glm::vec2 _position;
         glm::mat4 _cameraMatrix;
         glm::mat4 _orthoMatrix;
+		glm::vec2 xyVel;
+		float vel;
     };
 
 }
