@@ -3,6 +3,7 @@
 #include <vector>
 #include <glm.hpp>
 #include "BoundingBox.h"
+//class which has all methods needed for collision detection used in the game, the standard paramater for an object that is going to be tested is BoundingBox found in the GameEngine
 namespace GameEngine {
 	class CollisionDetection
 	{
@@ -10,6 +11,9 @@ namespace GameEngine {
 		CollisionDetection();
 		~CollisionDetection();
 		bool CheckRectangleIntersect(glm::vec4* _rect1, glm::vec4* _rect2);
+		void correctPosition(glm::vec4* _rect1, glm::vec4* _rect2);
+		void correctPosition(BoundingBox* bb1, BoundingBox* bb2);
+	private:
 		bool test1(glm::vec4* _rect1, glm::vec4* _rect2);
 		bool test2(glm::vec4* _rect1, glm::vec4* _rect2);
 		bool test3(glm::vec4* _rect1, glm::vec4* _rect2);
@@ -19,7 +23,5 @@ namespace GameEngine {
 		bool test7(glm::vec4* _rect1, glm::vec4* _rect2);
 		bool test8(glm::vec4* _rect1, glm::vec4* _rect2);
 		int getSide(glm::vec4* _rect1, glm::vec4* _rect2);
-		void correctPosition(glm::vec4* _rect1, glm::vec4* _rect2);
-		void correctPosition(BoundingBox* bb1, BoundingBox* bb2);
 	};
 }

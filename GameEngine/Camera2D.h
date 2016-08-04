@@ -4,7 +4,7 @@
 
 namespace GameEngine {
 
-    //Camera class for 2D games
+    //Camera class for 2D
     class Camera2D
     {
     public:
@@ -19,11 +19,9 @@ namespace GameEngine {
 
 		glm::vec2 convertScreenToWorld(glm::vec2 screenCoords);
 
-        //setters
         void setPosition(const glm::vec2& newPosition) { _position = newPosition; _needsMatrixUpdate = true; }
         void setScale(float newScale) { _scale = newScale; _needsMatrixUpdate = true; }
-
-        //getters
+		
         glm::vec2 getPosition() { return _position; }
         float getScale() { return _scale; }
         glm::mat4 getCameraMatrix() { return _cameraMatrix; }
