@@ -88,9 +88,6 @@ void MainGame::gameLoop() {
     }
 }
 void MainGame::updateGame() {
-	WorldItems.runItems();
-	player.handleInput(&_inputManager);
-	player.calcNewPos();
 	for (int j = 0; j < Platforms.getVectorSize(); j++)
 	{
 		cd.correctPosition(player.getBoundingBox(), Platforms.getBoundingBox(j));
@@ -99,6 +96,9 @@ void MainGame::updateGame() {
 			cd.correctPosition(WorldItems.getBoundingBox(i), Platforms.getBoundingBox(j));
 		}
 	}
+	WorldItems.runItems();
+	player.handleInput(&_inputManager);
+	player.calcNewPos();
 }
 //Processes input with SDL
 void MainGame::processInput() {
