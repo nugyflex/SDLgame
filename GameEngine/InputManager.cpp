@@ -1,5 +1,5 @@
 #include "InputManager.h"
-
+#include <iostream>
 namespace GameEngine {
 
 InputManager::InputManager() : _mouseCoords(0)
@@ -24,7 +24,10 @@ void InputManager::releaseKey(unsigned int keyID) {
 void InputManager::setMouseCoords(float x, float y) {
 	_mouseCoords.x = x;
 	_mouseCoords.y = y;
-
+}
+void InputManager::addMouseCoords(glm::vec2 _pos) {
+	//_mouseCoords.x *= -1;
+	//std::cout << "xy: " << _mouseCoords.x << ", " << _mouseCoords.y << std::endl;
 }
 bool InputManager::isKeyPressed(unsigned int keyID) {
     // We dont want to use the associative array approach here

@@ -44,9 +44,11 @@ namespace GameEngine {
 		//Make it so that 0 is the center
 		screenCoords -= glm::vec2(_screenWidth / 2, _screenHeight / 2);
 		//Scake the Coords
+		
 		screenCoords /= _scale;
 		//Translate with the camera position
-		screenCoords += _position;
+		screenCoords += glm::vec2(_position.x, -_position.y);
+		//;
 		return screenCoords;
 	}
 }

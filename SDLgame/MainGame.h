@@ -39,7 +39,7 @@ private:
     void gameLoop();
     void processInput();
     void drawGame();
-
+	void updateGame();
     GameEngine::Window _window;
     int _screenWidth;
     int _screenHeight;
@@ -58,7 +58,8 @@ private:
     float _time;
 	glm::vec2 lightPos = glm::vec2(0,0);
 	std::vector<GameEngine::Light> lightVector;
-	bool lastPressed = false;
+	bool lastPressedL = false;
+	bool lastPressedR = false;
 	int maxLights;
 	LightCollection Lights;
 	GameEngine::CollisionDetection cd;

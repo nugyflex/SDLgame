@@ -67,7 +67,11 @@ void MainGame::gameLoop() {
         processInput();
         _time += 0.1;
 
+		
+
         _camera.update();
+
+		updateGame();
 
         drawGame();
 
@@ -82,7 +86,16 @@ void MainGame::gameLoop() {
         }
     }
 }
-
+void MainGame::updateGame() {
+	WorldItems.runItems();
+	for (int i = 0; i < WorldItems.getVectorSize(); i++)
+	{
+		for (int j = 0; j < Platforms.getVectorSize(); j++)
+		{
+			cd.correctPosition(WorldItems.getBoundingBox(i), Platforms.getBoundingBox(j));
+		}
+	}
+}
 //Processes input with SDL
 void MainGame::processInput() {
     SDL_Event evnt;
@@ -117,19 +130,19 @@ void MainGame::processInput() {
     }
 
     if (_inputManager.isKeyPressed(SDLK_w)) {
-        //_camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
+        _camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
 		lightPos.y+=10;
     }
     if (_inputManager.isKeyPressed(SDLK_s)) {
-        //_camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, -CAMERA_SPEED));
+        _camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, -CAMERA_SPEED));
 		lightPos.y-=10;
     }
     if (_inputManager.isKeyPressed(SDLK_a)) {
-        //_camera.setPosition(_camera.getPosition() + glm::vec2(-CAMERA_SPEED, 0.0f));
+        _camera.setPosition(_camera.getPosition() + glm::vec2(-CAMERA_SPEED, 0.0f));
 		lightPos.x-=10;
     }
     if (_inputManager.isKeyPressed(SDLK_d)) {
-        //_camera.setPosition(_camera.getPosition() + glm::vec2(CAMERA_SPEED, 0.0f));
+        _camera.setPosition(_camera.getPosition() + glm::vec2(CAMERA_SPEED, 0.0f));
 		lightPos.x+=10;
     }
     if (_inputManager.isKeyPressed(SDLK_q)) {
@@ -142,29 +155,28 @@ void MainGame::processInput() {
 	if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
 		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
 		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
-		//std::cout << mouseCoords.x << " " << mouseCoords.y << std::endl;
-		if (!lastPressed) {
-			WorldItems.addItem(flare, mouseCoords.x, -mouseCoords.y, &Lights);
-			//Lights.addLight(mouseCoords.x, -mouseCoords.y, ((double)rand() / (RAND_MAX)), ((double)rand() / (RAND_MAX)), ((double)rand() / (RAND_MAX)), ((double)rand() / (RAND_MAX)) * 100 + 20);
+		if (!lastPressedL) {
+			WorldItems.addItem(glowStick, mouseCoords.x, -mouseCoords.y, &Lights);
 		}
-		lastPressed = true;
+		lastPressedL = true;
 	}
-	else { lastPressed = false; }
+	else { lastPressedL = false; }
+	if (_inputManager.isKeyPressed(SDL_BUTTON_RIGHT)) {
+		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
+		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
+		if (!lastPressedR) {
+			WorldItems.addItem(flare, mouseCoords.x, -mouseCoords.y, &Lights);
+		}
+		lastPressedR = true;
+	}
+	else { lastPressedR = false; }
 }
 
 //Draws the game using the almighty OpenGL
 void MainGame::drawGame() {
 	
 	WorldItems.linkToLights(&Lights);
-	WorldItems.runItems();
-	for (int i = 0; i < WorldItems.getVectorSize(); i++)
-	{
-		Lights.runFlicker();
-		for (int j = 0; j < Platforms.getVectorSize(); j++)
-		{
-			cd.correctPosition(WorldItems.getBoundingBox(i), Platforms.getBoundingBox(j));
-		}
-	}
+	Lights.runFlicker();
 	//std::cout << flare.x << "," << flare.y << "," << flare.z << "," << flare.w << std::endl;
     //Set the base depth to 1.0
     glClearDepth(1.0);

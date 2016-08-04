@@ -102,7 +102,7 @@ int LightCollection::getVectorIndexByID(int _ID) {
 			return i;
 		}
 	}
-	std::cout << "No Light found with ID " << _ID << std::endl;
+	//std::cout << "No Light found with ID " << _ID << std::endl;
 	return 0;
 }
 void LightCollection::changePosition(int _ID, float _x, float _y) {

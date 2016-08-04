@@ -12,6 +12,6 @@ GameEngine::Light GlowStick::getLight() {
 	light.radius = 0;
 	light.flicker = true;
 	light.flickerRange = glm::vec2(40, 45);
-	light.color = glm::vec3(0.3, 1, 0.4);
+	light.color = glm::vec3(0.35, 1, 0.6);
 	return light;
 }
