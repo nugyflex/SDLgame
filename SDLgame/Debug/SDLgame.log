@@ -1,2 +1,23 @@
-﻿  SDLgame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\SDLgame.exe
-  SDLgame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\SDLgame.pdb (Partial PDB)
+﻿  MainGame.cpp
+c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(68): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(114): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(205): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(256): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+  Compiling...
+  main.cpp
+  WorldItemCollection.cpp
+c:\users\jack\documents\github\sdlgame\sdlgame\worlditemcollection.cpp(28): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\sdlgame\worlditemcollection.cpp(35): warning C4018: '<': signed/unsigned mismatch
+  WorldItem.cpp
+  PlatformCollection.cpp
+c:\users\jack\documents\github\sdlgame\sdlgame\platformcollection.cpp(9): warning C4018: '<': signed/unsigned mismatch
+  Platform.cpp
+c:\users\jack\documents\github\sdlgame\sdlgame\platform.cpp(22): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  GlowStick.cpp
+c:\users\jack\documents\github\sdlgame\sdlgame\glowstick.cpp(6): warning C4305: '-=': truncation from 'double' to 'float'
+  Flare.cpp
+c:\users\jack\documents\github\sdlgame\sdlgame\flare.cpp(6): warning C4305: '-=': truncation from 'double' to 'float'
+  Generating Code...
+  SDLgame.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\SDLgame.exe
+  SDLgame.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\SDLgame.pdb (Partial PDB)

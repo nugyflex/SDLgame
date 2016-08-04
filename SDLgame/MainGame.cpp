@@ -45,7 +45,6 @@ void MainGame::initSystems() {
 	Lights.setMaxLights(100);
 	Platforms.addPlatform(-200, 0, 400, 20);
 	Platforms.addPlatform(-400, 100, 400, 20);
-	player.init(-50, 100);
 }
 
 void MainGame::initShaders() {
@@ -89,12 +88,9 @@ void MainGame::gameLoop() {
 }
 void MainGame::updateGame() {
 	WorldItems.runItems();
-	player.handleInput(&_inputManager);
-	player.calcNewPos();
-	for (int j = 0; j < Platforms.getVectorSize(); j++)
+	for (int i = 0; i < WorldItems.getVectorSize(); i++)
 	{
-		cd.correctPosition(player.getBoundingBox(), Platforms.getBoundingBox(j));
-		for (int i = 0; i < WorldItems.getVectorSize(); i++)
+		for (int j = 0; j < Platforms.getVectorSize(); j++)
 		{
 			cd.correctPosition(WorldItems.getBoundingBox(i), Platforms.getBoundingBox(j));
 		}
@@ -132,7 +128,7 @@ void MainGame::processInput() {
 				
 		}
     }
-	/*
+
     if (_inputManager.isKeyPressed(SDLK_w)) {
         _camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
 		lightPos.y+=10;
@@ -148,7 +144,7 @@ void MainGame::processInput() {
     if (_inputManager.isKeyPressed(SDLK_d)) {
         _camera.setPosition(_camera.getPosition() + glm::vec2(CAMERA_SPEED, 0.0f));
 		lightPos.x+=10;
-    }*/
+    }
     if (_inputManager.isKeyPressed(SDLK_q)) {
         _camera.setScale(_camera.getScale() + SCALE_SPEED);
     }
@@ -178,7 +174,7 @@ void MainGame::processInput() {
 
 //Draws the game using the almighty OpenGL
 void MainGame::drawGame() {
-	_camera.followObject(player.getBoundingBox());
+	
 	WorldItems.linkToLights(&Lights);
 	Lights.runFlicker();
 	//std::cout << flare.x << "," << flare.y << "," << flare.z << "," << flare.w << std::endl;
@@ -192,20 +188,19 @@ void MainGame::drawGame() {
 	glm::mat4 camera = _camera.getCameraMatrix();
 	glColor3f(1.0, 0.0, 0.0);
 	//GameEngine::drawRect(0, 0, 500, 500, _camera.getCameraMatrix());
-	glColor3f(0.0, 0.0, 0.0);
+	glColor3f(0.0, 1.0, 0.0);
 	GameEngine::drawLine(glm::vec2(50, 50), glm::vec2(-50, 100), camera);
-
-	glColor3f(0.0, 0.0, 0.0);
+/*
+	glm::vec4 rect(0, 0, 500, 500);
+	glColor3f(1.0, 0.0, 0.0);
 	glBegin(GL_POLYGON);
-	glVertex2f(-1, -1);
-	glVertex2f(-1, 1);
-	glVertex2f(1, 1);
-	glVertex2f(1, -1);
-	glEnd();
+	glVertex2f(0, 0);
+	glVertex2f(0.1, 0);
+	glVertex2f(0.1, 0.1);
+	glVertex2f(0, 0.1);
+	glEnd();*/
     //Enable the shader
     _colorProgram.use();
-	GLint vignette = _colorProgram.getUniformLocation("vignette");
-	glUniform2f(vignette, _camera.getPosition().x, _camera.getPosition().y);
 	GLint ambientLight = _colorProgram.getUniformLocation("ambientLight");
 	glUniform1f(ambientLight, 0.1);
     //We are using texture unit 0
@@ -215,7 +210,7 @@ void MainGame::drawGame() {
     //Tell the shader that the texture is in texture unit 0
     glUniform1i(textureLocation, 0);
 
-    //Set the camera matrixx
+    //Set the camera matrix
     GLint pLocation = _colorProgram.getUniformLocation("P");
     glm::mat4 cameraMatrix = _camera.getCameraMatrix();
 
@@ -243,7 +238,6 @@ void MainGame::drawGame() {
 	GameEngine::drawRect(300, 0, 600, 600, color, &_spriteBatch);
 	_spriteBatch.drawLine(glm::vec2(0, 0), glm::vec2(500, -100), color);
 	Platforms.drawPlatforms(&_spriteBatch);
-	player.draw(&_spriteBatch);
     _spriteBatch.end();
 
     _spriteBatch.renderBatch();

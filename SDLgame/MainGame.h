@@ -21,7 +21,6 @@
 #include "LightCollection.h"
 #include "WorldItemCollection.h"
 #include "PlatformCollection.h"
-#include "Player.h"
 
 enum class GameState {PLAY, EXIT};
 
@@ -66,6 +65,5 @@ private:
 	GameEngine::CollisionDetection cd;
 	WorldItemCollection WorldItems;
 	PlatformCollection Platforms;
-	Player player;
 };
 
