@@ -1,5 +1,8 @@
 ﻿  Player.cpp
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(52): warning C4305: '-=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(62): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  SDLgame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\SDLgame.exe
-  SDLgame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\SDLgame.pdb (Partial PDB)
+c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(66): warning C4305: '-=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(76): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  Inventory.cpp
+  Generating Code...
+c:\users\jack\documents\github\sdlgame\sdlgame\inventory.cpp(48): warning C4715: 'Inventory::removeItem': not all control paths return a value
+  SDLgame.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\SDLgame.exe
+  SDLgame.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\SDLgame.pdb (Partial PDB)

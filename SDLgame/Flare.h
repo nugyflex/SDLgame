@@ -8,3 +8,10 @@ public:
 	void run();
 	GameEngine::Light getLight();
 };
+class FlareParticle : public WorldItem {
+public:
+	FlareParticle();
+	~FlareParticle();
+	void run();
+	GameEngine::Light getLight();
+};

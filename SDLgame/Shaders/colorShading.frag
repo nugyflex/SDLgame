@@ -5,9 +5,9 @@ in vec2 fragmentPosition;
 in vec4 fragmentColor;
 in vec2 fragmentUV;
 uniform int lightArraySize;
-uniform float lightColours[100*3];
-uniform float lightPositions[100*2];
-uniform float lightRadii[100];
+uniform float lightColours[200*3];
+uniform float lightPositions[200*2];
+uniform float lightRadii[200];
 uniform vec2 vignette;
 //This is the 3 component float vector that gets outputted to the screen
 //for each pixel.
@@ -33,5 +33,5 @@ void main() {
 	color.a = textureColor.a;
 	float dv = distance(fragmentPosition.xy, vignette);
 	//vignette testing
-	//color.a -= dv/1000;
+	color.a -= dv/1000;
 }

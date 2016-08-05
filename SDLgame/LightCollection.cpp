@@ -67,7 +67,7 @@ int LightCollection::addLight(GameEngine::Light _light) {
 	}
 }
 void LightCollection::addLightsToShader(GameEngine::GLSLProgram* _shaderProgram) {
-	const int size = 100;
+	const int size = 200;
 	float lightColourArray[size * 3];
 	//std::cout << "lights: " << lightVector.size() << std::endl;
 	for (unsigned int i = 0; i < lightVector.size(); i++)
@@ -122,5 +122,5 @@ void LightCollection::runFlicker() {
 }
 void LightCollection::removeLight(int _ID) {
 	int index = getVectorIndexByID(_ID);
-	lightVector.erase(lightVector.begin() + _ID);
+	lightVector.erase(lightVector.begin() + index);
 }

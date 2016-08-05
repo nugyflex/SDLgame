@@ -7,6 +7,15 @@ void WorldItem::init(float _x, float _y, float _w, float _h)
 	setPosition(_x, _y);
 	setSize(_w, _h);
 	setVel(0, 0);
+	despawns = false;
+}
+void WorldItem::init(float _x, float _y, float _w, float _h, int _timer)
+{
+	setPosition(_x, _y);
+	setSize(_w, _h);
+	setVel(0, 0);
+	despawns = true;
+	deSpawnTimer = _timer;
 }
 BoundingBox* WorldItem::getBoundingBox()
 {
@@ -51,4 +60,12 @@ void WorldItem::run() {
 GameEngine::Light WorldItem::getLight() {
 	GameEngine::Light x;
 	return x;
+}
+void WorldItem::runTimer() {
+	if (despawns){
+		deSpawnTimer--;
+	}
+}
+int WorldItem::getTimer() {
+	return deSpawnTimer;
 }

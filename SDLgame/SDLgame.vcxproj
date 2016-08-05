@@ -21,6 +21,8 @@
   <ItemGroup>
     <ClInclude Include="Flare.h" />
     <ClInclude Include="GlowStick.h" />
+    <ClInclude Include="Inventory.h" />
+    <ClInclude Include="InventoryItem.h" />
     <ClInclude Include="LightCollection.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Platform.h" />
@@ -32,6 +34,8 @@
   <ItemGroup>
     <ClCompile Include="Flare.cpp" />
     <ClCompile Include="GlowStick.cpp" />
+    <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="InventoryItem.cpp" />
     <ClCompile Include="LightCollection.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />

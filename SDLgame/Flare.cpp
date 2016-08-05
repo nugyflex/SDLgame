@@ -12,6 +12,21 @@ GameEngine::Light Flare::getLight() {
 	light.radius = 0;
 	light.flicker = true;
 	light.flickerRange = glm::vec2(50, 160);
-	light.color = glm::vec3(1,0.15,0.15);
+	light.color = glm::vec3(1, 0.15, 0.15);
+	return light;
+}
+
+FlareParticle::FlareParticle() {}
+FlareParticle::~FlareParticle() {}
+void FlareParticle::run() {
+	boundingBox.yv -= 0.2;
+	boundingBox.x += boundingBox.xv;
+	boundingBox.y += boundingBox.yv;
+}
+GameEngine::Light FlareParticle::getLight() {
+	GameEngine::Light light;
+	light.radius = 15;
+	light.flicker = false;
+	light.color = glm::vec3(1, 0.25, 0.25);
 	return light;
 }

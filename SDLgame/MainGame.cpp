@@ -42,10 +42,12 @@ void MainGame::initSystems() {
 
     _spriteBatch.init();
     _fpsLimiter.init(_maxFPS);
-	Lights.setMaxLights(100);
+	Lights.setMaxLights(200);
 	Platforms.addPlatform(-200, 0, 400, 20);
 	Platforms.addPlatform(-400, 100, 400, 20);
-	player.init(-50, 100);
+	player.init(-50, 100, &WorldItems);
+	WorldItems.init(&Lights);
+	WorldItems.addItem(flareParticle, 0, 100);
 }
 
 void MainGame::initShaders() {
@@ -163,7 +165,7 @@ void MainGame::processInput() {
 		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
 		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
 		if (!lastPressedL) {
-			WorldItems.addItem(glowStick, mouseCoords.x, -mouseCoords.y, &Lights);
+			WorldItems.addItem(glowStick, mouseCoords.x, -mouseCoords.y);
 		}
 		lastPressedL = true;
 	}
@@ -172,7 +174,7 @@ void MainGame::processInput() {
 		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
 		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
 		if (!lastPressedR) {
-			WorldItems.addItem(flare, mouseCoords.x, -mouseCoords.y, &Lights);
+			WorldItems.addItem(flare, mouseCoords.x, -mouseCoords.y);
 		}
 		lastPressedR = true;
 	}
@@ -182,7 +184,7 @@ void MainGame::processInput() {
 //Draws the game using the almighty OpenGL
 void MainGame::drawGame() {
 	_camera.followObject(player.getBoundingBox());
-	WorldItems.linkToLights(&Lights);
+	WorldItems.linkToLights();
 	Lights.runFlicker();
 	//std::cout << flare.x << "," << flare.y << "," << flare.z << "," << flare.w << std::endl;
     //Set the base depth to 1.0
