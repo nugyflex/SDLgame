@@ -3,9 +3,13 @@
 Flare::Flare() {}
 Flare::~Flare() {}
 void Flare::run() {
-	boundingBox.yv -= 0.1;
+	boundingBox.yv -= 0.2;
 	boundingBox.x += boundingBox.xv;
 	boundingBox.y += boundingBox.yv;
+	if (boundingBox.onGround) {
+		boundingBox.xv *= 0.95;
+	}
+	boundingBox.onGround = false;
 }
 GameEngine::Light Flare::getLight() {
 	GameEngine::Light light;
@@ -19,9 +23,13 @@ GameEngine::Light Flare::getLight() {
 FlareParticle::FlareParticle() {}
 FlareParticle::~FlareParticle() {}
 void FlareParticle::run() {
-	boundingBox.yv -= 0.2;
+	boundingBox.yv -= 0.4;
 	boundingBox.x += boundingBox.xv;
 	boundingBox.y += boundingBox.yv;
+	if (boundingBox.onGround) {
+		boundingBox.xv *= 0.8;
+	}
+	boundingBox.onGround = false;
 }
 GameEngine::Light FlareParticle::getLight() {
 	GameEngine::Light light;

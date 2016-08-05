@@ -8,18 +8,21 @@ Player::Player()
 Player::~Player()
 {
 }
-void Player::init(float _x, float _y, WorldItemCollection* _itemCollectionPointer) {
+void Player::init(float _x, float _y, WorldItemCollection* _itemCollectionPointer, GameEngine::SpriteBatch* _sb) {
+	sb = _sb;
 	boundingBox.x = _x;
 	boundingBox.y = _y;
 	boundingBox.w = 30;
 	boundingBox.h = 30;
 	boundingBox.xv = 0;
 	boundingBox.yv = 0;
-	vel = 3;
+	vel = 6;
 	jumpLatch = true;
 	useLatch = true;
 	itemCollectionPointer = _itemCollectionPointer;
-	inventory.addItem(Inventoryflare, 5);
+	inventory.init(sb);
+	inventory.addItem(Inventoryflare, 2);
+	inventory.addItem(InventoryGlowStick, 5);
 }
 BoundingBox* Player::getBoundingBox() {
 	return &boundingBox;
@@ -27,16 +30,18 @@ BoundingBox* Player::getBoundingBox() {
 void Player::handleInput(GameEngine::InputManager* _im) {
 
 	if (_im->isKeyPressed(SDLK_w)) {
-		if (jumpLatch)
+		if (jumpLatch && boundingBox.onGround)
 		{
 			boundingBox.yv = 2*vel;
+			jumpLatch = false;
 		}
-		jumpLatch = false;
+		
 	}
 	else
 	{
 		jumpLatch = true;
 	}
+	boundingBox.onGround = false;
 	if (_im->isKeyPressed(SDLK_a)) {
 		boundingBox.xv = -vel;
 	}
@@ -52,8 +57,16 @@ void Player::handleInput(GameEngine::InputManager* _im) {
 	}
 	if (_im->isKeyPressed(SDLK_r)) {
 		if (useLatch) {
-			if (inventory.removeItem(Inventoryflare, 1)) {
+				if (inventory.removeItem(Inventoryflare, 1)) {
 				itemCollectionPointer->addItem(flare, boundingBox.x, boundingBox.y, boundingBox.xv, boundingBox.yv);
+			}
+		}
+		useLatch = false;
+	}
+	else if (_im->isKeyPressed(SDLK_t)) {
+		if (useLatch) {
+			if (inventory.removeItem(InventoryGlowStick, 1)) {
+				itemCollectionPointer->addItem(glowStick, boundingBox.x, boundingBox.y, boundingBox.xv, boundingBox.yv);
 			}
 		}
 		useLatch = false;
@@ -63,15 +76,24 @@ void Player::handleInput(GameEngine::InputManager* _im) {
 	}
 }
 void Player::calcNewPos() {
-	boundingBox.yv -= 0.15;
+	boundingBox.yv -= 0.3;
 	boundingBox.x += boundingBox.xv;
 	boundingBox.y += boundingBox.yv;
 }
-void Player::draw(GameEngine::SpriteBatch* sb) {
+void Player::draw() {
 	GameEngine::Color color;
+
 	color.r = 150;
 	color.g = 150;
 	color.b = 150;
 	color.a = 255;
-	GameEngine::drawRect(boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h, color, sb);
+	if (boundingBox.onGround)
+	{
+		color.r = 255;
+		color.g = 90;
+		color.b = 90;
+		color.a = 255;
+	}
+	GameEngine::drawRect(boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h, 1, color, sb);
+	inventory.draw(boundingBox.x, boundingBox.y);
 }

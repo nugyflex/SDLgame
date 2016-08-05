@@ -35,7 +35,9 @@ namespace GameEngine {
         //UV texture coordinates.
         UV uv;
 
-		float test;
+		float lightAlpha;
+
+		
 
         void setPosition(float x, float y) {
             position.x = x;

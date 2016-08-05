@@ -206,22 +206,23 @@ namespace GameEngine {
 	void CollisionDetection::correctPosition(BoundingBox* bb1, BoundingBox* bb2) {
 		if (bb1->y + bb1->h > bb2->y && bb1->y < bb2->y + bb2->h) {
 			if (bb1->x <= bb2->x && bb1->x + bb1->w + bb1->xv > bb2->x) {
-				bb1->x = bb2->x - bb1->w - 1;
+				bb1->x = bb2->x - bb1->w;
 				bb1->xv = 0;
 			}
 			else if (bb1->x + bb1->w >= bb2->x + bb2->w && bb1->x + bb1->xv < bb2->x + bb2->w) {
-				bb1->x = bb2->x + bb2->w + 1;
+				bb1->x = bb2->x + bb2->w;
 				bb1->xv = 0;
 			}
 		}
 		if (bb1->x + bb1->w > bb2->x && bb1->x < bb2->x + bb2->w) {
 			if (bb1->y <= bb2->y && bb1->y + bb1->h + bb1->yv > bb2->y) {
-				bb1->y = bb2->y - bb1->h - 1;
+				bb1->y = bb2->y - bb1->h;
 				bb1->yv = 0;
 			}
 			else if (bb1->y + bb1->h >= bb2->y + bb2->h && bb1->y + bb1->yv < bb2->y + bb2->h) {
-				bb1->y = bb2->y + bb2->h + 1;
+				bb1->y = bb2->y + bb2->h;
 				bb1->yv = 0;
+				bb1->onGround = true;
 			}
 		}
 

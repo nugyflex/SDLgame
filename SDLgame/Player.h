@@ -9,17 +9,18 @@ class Player
 public:
 	Player();
 	~Player();
-	void init(float _x, float _y, WorldItemCollection* _itemCollectionPointer);
+	void init(float _x, float _y, WorldItemCollection* _itemCollectionPointer, GameEngine::SpriteBatch* _sb);
 	BoundingBox* getBoundingBox();
 	void handleInput(GameEngine::InputManager* _im);
 	void calcNewPos();
-	void draw(GameEngine::SpriteBatch* sb);
+	void draw();
+	Inventory inventory;
 private:
 	WorldItemCollection* itemCollectionPointer;
-	Inventory inventory;
 	BoundingBox boundingBox;
 	float vel;
 	bool jumpLatch;
 	bool useLatch;
+	GameEngine::SpriteBatch* sb;
 };
 

@@ -45,7 +45,7 @@ void MainGame::initSystems() {
 	Lights.setMaxLights(200);
 	Platforms.addPlatform(-200, 0, 400, 20);
 	Platforms.addPlatform(-400, 100, 400, 20);
-	player.init(-50, 100, &WorldItems);
+	player.init(-50, 100, &WorldItems, &_spriteBatch);
 	WorldItems.init(&Lights);
 	WorldItems.addItem(flareParticle, 0, 100);
 }
@@ -90,9 +90,6 @@ void MainGame::gameLoop() {
     }
 }
 void MainGame::updateGame() {
-	WorldItems.runItems();
-	player.handleInput(&_inputManager);
-	player.calcNewPos();
 	for (int j = 0; j < Platforms.getVectorSize(); j++)
 	{
 		cd.correctPosition(player.getBoundingBox(), Platforms.getBoundingBox(j));
@@ -235,20 +232,21 @@ void MainGame::drawGame() {
 	static GameEngine::GLTexture texture = GameEngine::ResourceManager::getTexture("Textures/jimmyJump_pack/PNG/CharacterRight_Standing.png");
 	glm::vec4 pos1(-1000.0f, 1000.0f, 2000.0f, -2000.0f);
 	glm::vec4 uv1(0.0f, 0.0f, 1.0f, 1.0f);
-	static GameEngine::GLTexture 
-	newTexture = GameEngine::ResourceManager::getTexture("Textures/jimmyJump_pack/PNG/AngryCloud.png");
+	static GameEngine::GLTexture newTexture = GameEngine::ResourceManager::getTexture("Textures/jimmyJump_pack/PNG/b1.png");
+	static GameEngine::GLTexture newTexture1 = GameEngine::ResourceManager::getTexture("Textures/jimmyJump_pack/PNG/b2.png");
     GameEngine::Color color;
     color.r = 255;
     color.g = 0;
     color.b = 255;
     color.a = 255;
-	_spriteBatch.draw(pos1, uv1, newTexture.id, 0.0f, color);
+	_spriteBatch.draw(pos1, uv1, newTexture1.id, 0.0f, color, 0.5);
+	_spriteBatch.draw(pos1, uv1, newTexture.id, 0.0f, color, 1);
 
     _spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
-	GameEngine::drawRect(300, 0, 600, 600, color, &_spriteBatch);
+	GameEngine::drawRect(300, 0, 600, 600, 1, color, &_spriteBatch);
 	_spriteBatch.drawLine(glm::vec2(0, 0), glm::vec2(500, -100), color);
 	Platforms.drawPlatforms(&_spriteBatch);
-	player.draw(&_spriteBatch);
+	player.draw();
     _spriteBatch.end();
 
     _spriteBatch.renderBatch();

@@ -1,14 +1,17 @@
 #version 130
 //The vertex shader operates on each vertex
-
 //input data from the VBO. Each vertex is 2 floats
 in vec2 vertexPosition;
 in vec4 vertexColor;
 in vec2 vertexUV;
+in float vertexLightAlpha;
+
 
 out vec2 fragmentPosition;
 out vec4 fragmentColor;
 out vec2 fragmentUV;
+out float fragmentLightAlpha;
+out float fragmentAlpha;
 
 uniform mat4 P;
 
@@ -21,6 +24,7 @@ void main() {
     gl_Position.w = 1.0;
 	fragmentPosition = vertexPosition;
     fragmentColor = vertexColor;  
+	fragmentLightAlpha = vertexLightAlpha;
     
     fragmentUV = vec2(vertexUV.x, 1.0 - vertexUV.y);
 }

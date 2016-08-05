@@ -54,7 +54,10 @@ void SpriteBatch::drawLine(glm::vec2 _p1, glm::vec2 _p2, const Color& color) {
 	newGlyph->topRight.color = color;
 	newGlyph->topRight.setPosition(_p1.x+10, _p1.y+10);
 	newGlyph->topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
-
+	newGlyph->topLeft.lightAlpha = 0;
+	newGlyph->bottomLeft.lightAlpha = 0;
+	newGlyph->bottomRight.lightAlpha = 0;
+	newGlyph->topRight.lightAlpha = 0;
 	_glyphs.push_back(newGlyph);
 }
 void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color) {
@@ -90,9 +93,51 @@ void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuin
 		newGlyph->bottomRight.color = colorForTextures;
 		newGlyph->topRight.color = colorForTextures;
 	}
+	newGlyph->topLeft.lightAlpha = 1;
+	newGlyph->bottomLeft.lightAlpha = 1;
+	newGlyph->bottomRight.lightAlpha = 1;
+	newGlyph->topRight.lightAlpha = 1;
     _glyphs.push_back(newGlyph);
 }
+void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color, float _lightAlpha) {
 
+	Glyph* newGlyph = new Glyph;
+
+	newGlyph->texture = texture;
+	newGlyph->depth = depth;
+
+	newGlyph->topLeft.color = color;
+	newGlyph->topLeft.setPosition(destRect.x, destRect.y + destRect.w);
+	newGlyph->topLeft.setUV(uvRect.x, uvRect.y + uvRect.w);
+
+	newGlyph->bottomLeft.color = color;
+	newGlyph->bottomLeft.setPosition(destRect.x, destRect.y);
+	newGlyph->bottomLeft.setUV(uvRect.x, uvRect.y);
+
+	newGlyph->bottomRight.color = color;
+	newGlyph->bottomRight.setPosition(destRect.x + destRect.z, destRect.y);
+	newGlyph->bottomRight.setUV(uvRect.x + uvRect.z, uvRect.y);
+
+	newGlyph->topRight.color = color;
+	newGlyph->topRight.setPosition(destRect.x + destRect.z, destRect.y + destRect.w);
+	newGlyph->topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
+	if (texture != NULL) {
+		Color colorForTextures;
+		colorForTextures.r = 0;
+		colorForTextures.g = 0;
+		colorForTextures.b = 0;
+		colorForTextures.a = 0;
+		newGlyph->topLeft.color = colorForTextures;
+		newGlyph->bottomLeft.color = colorForTextures;
+		newGlyph->bottomRight.color = colorForTextures;
+		newGlyph->topRight.color = colorForTextures;
+	}
+	newGlyph->topLeft.lightAlpha = _lightAlpha;
+	newGlyph->bottomLeft.lightAlpha = _lightAlpha;
+	newGlyph->bottomRight.lightAlpha = _lightAlpha;
+	newGlyph->topRight.lightAlpha = _lightAlpha;
+	_glyphs.push_back(newGlyph);
+}
 void SpriteBatch::renderBatch() {
 
     // Bind our VAO. This sets up the opengl state we need, including the 
@@ -171,62 +216,63 @@ void SpriteBatch::createRenderBatches() {
 
 void SpriteBatch::createVertexArray() {
 
-    // Generate the VAO if it isn't already generated
-    if (_vao == 0) {
-        glGenVertexArrays(1, &_vao);
-    }
-    
-    // Bind the VAO. All subsequent opengl calls will modify it's state.
-    glBindVertexArray(_vao);
+	// Generate the VAO if it isn't already generated
+	if (_vao == 0) {
+		glGenVertexArrays(1, &_vao);
 
-    //G enerate the VBO if it isn't already generated
-    if (_vbo == 0) {
-        glGenBuffers(1, &_vbo);
-    }
-    glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 
-    //Tell opengl what attribute arrays we need
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
-	glEnableVertexAttribArray(3);
+		// Bind the VAO. All subsequent opengl calls will modify it's state.
+		glBindVertexArray(_vao);
 
-    //This is the position attribute pointer
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
-    //This is the color attribute pointer
-    glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void*)offsetof(Vertex, color));
-    //This is the UV attribute pointer
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
+		//G enerate the VBO if it isn't already generated
+		if (_vbo == 0) {
+			glGenBuffers(1, &_vbo);
+		}
+		glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 
-    glBindVertexArray(0);
+		//Tell opengl what attribute arrays we need
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
+		glEnableVertexAttribArray(3);
 
+		//This is the position attribute pointer
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
+		//This is the color attribute pointer
+		glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void*)offsetof(Vertex, color));
+		//This is the UV attribute pointer
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
+		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, lightAlpha));
+		
+
+		glBindVertexArray(0);
+
+	}
 }
+	void SpriteBatch::sortGlyphs() {
 
-void SpriteBatch::sortGlyphs() {
-   
-    switch (_sortType) {
-        case GlyphSortType::BACK_TO_FRONT:
-            std::stable_sort(_glyphs.begin(), _glyphs.end(), compareBackToFront);
-            break;
-        case GlyphSortType::FRONT_TO_BACK:
-            std::stable_sort(_glyphs.begin(), _glyphs.end(), compareFrontToBack);
-            break;
-        case GlyphSortType::TEXTURE:
-            std::stable_sort(_glyphs.begin(), _glyphs.end(), compareTexture);
-            break;
-    }
-}
+		switch (_sortType) {
+		case GlyphSortType::BACK_TO_FRONT:
+			std::stable_sort(_glyphs.begin(), _glyphs.end(), compareBackToFront);
+			break;
+		case GlyphSortType::FRONT_TO_BACK:
+			std::stable_sort(_glyphs.begin(), _glyphs.end(), compareFrontToBack);
+			break;
+		case GlyphSortType::TEXTURE:
+			std::stable_sort(_glyphs.begin(), _glyphs.end(), compareTexture);
+			break;
+		}
+	}
 
-bool SpriteBatch::compareFrontToBack(Glyph* a, Glyph* b) {
-    return (a->depth < b->depth);
-}
+	bool SpriteBatch::compareFrontToBack(Glyph* a, Glyph* b) {
+		return (a->depth < b->depth);
+	}
 
-bool SpriteBatch::compareBackToFront(Glyph* a, Glyph* b) {
-    return (a->depth > b->depth);
-}
+	bool SpriteBatch::compareBackToFront(Glyph* a, Glyph* b) {
+		return (a->depth > b->depth);
+	}
 
-bool SpriteBatch::compareTexture(Glyph* a, Glyph* b) {
-    return (a->texture < b->texture);
-}
-
+	bool SpriteBatch::compareTexture(Glyph* a, Glyph* b) {
+		return (a->texture < b->texture);
+	}
 }

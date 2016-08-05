@@ -4,6 +4,8 @@
 in vec2 fragmentPosition;
 in vec4 fragmentColor;
 in vec2 fragmentUV;
+in float fragmentLightAlpha;
+
 uniform int lightArraySize;
 uniform float lightColours[200*3];
 uniform float lightPositions[200*2];
@@ -22,16 +24,34 @@ void main() {
 	float newLightIntensity = 0;
 	for(int j = 0; j < lightArraySize; j++)
 	{
-	float d = distance(vec2(lightPositions[j*2], lightPositions[(j*2) + 1]), fragmentPosition);
-	newLightIntensity = 1/(((d/lightRadii[j]))*((d/lightRadii[j])+1));
-	newLightColor += (vec4(lightColours[j*3], lightColours[(j*3) + 1], lightColours[(j*3) + 2], 1)*newLightIntensity);
+		float d = distance(vec2(lightPositions[j*2], lightPositions[(j*2) + 1]), fragmentPosition);
+		newLightIntensity = 1/(((d/lightRadii[j]))*((d/lightRadii[j])+1));
+		if (fragmentLightAlpha > 0) {
+			newLightColor += (vec4(lightColours[j*3], lightColours[(j*3) + 1], lightColours[(j*3) + 2], 1)*newLightIntensity)*fragmentLightAlpha;
+		}
+		else {
+			newLightColor += (vec4(lightColours[j*3], lightColours[(j*3) + 1], lightColours[(j*3) + 2], 1)*newLightIntensity);
+		}
 	}
-	color = color * newLightColor;
+	if (fragmentLightAlpha <= 0) {
+	color = (1+fragmentLightAlpha)*color + ((-1*(fragmentLightAlpha)) * color * newLightColor);
+	}
+	else {
+		color = color * newLightColor;
+		color = color*ambientLight;
+	}
 	color.a = textureColor.a;
+	if (fragmentColor.a > 0) {
+	color.a = fragmentColor.a;
+	}
+	else
+	{
+	color.a = textureColor.a;
+	}
 	//ambient
-	color = color*ambientLight;
-	color.a = textureColor.a;
+	
+	
 	float dv = distance(fragmentPosition.xy, vignette);
 	//vignette testing
-	color.a -= dv/1000;
+	//color.a -= dv/1000;
 }

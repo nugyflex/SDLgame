@@ -13,7 +13,9 @@ void WorldItemCollection::addItem(WorldItemType _type, float _x, float _y, float
 		worldItemVector.push_back(new Flare());
 		tempLight = worldItemVector[worldItemVector.size() - 1]->getLight();
 		lightID = LC->addLight(tempLight);
-		worldItemVector[worldItemVector.size() - 1]->init(0, 0, 10, 1000);
+		worldItemVector[worldItemVector.size() - 1]->init(0, 0, 10, 10, 1000);
+		worldItemVector[worldItemVector.size() - 1]->getBoundingBox()->yv = _yv;
+		worldItemVector[worldItemVector.size() - 1]->getBoundingBox()->xv = _xv;
 		worldItemVector[worldItemVector.size() - 1]->setType(flare);
 		break;
 	case flareParticle:
@@ -30,6 +32,8 @@ void WorldItemCollection::addItem(WorldItemType _type, float _x, float _y, float
 		tempLight = worldItemVector[worldItemVector.size() - 1]->getLight();
 		lightID = LC->addLight(tempLight);
 		worldItemVector[worldItemVector.size() - 1]->init(0, 0, 10, 10);
+		worldItemVector[worldItemVector.size() - 1]->getBoundingBox()->yv = _yv;
+		worldItemVector[worldItemVector.size() - 1]->getBoundingBox()->xv = _xv;
 		worldItemVector[worldItemVector.size() - 1]->setType(glowStick);
 		break;
 	case default:
@@ -79,8 +83,8 @@ void WorldItemCollection::runItems() {
 	{
 		worldItemVector[i]->run();
 		worldItemVector[i]->runTimer();
-		if (worldItemVector[i]->getType() == flare && ((double)rand() / (RAND_MAX)) > 0.9) {
-			addItem(flareParticle, worldItemVector[i]->getBoundingBox()->x, worldItemVector[i]->getBoundingBox()->y, ((double)rand() / (RAND_MAX)) * 3 - 1.5, ((double)rand() / (RAND_MAX)) * 10);
+		if (worldItemVector[i]->getType() == flare && ((double)rand() / (RAND_MAX)) > 0.8) {
+			addItem(flareParticle, worldItemVector[i]->getBoundingBox()->x, worldItemVector[i]->getBoundingBox()->y, ((double)rand() / (RAND_MAX)) * 6 - 3, ((double)rand() / (RAND_MAX)) * 16);
 		}
 		if (worldItemVector[i]->getTimer() <= 0 && worldItemVector[i]->despawns)
 		{

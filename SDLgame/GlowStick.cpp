@@ -3,7 +3,7 @@
 GlowStick::GlowStick() {}
 GlowStick::~GlowStick() {}
 void GlowStick::run() {
-	boundingBox.yv -= 0.3;
+	boundingBox.yv -= 0.6;
 	boundingBox.x += boundingBox.xv;
 	boundingBox.y += boundingBox.yv;
 }

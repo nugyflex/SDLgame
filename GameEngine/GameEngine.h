@@ -13,6 +13,6 @@ namespace GameEngine {
 		glm::vec2 flickerRange;
 	};
 	extern int init();
-	extern void drawRect(int x, int y, int width, int height, Color color, SpriteBatch* spriteBatch);
+	extern void drawRect(int x, int y, int width, int height, float _lightAlpha, Color color, SpriteBatch* spriteBatch);
 	extern void drawLine(glm::vec2 point1, glm::vec2 point2, glm::mat4 cameraMatrix);
 }

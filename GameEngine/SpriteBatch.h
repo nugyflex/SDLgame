@@ -20,7 +20,6 @@ enum class GlyphSortType {
 struct Glyph {
     GLuint texture;
     float depth;
-    
     Vertex topLeft;
     Vertex bottomLeft;
     Vertex topRight;
@@ -56,6 +55,7 @@ public:
 
     // Adds a glyph to the spritebatch
     void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color);
+	void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color, float _lightAlpha);
 	void drawLine(glm::vec2 _p1, glm::vec2 _p2, const Color& color);
 
     // Renders the entire SpriteBatch to the screen
