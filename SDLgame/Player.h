@@ -14,7 +14,7 @@ public:
 	void handleInput(GameEngine::InputManager* _im);
 	void calcNewPos();
 	void draw();
-	Inventory inventory;
+	void drawInventory(glm::vec2 _position);
 private:
 	WorldItemCollection* itemCollectionPointer;
 	BoundingBox boundingBox;
@@ -22,5 +22,6 @@ private:
 	bool jumpLatch;
 	bool useLatch;
 	GameEngine::SpriteBatch* sb;
+	Inventory inventory;
 };
 

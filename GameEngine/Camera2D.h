@@ -26,6 +26,7 @@ namespace GameEngine {
         float getScale() { return _scale; }
         glm::mat4 getCameraMatrix() { return _cameraMatrix; }
 		void followObject(BoundingBox* _bb);
+		glm::vec2 getVelocity() { return xyVel; };
     private:
         int _screenWidth, _screenHeight;
         bool _needsMatrixUpdate;

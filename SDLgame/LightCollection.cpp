@@ -24,7 +24,7 @@ int LightCollection::addLight(float x, float y, float r, float g, float b, float
 		newLight.ID = lastLightID + 1;
 		lastLightID++;
 		lightVector.push_back(newLight);
-		std::cout << "lights: " << lightVector.size() << std::endl;
+		//std::cout << "lights: " << lightVector.size() << std::endl;
 		return newLight.ID;
 	}
 	else {
@@ -44,7 +44,7 @@ int LightCollection::addLight(float x, float y, float r, float g, float b, float
 		newLight.ID = lastLightID + 1;
 		lastLightID++;
 		lightVector.push_back(newLight);
-		std::cout << "lights: " << lightVector.size() << std::endl;
+		//std::cout << "lights: " << lightVector.size() << std::endl;
 		return newLight.ID;
 	}
 	else {
@@ -58,7 +58,7 @@ int LightCollection::addLight(GameEngine::Light _light) {
 		_light.ID = lastLightID + 1;
 		lastLightID++;
 		lightVector.push_back(_light);
-		std::cout << "lights: " << lightVector.size() << std::endl;
+		//std::cout << "lights: " << lightVector.size() << std::endl;
 		return _light.ID;
 	}
 	else {

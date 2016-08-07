@@ -89,7 +89,6 @@ void WorldItemCollection::runItems() {
 		if (worldItemVector[i]->getTimer() <= 0 && worldItemVector[i]->despawns)
 		{
 			remove(i);
-			i--;
 		}
 	}
 }

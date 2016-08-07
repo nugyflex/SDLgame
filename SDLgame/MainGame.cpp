@@ -43,11 +43,23 @@ void MainGame::initSystems() {
     _spriteBatch.init();
     _fpsLimiter.init(_maxFPS);
 	Lights.setMaxLights(200);
-	Platforms.addPlatform(-200, 0, 400, 20);
+	Platforms.addPlatform(-200, 0, 800, 20);
+	Platforms.addPlatform(-800, 0, 400, 20);
 	Platforms.addPlatform(-400, 100, 400, 20);
+	Platforms.addPlatform(-800, -600, 800, 20);
+	Platforms.addPlatform(0, -1200, 800, 20);
+	Platforms.addPlatform(-800, -1800, 800, 20);
+	Platforms.addPlatform(0, -2400, 800, 20);
+	Platforms.addPlatform(-800, -3000, 800, 20);
+	Platforms.addPlatform(0, -3600, 800, 20);
+	Platforms.addPlatform(-800, -4200, 800, 20);
 	player.init(-50, 100, &WorldItems, &_spriteBatch);
 	WorldItems.init(&Lights);
-	WorldItems.addItem(flareParticle, 0, 100);
+	for (int i = 0; i < 100; i++)
+	{
+		WorldItems.addItem(glowStick, 2*i, 100);
+	}
+	
 }
 
 void MainGame::initShaders() {
@@ -101,6 +113,7 @@ void MainGame::updateGame() {
 	WorldItems.runItems();
 	player.handleInput(&_inputManager);
 	player.calcNewPos();
+	_camera.followObject(player.getBoundingBox());
 }
 //Processes input with SDL
 void MainGame::processInput() {
@@ -180,7 +193,7 @@ void MainGame::processInput() {
 
 //Draws the game using the almighty OpenGL
 void MainGame::drawGame() {
-	_camera.followObject(player.getBoundingBox());
+	
 	WorldItems.linkToLights();
 	Lights.runFlicker();
 	//std::cout << flare.x << "," << flare.y << "," << flare.z << "," << flare.w << std::endl;
@@ -234,6 +247,8 @@ void MainGame::drawGame() {
 	glm::vec4 uv1(0.0f, 0.0f, 1.0f, 1.0f);
 	static GameEngine::GLTexture newTexture = GameEngine::ResourceManager::getTexture("Textures/jimmyJump_pack/PNG/b1.png");
 	static GameEngine::GLTexture newTexture1 = GameEngine::ResourceManager::getTexture("Textures/jimmyJump_pack/PNG/b2.png");
+	static GameEngine::GLTexture db = GameEngine::ResourceManager::getTexture("Textures/decentBackground.png");
+	static GameEngine::GLTexture mb = GameEngine::ResourceManager::getTexture("Textures/meshBackground.png");
     GameEngine::Color color;
     color.r = 255;
     color.g = 0;
@@ -241,12 +256,15 @@ void MainGame::drawGame() {
     color.a = 255;
 	_spriteBatch.draw(pos1, uv1, newTexture1.id, 0.0f, color, 0.5);
 	_spriteBatch.draw(pos1, uv1, newTexture.id, 0.0f, color, 1);
+	_spriteBatch.draw(glm::vec4(-3650 / 2, -2250 / 2, 3650, 2250) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.8, 0.8, 0, 0), uv1, db.id, 0.0f, color, 0);
+	_spriteBatch.draw(glm::vec4(-9500 / 2, -5500 / 2, 9500, 5500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.6, 0.6, 0, 0), uv1, mb.id, 0.0f, color, 1);
 
     _spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
 	GameEngine::drawRect(300, 0, 600, 600, 1, color, &_spriteBatch);
 	_spriteBatch.drawLine(glm::vec2(0, 0), glm::vec2(500, -100), color);
 	Platforms.drawPlatforms(&_spriteBatch);
 	player.draw();
+	player.drawInventory(_camera.getPosition() - glm::vec2(_screenWidth/2, _screenHeight/2) - _camera.getVelocity());
     _spriteBatch.end();
 
     _spriteBatch.renderBatch();

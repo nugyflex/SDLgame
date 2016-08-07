@@ -95,5 +95,7 @@ void Player::draw() {
 		color.a = 255;
 	}
 	GameEngine::drawRect(boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h, 1, color, sb);
-	inventory.draw(boundingBox.x, boundingBox.y);
+}
+void Player::drawInventory(glm::vec2 _position) {
+	inventory.draw(_position.x, _position.y);
 }

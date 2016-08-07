@@ -22,6 +22,7 @@ void Inventory::init(GameEngine::SpriteBatch * _sb) {
 		hotBar[i].type = InventoryNone;
 		hotBar[i].amount = 0;
 	}
+	cellDrawSize = 100;
 }
 void Inventory::addItem(inventoryitemType _type, int _amount) {
 	bool finished = false;
@@ -80,17 +81,17 @@ void Inventory::draw(float _x, float _y) {
 	color.b = 120;
 	color.a = 100;
 	for (int i = 0; i < 5; i++) {
-		GameEngine::drawRect(_x + (45 * i) - 3, _y, 1, 45 * 4 - 5, 0, color, sb);
+		GameEngine::drawRect(_x + (cellDrawSize * i), _y, 1, cellDrawSize * 4 + 1, 0, color, sb);
 	}
 	for (int i = 0; i < 5; i++) {
-		GameEngine::drawRect(_x, _y + (45 * i) - 3, 45 * 4 - 5, 1, 0, color, sb);
+		GameEngine::drawRect(_x, _y + (cellDrawSize * i), cellDrawSize * 4 + 1, 1, 0, color, sb);
 	}
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
-			GameEngine::drawRect(_x + 45 * i, _y + 45 * j, 40, 1, 0, color, sb);
-			GameEngine::drawRect(_x + 45 * i, _y + 45 * j, 1, 40, 0, color, sb);
-			GameEngine::drawRect(_x + 45 * i + 40 - 1, _y + 45 * j, 1, 40, 0, color, sb);
-			GameEngine::drawRect(_x + 45 * i, _y + 45 * j + 40 - 1, 40, 1, 0, color, sb);
+			GameEngine::drawRect(_x + cellDrawSize * i + 3, _y + cellDrawSize * j + 3, cellDrawSize - 5, 1, 0, color, sb);
+			GameEngine::drawRect(_x + cellDrawSize * i + 3, _y + cellDrawSize * j + 3, 1, cellDrawSize - 5, 0, color, sb);
+			GameEngine::drawRect(_x + cellDrawSize * i + cellDrawSize - 3, _y + cellDrawSize * j + 3, 1, cellDrawSize - 5, 0, color, sb);
+			GameEngine::drawRect(_x + cellDrawSize * i + 3, _y + cellDrawSize * j + cellDrawSize - 3, cellDrawSize - 5, 1, 0, color, sb);
 		}
 	}
 }

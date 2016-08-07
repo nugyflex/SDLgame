@@ -34,7 +34,8 @@ void main() {
 		}
 	}
 	if (fragmentLightAlpha <= 0) {
-	color = (1+fragmentLightAlpha)*color + ((-1*(fragmentLightAlpha)) * color * newLightColor);
+	//color = (1+fragmentLightAlpha)*color + ((-1*(fragmentLightAlpha)) * color * newLightColor);
+	color = color + newLightColor/20;
 	}
 	else {
 		color = color * newLightColor;
