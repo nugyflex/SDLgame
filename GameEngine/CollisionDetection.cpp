@@ -1,6 +1,6 @@
 #include  "CollisionDetection.h"
 #include <iostream>
-
+struct collisionResult { collisionResult() : left(false), right(false), top(false), bottom(false) {} bool left; bool right; bool top; bool bottom; };
 namespace GameEngine {
 	CollisionDetection::CollisionDetection() {}
 	CollisionDetection::~CollisionDetection() {}
@@ -204,54 +204,87 @@ namespace GameEngine {
 		}
 	}
 	void CollisionDetection::correctPosition(BoundingBox* bb1, BoundingBox* bb2) {
+		collisionResult result;
 		if (bb1->x + bb1->w > bb2->x && bb1->x < bb2->x + bb2->w) {
 			if (bb1->y <= bb2->y && bb1->y + bb1->h + bb1->yv > bb2->y) {
+				result.bottom = true;
+			}
+			else if (bb1->y + bb1->h >= bb2->y + bb2->h && bb1->y + bb1->yv < bb2->y + bb2->h) {
+				result.top = true;
+			}
+		}
+		if (bb1->y + bb1->h > bb2->y && bb1->y < bb2->y + bb2->h) {
+			if (bb1->x <= bb2->x && bb1->x + bb1->w + bb1->xv > bb2->x) {
+				result.left = true;
+			}
+			else if (bb1->x + bb1->w >= bb2->x + bb2->w && bb1->x + bb1->xv < bb2->x + bb2->w) {
+				result.right = true;
+			}
+		}
+		if (result.bottom) {
+			if (result.left) {
+				if (bb1->y + bb1->h + bb1->yv - bb2->y > (bb1->x + bb1->w + bb1->xv) - bb2->x) {
+					bb1->y = bb2->y - bb1->h;
+					if (bb1->yv > 0) { bb1->yv = 0; }
+				}
+				else {
+					bb1->x = bb2->x - bb1->w;
+					if (bb1->xv > 0) { bb1->xv = 0; }
+				}
+			}
+			else if (result.right) {
+				if (bb1->y + bb1->h + bb1->yv - bb2->y > bb1->x + bb1->w + bb1->xv - bb2->x) {
+					bb1->y = bb2->y - bb1->h;
+					if (bb1->yv > 0) { bb1->yv = 0; }
+				}
+				else {
+					bb1->x = bb2->x + bb2->w;
+					if (bb1->xv < 0) { bb1->xv = 0; }
+				}
+			}
+			else {
 				bb1->y = bb2->y - bb1->h;
 				bb1->yv = 0;
 			}
-			else if (bb1->y + bb1->h >= bb2->y + bb2->h && bb1->y + bb1->yv < bb2->y + bb2->h) {
+		}
+		else if (result.top) {
+			if (result.left) {
+				if (bb2->y + bb2->h - (bb1->y + bb1->yv) > bb1->x + bb1->w + bb1->xv - bb2->x) {
+					bb1->x = bb2->x - bb1->w;
+					if (bb1->xv > 0) { bb1->xv = 0; }
+				}
+				else {
+					bb1->y = bb2->y + bb2->h;
+					if (bb1->yv < 0) { bb1->yv = 0; }
+					bb1->onGround = true;
+				}
+			}
+			else if (result.right) {
+				if (bb1->y + bb1->yv - bb2->y + bb2->h > bb1->x + bb1->w + bb1->xv - bb2->x) {
+					bb1->x = bb2->x + bb2->w;
+					bb1->xv = 0;
+					if (bb1->xv < 0) { bb1->xv = 0; }
+				}
+				else {
+
+					bb1->y = bb2->y + bb2->h;
+					if (bb1->yv < 0) { bb1->yv = 0; }
+					bb1->onGround = true;
+				}
+			}
+			else {
 				bb1->y = bb2->y + bb2->h;
 				bb1->yv = 0;
 				bb1->onGround = true;
 			}
 		}
-		if (bb1->y + bb1->h > bb2->y && bb1->y < bb2->y + bb2->h) {
-			if (bb1->x <= bb2->x && bb1->x + bb1->w + bb1->xv > bb2->x) {
-				bb1->x = bb2->x - bb1->w;
-				bb1->xv = 0;
-			}
-			else if (bb1->x + bb1->w >= bb2->x + bb2->w && bb1->x + bb1->xv < bb2->x + bb2->w) {
-				bb1->x = bb2->x + bb2->w;
-				bb1->xv = 0;
-			}
+		else if (result.left) {
+			bb1->x = bb2->x - bb1->w;
+			bb1->xv = 0;
 		}
-
-		/*
-		//left = 1, bottom = 2, right = 3, top = 
-		glm::vec4 rect = glm::vec4(bb1->x, bb1->y, bb1->w, bb1->h);
-		glm::vec4 rect2 = glm::vec4(bb2->x, bb2->y, bb2->w, bb2->h);
-		if (CheckRectangleIntersect(&rect, &rect2))
-		{
-			switch (getSide(&rect, &rect2))
-			{
-			case 1:
-				if (bb1->xv > 0) { bb1->xv = 0; }
-				bb1->x = bb2->x - bb1->w;
-				break;
-			case 3:
-				if (bb1->xv < 0) { bb1->xv = 0; }
-				bb1->x = (bb2->x + bb2->w);
-				break;
-			case 2:
-				if (bb1->yv < 0) { bb1->yv = 0; }
-				bb1->y = (bb2->y + bb2->h);
-				break;
-			case 4:
-				std::cout << bb1->yv << std::endl;
-				if (bb1->yv > 0) { bb1->yv = 0; }
-				bb1->y = (bb2->y - bb1->h);
-				break;
-			}
-		}*/
+		else if (result.right) {
+			bb1->x = bb2->x + bb2->w;
+			bb1->xv = 0;
+		}
 	}
 }

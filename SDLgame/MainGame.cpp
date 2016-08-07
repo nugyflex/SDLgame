@@ -45,7 +45,8 @@ void MainGame::initSystems() {
 	Lights.setMaxLights(200);
 	Platforms.addPlatform(-200, 0, 800, 20);
 	Platforms.addPlatform(-800, 0, 400, 20);
-	Platforms.addPlatform(-400, 100, 400, 20);
+	Platforms.addPlatform(-400, 40, 400, 80);
+	Platforms.addPlatform(400, 40, 400, 80);
 	Platforms.addPlatform(-800, -600, 800, 20);
 	Platforms.addPlatform(0, -1200, 800, 20);
 	Platforms.addPlatform(-800, -1800, 800, 20);
@@ -102,6 +103,9 @@ void MainGame::gameLoop() {
     }
 }
 void MainGame::updateGame() {
+	player.handleInput(&_inputManager);
+	WorldItems.runItems();
+	_camera.followObject(player.getBoundingBox());
 	for (int j = 0; j < Platforms.getVectorSize(); j++)
 	{
 		cd.correctPosition(player.getBoundingBox(), Platforms.getBoundingBox(j));
@@ -110,10 +114,8 @@ void MainGame::updateGame() {
 			cd.correctPosition(WorldItems.getBoundingBox(i), Platforms.getBoundingBox(j));
 		}
 	}
-	WorldItems.runItems();
-	player.handleInput(&_inputManager);
 	player.calcNewPos();
-	_camera.followObject(player.getBoundingBox());
+
 }
 //Processes input with SDL
 void MainGame::processInput() {

@@ -74,9 +74,9 @@ void Player::handleInput(GameEngine::InputManager* _im) {
 	else {
 		useLatch = true;
 	}
+	boundingBox.yv -= 0.3;
 }
 void Player::calcNewPos() {
-	boundingBox.yv -= 0.3;
 	boundingBox.x += boundingBox.xv;
 	boundingBox.y += boundingBox.yv;
 }
