@@ -7,8 +7,8 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(1024),
-	_screenHeight(768),
+	_screenWidth(1920),
+	_screenHeight(1080),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f),
@@ -56,10 +56,6 @@ void MainGame::initSystems() {
 	Platforms.addPlatform(-800, -4200, 800, 20);
 	player.init(-50, 100, &WorldItems, &_spriteBatch);
 	WorldItems.init(&Lights);
-	for (int i = 0; i < 100; i++)
-	{
-		WorldItems.addItem(glowStick, 2*i, 100);
-	}
 	
 }
 
@@ -259,7 +255,10 @@ void MainGame::drawGame() {
 	_spriteBatch.draw(pos1, uv1, newTexture1.id, 0.0f, color, 0.5);
 	_spriteBatch.draw(pos1, uv1, newTexture.id, 0.0f, color, 1);
 	_spriteBatch.draw(glm::vec4(-3650 / 2, -2250 / 2, 3650, 2250) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.8, 0.8, 0, 0), uv1, db.id, 0.0f, color, 0);
-	_spriteBatch.draw(glm::vec4(-9500 / 2, -5500 / 2, 9500, 5500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.6, 0.6, 0, 0), uv1, mb.id, 0.0f, color, 1);
+	//_spriteBatch.draw(glm::vec4(-9500 / 2, -5500 / 2, 9500, 5500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.6, 0.7, 0, 0), uv1, mb.id, 0.0f, color, 0.5);
+	_spriteBatch.draw(glm::vec4(-9500 / 2, -5500 / 2, 9500, 5500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.6, 0.6, 0, 0), uv1, mb.id, 0.0f, color, 0.7);
+	_spriteBatch.draw(glm::vec4(-9500 / 2, -5500 / 2, 9500, 5500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.6, 0.6, 0, 0) + glm::vec4(3, 3, 0, 0), uv1, mb.id, 0.0f, color, 0.9);
+
 
     _spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
 	GameEngine::drawRect(300, 0, 600, 600, 1, color, &_spriteBatch);

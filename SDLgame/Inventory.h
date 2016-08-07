@@ -16,4 +16,5 @@ protected:
 	InventoryItem hotBar[4];
 	GameEngine::SpriteBatch * sb;
 	int cellDrawSize;
+	void drawItem(InventoryItem Item, float _x, float _y);
 };

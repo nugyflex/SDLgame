@@ -1,5 +1,5 @@
 #pragma once
-enum inventoryitemType { Inventoryflare, InventoryGlowStick, InventoryNone };
+enum inventoryitemType { InventoryFlare, InventoryGlowStick, InventoryNone };
 class InventoryItem
 {
 public:

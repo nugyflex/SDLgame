@@ -21,7 +21,7 @@ void Player::init(float _x, float _y, WorldItemCollection* _itemCollectionPointe
 	useLatch = true;
 	itemCollectionPointer = _itemCollectionPointer;
 	inventory.init(sb);
-	inventory.addItem(Inventoryflare, 2);
+	inventory.addItem(InventoryFlare, 2);
 	inventory.addItem(InventoryGlowStick, 5);
 }
 BoundingBox* Player::getBoundingBox() {
@@ -57,7 +57,7 @@ void Player::handleInput(GameEngine::InputManager* _im) {
 	}
 	if (_im->isKeyPressed(SDLK_r)) {
 		if (useLatch) {
-				if (inventory.removeItem(Inventoryflare, 1)) {
+				if (inventory.removeItem(InventoryFlare, 1)) {
 				itemCollectionPointer->addItem(flare, boundingBox.x, boundingBox.y, boundingBox.xv, boundingBox.yv);
 			}
 		}
@@ -87,13 +87,6 @@ void Player::draw() {
 	color.g = 150;
 	color.b = 150;
 	color.a = 255;
-	if (boundingBox.onGround)
-	{
-		color.r = 255;
-		color.g = 90;
-		color.b = 90;
-		color.a = 255;
-	}
 	GameEngine::drawRect(boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h, 1, color, sb);
 }
 void Player::drawInventory(glm::vec2 _position) {

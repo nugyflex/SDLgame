@@ -15,9 +15,9 @@ BoundingBox* Platform::getBoundingBox() {
 }
 void Platform::draw(GameEngine::SpriteBatch* sb) {
 	GameEngine::Color color;
-	color.r = 60;
-	color.g = 60;
-	color.b = 60;
+	color.r = 255;
+	color.g = 255;
+	color.b = 255;
 	color.a = 255;
 	GameEngine::drawRect(boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h, 1, color, sb);
 }

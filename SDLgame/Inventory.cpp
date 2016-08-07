@@ -1,6 +1,6 @@
 #include "Inventory.h"
-
-
+#include <GameEngine\GLTexture.h>
+#include <GameEngine\ResourceManager.h>
 
 Inventory::Inventory()
 {
@@ -73,6 +73,7 @@ bool Inventory::removeItem(inventoryitemType _type, int _amount) {
 
 		}
 	}
+	return false;
 }
 void Inventory::draw(float _x, float _y) {
 	GameEngine::Color color;
@@ -92,6 +93,31 @@ void Inventory::draw(float _x, float _y) {
 			GameEngine::drawRect(_x + cellDrawSize * i + 3, _y + cellDrawSize * j + 3, 1, cellDrawSize - 5, 0, color, sb);
 			GameEngine::drawRect(_x + cellDrawSize * i + cellDrawSize - 3, _y + cellDrawSize * j + 3, 1, cellDrawSize - 5, 0, color, sb);
 			GameEngine::drawRect(_x + cellDrawSize * i + 3, _y + cellDrawSize * j + cellDrawSize - 3, cellDrawSize - 5, 1, 0, color, sb);
+			drawItem(storage[i][j], _x + cellDrawSize * i + (cellDrawSize - 40) / 2, _y + cellDrawSize * j + (cellDrawSize - 40) / 2);
 		}
+	}
+}
+void Inventory::drawItem(InventoryItem _item, float _x, float _y) {
+	static GameEngine::GLTexture texture;
+	bool draw = true;
+	switch (_item.type) {
+		case InventoryFlare:
+			texture = GameEngine::ResourceManager::getTexture("Textures/flareIcon.png");
+			break;
+		case InventoryGlowStick:
+			texture = GameEngine::ResourceManager::getTexture("Textures/glowStickIcon.png");
+			break;
+		case InventoryNone:
+			draw = false;
+			break;
+	}
+	if (draw)
+	{
+		GameEngine::Color color;
+		color.r = 255;
+		color.g = 0;
+		color.b = 255;
+		color.a = 255;
+		sb->draw(glm::vec4(_x, _y, 40, 40), glm::vec4(0, 0, 1, 1), texture.id, 0.0f, color, 0);
 	}
 }
