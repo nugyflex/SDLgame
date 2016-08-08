@@ -9,7 +9,7 @@ class Player
 public:
 	Player();
 	~Player();
-	void init(float _x, float _y, WorldItemCollection* _itemCollectionPointer, GameEngine::SpriteBatch* _sb);
+	void init(float _x, float _y, WorldItemCollection* _itemCollectionPointer, GameEngine::SpriteBatch* _sb, GameEngine::DrawText* _drawText);
 	BoundingBox* getBoundingBox();
 	void handleInput(GameEngine::InputManager* _im);
 	void calcNewPos();

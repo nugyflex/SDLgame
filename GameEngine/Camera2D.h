@@ -12,7 +12,7 @@ namespace GameEngine {
         ~Camera2D();
 
         //sets up the orthographic matrix and screen dimensions
-        void init(int screenWidth, int screenHeight);
+        void init(int screenWidth, int screenHeight, int _x, int _y);
 
         //updates the camera matrix if needed
         void update();
@@ -27,15 +27,22 @@ namespace GameEngine {
         glm::mat4 getCameraMatrix() { return _cameraMatrix; }
 		void followObject(BoundingBox* _bb);
 		glm::vec2 getVelocity() { return xyVel; };
+		void setScreenShakeIntensity(float _intensity) { screenShakeIntensity = _intensity; };
+		void settleScreenShake();
+		void addScreenShake();
     private:
         int _screenWidth, _screenHeight;
         bool _needsMatrixUpdate;
         float _scale;
+		float vel;
+		float screenShakeIntensity;
+		glm::vec2 truePosition;
         glm::vec2 _position;
         glm::mat4 _cameraMatrix;
         glm::mat4 _orthoMatrix;
 		glm::vec2 xyVel;
-		float vel;
+		glm::vec2 screenShake;
+		
     };
 
 }

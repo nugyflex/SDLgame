@@ -8,14 +8,14 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(800),
-	_screenHeight(600),
+	_screenWidth(1920),
+	_screenHeight(1080),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f),
 	maxLights(100)
 {
-    _camera.init(_screenWidth, _screenHeight);
+    _camera.init(_screenWidth, _screenHeight, -50, 3200);
 }
 
 //Destructor
@@ -44,20 +44,33 @@ void MainGame::initSystems() {
     _spriteBatch.init();
     _fpsLimiter.init(_maxFPS);
 	Lights.setMaxLights(200);
-	Platforms.addPlatform(-200, 0, 800, 20);
-	Platforms.addPlatform(-800, 0, 400, 20);
-	Platforms.addPlatform(-400, 40, 400, 80);
-	Platforms.addPlatform(400, 40, 400, 80);
-	Platforms.addPlatform(-800, -600, 800, 20);
-	Platforms.addPlatform(0, -1200, 800, 20);
-	Platforms.addPlatform(-800, -1800, 800, 20);
-	Platforms.addPlatform(0, -2400, 800, 20);
-	Platforms.addPlatform(-800, -3000, 800, 20);
-	Platforms.addPlatform(0, -3600, 800, 20);
-	Platforms.addPlatform(-800, -4200, 800, 20);
-	player.init(-50, 100, &WorldItems, &_spriteBatch);
+	Lights.addLight(0, 9000, 1, 1, 1, 12500);
+	Lights.addLight(-400, -7100, 0.2, 0.2, 1, 100);
+	Platforms.addPlatform(-200, 3000, 800, 16);
+	Platforms.addPlatform(-800, 3000, 400, 16);
+	Platforms.addPlatform(-400, 3040, 400, 16);
+	Platforms.addPlatform(400, 3040, 400, 16);
+	Platforms.addPlatform(-800, 2400, 800, 16);
+	Platforms.addPlatform(0, 1800, 800, 16);
+	Platforms.addPlatform(-800, 1200, 800, 16);
+	Platforms.addPlatform(0, 600, 800, 16);
+	Platforms.addPlatform(-800, 0, 800, 16);
+	Platforms.addPlatform(0, -600, 800, 16);
+	Platforms.addPlatform(-800, -1200, 800, 16);
+	Platforms.addPlatform(0, -1800, 800, 16);
+	Platforms.addPlatform(-800, -2400, 800, 16);
+	Platforms.addPlatform(0, -3000, 800, 16);
+	Platforms.addPlatform(-800, -3600, 800, 16);
+	Platforms.addPlatform(0, -4200, 800, 16);
+	Platforms.addPlatform(-800, -4800, 800, 16);
+	Platforms.addPlatform(0, -5400, 800, 16);
+	Platforms.addPlatform(-800, -6000, 800, 16);
+	Platforms.addPlatform(0, -6600, 800, 16);
+	Platforms.addPlatform(-800, -7200, 800, 16);
+	player.init(-50, 3200, &WorldItems, &_spriteBatch, &drawText);
 	WorldItems.init(&Lights);
 	drawText.init(&_spriteBatch);
+	_camera.setScreenShakeIntensity(10);
 }
 
 void MainGame::initShaders() {
@@ -255,7 +268,7 @@ void MainGame::drawGame() {
     color.a = 255;
 	_spriteBatch.draw(pos1, uv1, newTexture1.id, 0.0f, color, 0.5);
 	_spriteBatch.draw(pos1, uv1, newTexture.id, 0.0f, color, 1);
-	_spriteBatch.draw(glm::vec4(-3650 / 2, -2250 / 2, 3650, 2250) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.8, 0.8, 0, 0), uv1, db.id, 0.0f, color, 0);
+	_spriteBatch.draw(glm::vec4(-6500 / 2, -6500 / 2, 6500, 6500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.8, 0.8, 0, 0), uv1, db.id, 0.0f, color, 0);
 	//_spriteBatch.draw(glm::vec4(-9500 / 2, -5500 / 2, 9500, 5500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.6, 0.7, 0, 0), uv1, mb.id, 0.0f, color, 0.5);
 	_spriteBatch.draw(glm::vec4(-9500 / 2, -5500 / 2, 9500, 5500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.6, 0.6, 0, 0), uv1, mb.id, 0.0f, color, 0.7);
 	_spriteBatch.draw(glm::vec4(-9500 / 2, -5500 / 2, 9500, 5500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.6, 0.6, 0, 0) + glm::vec4(3, 3, 0, 0), uv1, mb.id, 0.0f, color, 0.9);
@@ -266,8 +279,14 @@ void MainGame::drawGame() {
 	_spriteBatch.drawLine(glm::vec2(0, 0), glm::vec2(500, -100), color);
 	Platforms.drawPlatforms(&_spriteBatch);
 	player.draw();
-	player.drawInventory(_camera.getPosition() - glm::vec2(_screenWidth/2, _screenHeight/2) - _camera.getVelocity());
-	drawText.draw(10, 10, 0);
+	if (_inputManager.isKeyPressed(SDLK_TAB)) {
+		player.drawInventory(_camera.getPosition() - _camera.getVelocity());
+	}
+	drawText.draw(0, 0, "a", 2);
+	drawText.draw(10, 0, 1, 2);
+	drawText.draw(20, 0, 2, 2);
+	drawText.draw(30, 0, 3, 1);
+	drawText.draw(40, 0, 4, 1);
 	_spriteBatch.end();
 	
     _spriteBatch.renderBatch();

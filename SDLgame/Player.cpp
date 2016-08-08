@@ -8,7 +8,7 @@ Player::Player()
 Player::~Player()
 {
 }
-void Player::init(float _x, float _y, WorldItemCollection* _itemCollectionPointer, GameEngine::SpriteBatch* _sb) {
+void Player::init(float _x, float _y, WorldItemCollection* _itemCollectionPointer, GameEngine::SpriteBatch* _sb, GameEngine::DrawText* _drawText) {
 	sb = _sb;
 	boundingBox.x = _x;
 	boundingBox.y = _y;
@@ -20,7 +20,7 @@ void Player::init(float _x, float _y, WorldItemCollection* _itemCollectionPointe
 	jumpLatch = true;
 	useLatch = true;
 	itemCollectionPointer = _itemCollectionPointer;
-	inventory.init(sb);
+	inventory.init(sb, _drawText);
 	inventory.addItem(InventoryFlare, 2);
 	inventory.addItem(InventoryGlowStick, 5);
 }

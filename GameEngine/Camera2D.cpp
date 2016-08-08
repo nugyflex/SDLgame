@@ -3,6 +3,7 @@
 namespace GameEngine {
 
     Camera2D::Camera2D() : _position(0.0f, 0.0f),
+		truePosition(0.0f, 0.0f),
         _cameraMatrix(1.0f),
         _orthoMatrix(1.0f),
         _scale(1.0f),
@@ -17,10 +18,14 @@ namespace GameEngine {
     {
     }
 
-    void Camera2D::init(int screenWidth, int screenHeight) {
+    void Camera2D::init(int screenWidth, int screenHeight, int _x, int _y) {
         _screenWidth = screenWidth;
         _screenHeight = screenHeight;
         _orthoMatrix = glm::ortho(0.0f, (float)_screenWidth, 0.0f, (float)_screenHeight);
+		screenShake.x = 0;
+		screenShake.y = 0;
+		truePosition.x = _x;
+		truePosition.y = _y;
     }
 
     //updates the camera matrix if needed
@@ -50,22 +55,37 @@ namespace GameEngine {
 		return screenCoords;
 	}
 	void Camera2D::followObject(BoundingBox* _bb) {
-		if (_position.x < _bb->x) {
-			xyVel.x = floor((_bb->x - _position.x) / 50);
+		if (truePosition.x < _bb->x) {
+			xyVel.x = floor((_bb->x - truePosition.x) / 50);
 		}
-		if (_position.x > _bb->x) {
+		if (truePosition.x > _bb->x) {
 			xyVel.x = floor((_position.x - _bb->x) / -50);
 		}
-		if (_position.y < _bb->y ) {
-			xyVel.y = floor(((_bb->y) - _position.y) / 50);
+		if (truePosition.y < _bb->y ) {
+			xyVel.y = floor(((_bb->y) - truePosition.y) / 50);
 		}
-		if (_position.y > _bb->y ) {
-			xyVel.y = floor((_position.y - (_bb->y)) / -50);
+		if (truePosition.y > _bb->y ) {
+			xyVel.y = floor((truePosition.y - (_bb->y)) / -50);
 		}
-		_position.x += xyVel.x;
-		_position.y += xyVel.y;
+		truePosition.x += xyVel.x;
+		truePosition.y += xyVel.y;
+		
 		//_position.x = floor(_position.x);
 		//_position.y = floor(_position.y);
+		_position = truePosition;
+		_position += screenShake;
 		_needsMatrixUpdate = true;
+		addScreenShake();
+		settleScreenShake();
+	}
+	void Camera2D::addScreenShake() {
+		screenShake.x = ((double)rand() / (RAND_MAX)) * screenShakeIntensity*2 - screenShakeIntensity;
+		screenShake.y = ((double)rand() / (RAND_MAX)) * screenShakeIntensity * 2 - screenShakeIntensity;
+	}
+	void Camera2D::settleScreenShake() {
+		screenShakeIntensity *= 0.98;
+		if (screenShakeIntensity > -1 && screenShakeIntensity < 1) {
+			screenShakeIntensity = 0;
+		}
 	}
 }

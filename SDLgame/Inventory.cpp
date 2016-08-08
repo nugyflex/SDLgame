@@ -9,8 +9,9 @@ Inventory::Inventory()
 Inventory::~Inventory()
 {
 }
-void Inventory::init(GameEngine::SpriteBatch * _sb) {
+void Inventory::init(GameEngine::SpriteBatch * _sb, GameEngine::DrawText* _drawText) {
 	sb = _sb;
+	drawText = _drawText;
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
 			storage[i][j].type = InventoryNone;
@@ -77,19 +78,30 @@ bool Inventory::removeItem(inventoryitemType _type, int _amount) {
 	return false;
 }
 void Inventory::draw(float _x, float _y) {
+	_x = _x - (4 * cellDrawSize) / 2;
+	_y = _y - (4 * cellDrawSize) / 2;
 	GameEngine::Color color;
 	color.r = 120;
 	color.g = 200;
 	color.b = 120;
-	color.a = 100;
+	color.a = 70;
+	GameEngine::drawRect(_x - 2, _y - 2, cellDrawSize * 4 + 5, cellDrawSize * 4 + 5, 0, color, sb);
+	color.r = 120;
+	color.g = 200;
+	color.b = 120;
+	color.a = 120;
 	for (int i = 0; i < 5; i++) {
 		GameEngine::drawRect(_x + (cellDrawSize * i), _y, 1, cellDrawSize * 4 + 1, 0, color, sb);
 	}
 	for (int i = 0; i < 5; i++) {
 		GameEngine::drawRect(_x, _y + (cellDrawSize * i), cellDrawSize * 4 + 1, 1, 0, color, sb);
 	}
+	
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
+			if (storage[i][j].amount>0) {
+				drawText->draw(_x + cellDrawSize * i + 7, _y + cellDrawSize * j + 7, storage[i][j].amount, 2);
+			}
 			GameEngine::drawRect(_x + cellDrawSize * i + 3, _y + cellDrawSize * j + 3, cellDrawSize - 5, 1, 0, color, sb);
 			GameEngine::drawRect(_x + cellDrawSize * i + 3, _y + cellDrawSize * j + 3, 1, cellDrawSize - 5, 0, color, sb);
 			GameEngine::drawRect(_x + cellDrawSize * i + cellDrawSize - 3, _y + cellDrawSize * j + 3, 1, cellDrawSize - 5, 0, color, sb);

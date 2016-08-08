@@ -63,7 +63,7 @@ int LightCollection::addLight(GameEngine::Light _light) {
 	}
 	else {
 		std::cout << "Maximum amount of lights reached!" << std::endl;
-		return 0;
+		return -1;
 	}
 }
 void LightCollection::addLightsToShader(GameEngine::GLSLProgram* _shaderProgram) {
@@ -102,7 +102,7 @@ int LightCollection::getVectorIndexByID(int _ID) {
 			return i;
 		}
 	}
-	//std::cout << "No Light found with ID " << _ID << std::endl;
+	std::cout << "No Light found with ID " << _ID << std::endl;
 	return 0;
 }
 void LightCollection::changePosition(int _ID, float _x, float _y) {
@@ -121,6 +121,7 @@ void LightCollection::runFlicker() {
 	}
 }
 void LightCollection::removeLight(int _ID) {
+	
 	int index = getVectorIndexByID(_ID);
 	lightVector.erase(lightVector.begin() + index);
 }

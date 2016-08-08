@@ -1,6 +1,8 @@
 #pragma once
 #include <GameEngine\BoundingBox.h>
 #include <GameEngine\SpriteBatch.h>
+#include <GameEngine\ResourceManager.h>
+#include <GameEngine\GLTexture.h>
 class Platform {
 public:
 	Platform();
@@ -10,4 +12,5 @@ public:
 	void draw(GameEngine::SpriteBatch* sb);
 private:
 	BoundingBox boundingBox;
+	GameEngine::GLTexture texture;
 };
