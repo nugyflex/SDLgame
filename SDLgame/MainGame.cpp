@@ -5,10 +5,11 @@
 #include <iostream>
 #include <string>
 
+
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(1920),
-	_screenHeight(1080),
+	_screenWidth(800),
+	_screenHeight(600),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f),
@@ -56,7 +57,7 @@ void MainGame::initSystems() {
 	Platforms.addPlatform(-800, -4200, 800, 20);
 	player.init(-50, 100, &WorldItems, &_spriteBatch);
 	WorldItems.init(&Lights);
-	
+	drawText.init(&_spriteBatch);
 }
 
 void MainGame::initShaders() {
@@ -266,8 +267,9 @@ void MainGame::drawGame() {
 	Platforms.drawPlatforms(&_spriteBatch);
 	player.draw();
 	player.drawInventory(_camera.getPosition() - glm::vec2(_screenWidth/2, _screenHeight/2) - _camera.getVelocity());
-    _spriteBatch.end();
-
+	drawText.draw(10, 10, 0);
+	_spriteBatch.end();
+	
     _spriteBatch.renderBatch();
 
     //unbind the texture

@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClCompile Include="Camera2D.cpp" />
     <ClCompile Include="CollisionDetection.cpp" />
+    <ClCompile Include="DrawText.cpp" />
     <ClCompile Include="Errors.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="GLSLProgram.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="Camera2D.h" />
     <ClInclude Include="CollisionDetection.h" />
+    <ClInclude Include="DrawText.h" />
     <ClInclude Include="Errors.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="GLSLProgram.h" />

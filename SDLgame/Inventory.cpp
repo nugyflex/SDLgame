@@ -1,5 +1,4 @@
 #include "Inventory.h"
-#include <GameEngine\GLTexture.h>
 #include <GameEngine\ResourceManager.h>
 
 Inventory::Inventory()
@@ -23,6 +22,8 @@ void Inventory::init(GameEngine::SpriteBatch * _sb) {
 		hotBar[i].amount = 0;
 	}
 	cellDrawSize = 100;
+	flareTexture = GameEngine::ResourceManager::getTexture("Textures/flareIcon.png");
+	glowStickTexture = GameEngine::ResourceManager::getTexture("Textures/glowStickIcon.png");
 }
 void Inventory::addItem(inventoryitemType _type, int _amount) {
 	bool finished = false;
@@ -98,14 +99,14 @@ void Inventory::draw(float _x, float _y) {
 	}
 }
 void Inventory::drawItem(InventoryItem _item, float _x, float _y) {
-	static GameEngine::GLTexture texture;
+	int textureID;
 	bool draw = true;
 	switch (_item.type) {
 		case InventoryFlare:
-			texture = GameEngine::ResourceManager::getTexture("Textures/flareIcon.png");
+			textureID = flareTexture.id;
 			break;
 		case InventoryGlowStick:
-			texture = GameEngine::ResourceManager::getTexture("Textures/glowStickIcon.png");
+			textureID = glowStickTexture.id;
 			break;
 		case InventoryNone:
 			draw = false;
@@ -118,6 +119,6 @@ void Inventory::drawItem(InventoryItem _item, float _x, float _y) {
 		color.g = 0;
 		color.b = 255;
 		color.a = 255;
-		sb->draw(glm::vec4(_x, _y, 40, 40), glm::vec4(0, 0, 1, 1), texture.id, 0.0f, color, 0);
+		sb->draw(glm::vec4(_x, _y, 40, 40), glm::vec4(0, 0, 1, 1), textureID, 0.0f, color, 0);
 	}
 }

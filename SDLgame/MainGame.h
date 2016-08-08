@@ -22,6 +22,7 @@
 #include "WorldItemCollection.h"
 #include "PlatformCollection.h"
 #include "Player.h"
+#include <GameEngine\DrawText.h>
 
 enum class GameState {PLAY, EXIT};
 
@@ -67,5 +68,6 @@ private:
 	WorldItemCollection WorldItems;
 	PlatformCollection Platforms;
 	Player player;
+	GameEngine::DrawText drawText;
 };
 

@@ -1,9 +1,2 @@
-﻿  Inventory.cpp
-c:\users\jack\documents\github\sdlgame\sdlgame\inventory.cpp(85): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\jack\documents\github\sdlgame\sdlgame\inventory.cpp(88): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\jack\documents\github\sdlgame\sdlgame\inventory.cpp(92): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\jack\documents\github\sdlgame\sdlgame\inventory.cpp(93): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\jack\documents\github\sdlgame\sdlgame\inventory.cpp(94): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\jack\documents\github\sdlgame\sdlgame\inventory.cpp(95): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  SDLgame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\SDLgame.exe
-  SDLgame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\SDLgame.pdb (Partial PDB)
+﻿  SDLgame.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\SDLgame.exe
+  SDLgame.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\SDLgame.pdb (Partial PDB)

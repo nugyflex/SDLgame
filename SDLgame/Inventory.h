@@ -2,6 +2,7 @@
 #include "InventoryItem.h"
 #include <GameEngine\SpriteBatch.h>
 #include <GameEngine\GameEngine.h>
+#include <GameEngine\GLTexture.h>
 class Inventory
 {
 public:
@@ -17,4 +18,6 @@ protected:
 	GameEngine::SpriteBatch * sb;
 	int cellDrawSize;
 	void drawItem(InventoryItem Item, float _x, float _y);
+	GameEngine::GLTexture flareTexture;
+	GameEngine::GLTexture glowStickTexture;
 };
