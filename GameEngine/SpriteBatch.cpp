@@ -48,17 +48,18 @@ void SpriteBatch::drawLine(glm::vec2 _p1, glm::vec2 _p2, const Color& color) {
 	newGlyph->bottomLeft.setUV(uvRect.x, uvRect.y);
 
 	newGlyph->bottomRight.color = color;
-	newGlyph->bottomRight.setPosition(_p2.x+10, _p2.y+10);
+	newGlyph->bottomRight.setPosition(_p2.x+0.5, _p2.y - 0.5);
 	newGlyph->bottomRight.setUV(uvRect.x + uvRect.z, uvRect.y);
 
 	newGlyph->topRight.color = color;
-	newGlyph->topRight.setPosition(_p1.x+10, _p1.y+10);
+	newGlyph->topRight.setPosition(_p1.x - 0.5, _p1.y + 0.5);
 	newGlyph->topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
 	newGlyph->topLeft.lightAlpha = 0;
 	newGlyph->bottomLeft.lightAlpha = 0;
 	newGlyph->bottomRight.lightAlpha = 0;
 	newGlyph->topRight.lightAlpha = 0;
 	_glyphs.push_back(newGlyph);
+
 }
 void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color) {
 

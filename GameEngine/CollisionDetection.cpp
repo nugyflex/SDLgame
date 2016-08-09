@@ -287,4 +287,20 @@ namespace GameEngine {
 			bb1->xv = 0;
 		}
 	}
+	bool CollisionDetection::isCheckRequired(BoundingBox* bb1, BoundingBox* bb2) {
+		bool check;
+		if (bb1->xv > 0 && bb1->x < bb2->x) {
+			check = true;
+		} else if (bb1->xv < 0 && bb1->x + bb1->w > bb2->x + bb2->w) {
+			check = true;
+		} else if (bb1->yv < 0 && bb1->y + bb1->h > bb2->y + bb2->h) {
+			check = true;
+		} else 	if (bb1->yv > 0 && bb1->y < bb2->y) {
+			check = true;
+		} else { check = false; }
+		return check;
+	}
+	glm::vec2 CollisionDetection::getLineIntersect(glm::vec2 _p1, glm::vec2 _p2, glm::vec2 _p3, glm::vec2 _p4) {
+		return glm::vec2(((_p1.x*_p2.y - _p1.y*_p2.x)*(_p3.x - _p4.x) - (_p1.x - _p2.x)*(_p3.x*_p4.y - _p3.y*_p4.x))/((_p1.x - _p2.x)*(_p3.y - _p4.y) - (_p1.y - _p2.y)*(_p3.x - _p4.x)), ((_p1.x*_p2.y - _p1.y*_p2.x)*(_p3.y - _p4.y) - (_p1.y - _p2.y)*(_p3.x*_p4.y - _p3.y*_p4.x)) / ((_p1.x - _p2.x)*(_p3.y - _p4.y) - (_p1.y - _p2.y)*(_p3.x - _p4.x)));
+	}
 }

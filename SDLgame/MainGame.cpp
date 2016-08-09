@@ -121,7 +121,10 @@ void MainGame::updateGame() {
 		cd.correctPosition(player.getBoundingBox(), Platforms.getBoundingBox(j));
 		for (int i = 0; i < WorldItems.getVectorSize(); i++)
 		{
-			cd.correctPosition(WorldItems.getBoundingBox(i), Platforms.getBoundingBox(j));
+			if (cd.isCheckRequired(WorldItems.getBoundingBox(i), Platforms.getBoundingBox(j)))
+			{
+				cd.correctPosition(WorldItems.getBoundingBox(i), Platforms.getBoundingBox(j));
+			}
 		}
 	}
 	player.calcNewPos();
@@ -276,7 +279,7 @@ void MainGame::drawGame() {
 
     _spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
 	GameEngine::drawRect(300, 0, 600, 600, 1, color, &_spriteBatch);
-	_spriteBatch.drawLine(glm::vec2(0, 0), glm::vec2(500, -100), color);
+	_spriteBatch.drawLine(glm::vec2(0, 3200), glm::vec2(100, 3200), color);
 	Platforms.drawPlatforms(&_spriteBatch);
 	player.draw();
 	if (_inputManager.isKeyPressed(SDLK_TAB)) {

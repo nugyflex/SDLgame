@@ -13,6 +13,8 @@ namespace GameEngine {
 		bool CheckRectangleIntersect(glm::vec4* _rect1, glm::vec4* _rect2);
 		void correctPosition(glm::vec4* _rect1, glm::vec4* _rect2);
 		void correctPosition(BoundingBox* bb1, BoundingBox* bb2);
+		bool isCheckRequired(BoundingBox* bb1, BoundingBox* bb2);
+		glm::vec2 getLineIntersect(glm::vec2 _p1, glm::vec2 _p2, glm::vec2 _p3, glm::vec2 _p4);
 	private:
 		bool test1(glm::vec4* _rect1, glm::vec4* _rect2);
 		bool test2(glm::vec4* _rect1, glm::vec4* _rect2);
