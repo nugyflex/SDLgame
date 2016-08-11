@@ -281,12 +281,17 @@ void MainGame::drawGame() {
 	if (_inputManager.isKeyPressed(SDLK_TAB)) {
 		player.drawInventory(_camera.getPosition() - _camera.getVelocity());
 	}
+<<<<<<< HEAD
 	
 	drawText.draw(0, 0, "a", 2);
 	drawText.draw(10, 0, 1, 2);
 	drawText.draw(20, 0, 2, 2);
 	drawText.draw(30, 0, 3, 1);
 	drawText.draw(40, 0, 4, 1);
+=======
+	//drawText.draw(-30, 3100, "a", 1);
+	drawText.drawAll(-30, 3100, 3);
+>>>>>>> origin/master
 	_spriteBatch.end();
 	
     _spriteBatch.renderBatch();
