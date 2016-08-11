@@ -12,7 +12,7 @@ namespace GameEngine {
 	{
 	}
 	void DrawText::init(GameEngine::SpriteBatch* _sb) {
-		texture = GameEngine::ResourceManager::getTexture("Textures/letters.png");
+		texture = GameEngine::ResourceManager::getTexture("Textures/lettersX2.png");
 		sb = _sb;
 	}
 
@@ -58,22 +58,32 @@ namespace GameEngine {
 		return glm::vec2(uvx, width);
 	}
 	void DrawText::draw(float _x, float _y, int _int, float _scale) {
-		glm::vec2 test = getUVX(getIndexFromString(_int));
+		int test = getIndexFromString(_int);
 		GameEngine::Color color;
 		color.r = 10;
 		color.g = 10;
 		color.b = 10;
 		color.a = 255;
-		sb->draw(glm::vec4(_x, _y, test.y*_scale, 5* _scale), glm::vec4(test.x/149, 0, test.y / 149, 1), texture.id, 0.0f, color, -1);
+		sb->draw(glm::vec4(_x, _y, 7.0f * _scale, 10.0f * _scale), glm::vec4(7.0f*test / 252.0f, 0, 7.0f / 252.0f, 1), texture.id, 0.0f, color, -1);
 	}
 	void DrawText::draw(float _x, float _y, std::string _string, float _scale) {
-		glm::vec2 test = getUVX(getIndexFromString(_string));
+		int test = getIndexFromString(_string);
 		GameEngine::Color color;
 		color.r = 10;
 		color.g = 10;
 		color.b = 10;
 		color.a = 255;
-		sb->draw(glm::vec4(_x, _y, test.y * _scale, 5 * _scale), glm::vec4(test.x / 149, 0, test.y / 149, 1), texture.id, 0.0f, color, -1);
+		sb->draw(glm::vec4(_x, _y, 7.0f * _scale, 10.0f * _scale), glm::vec4(7.0f*test / 252.0f, 0, 7.0f / 252.0f, 1), texture.id, 0.0f, color, -1);
+	}
+	void DrawText::drawAll(float _x, float _y, float _scale) {
+		for (int i = 0; i < 36; i++) {
+			GameEngine::Color color;
+			color.r = 10;
+			color.g = 10;
+			color.b = 10;
+			color.a = 255;
+			sb->draw(glm::vec4(_x+(i*_scale*9), _y, 7.0f * _scale, 10.0f * _scale), glm::vec4(7.0f*i / 252.0f, 0, 7.0f / 252.0f, 1), texture.id, 0.0f, color, -1);
+		}
 	}
 	int DrawText::getIndexFromString(int _int) {
 		return 26 + _int;

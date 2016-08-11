@@ -12,6 +12,7 @@ namespace GameEngine {
 		void draw(float _x, float _y, int _index, float _scale);
 		void draw(float _x, float _y, std::string _string, float _scale);
 		void init(GameEngine::SpriteBatch* _sb);
+		void drawAll(float _x, float _y, float _scale);
 	private:
 		GameEngine::GLTexture texture;
 		GameEngine::SpriteBatch* sb;
