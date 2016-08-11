@@ -1,6 +1,7 @@
 #include "Player.h"
 #include <SDL.h>
 #include <GameEngine\GameEngine.h>
+#include <iostream>
 
 Player::Player()
 {
@@ -12,17 +13,18 @@ void Player::init(float _x, float _y, WorldItemCollection* _itemCollectionPointe
 	sb = _sb;
 	boundingBox.x = _x;
 	boundingBox.y = _y;
-	boundingBox.w = 30;
-	boundingBox.h = 30;
+	boundingBox.w = 26;
+	boundingBox.h = 50;
 	boundingBox.xv = 0;
 	boundingBox.yv = 0;
-	vel = 6;
+	vel = 4;
 	jumpLatch = true;
 	useLatch = true;
 	itemCollectionPointer = _itemCollectionPointer;
 	inventory.init(sb, _drawText);
 	inventory.addItem(InventoryFlare, 2);
 	inventory.addItem(InventoryGlowStick, 5);
+	texture = GameEngine::ResourceManager::getTexture("Textures/player_walk_right.png");
 }
 BoundingBox* Player::getBoundingBox() {
 	return &boundingBox;
@@ -87,8 +89,29 @@ void Player::draw() {
 	color.g = 150;
 	color.b = 150;
 	color.a = 255;
-	GameEngine::drawRect(boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h, 1, color, sb);
+	fs++;
+	if (fs == 5) {
+		fs = 0;
+	}
+	if (fs == 0)
+	{
+		frame++;
+		if (frame == 9) {
+			frame = 0;
+		}
+	}
+	//GameEngine::drawRect(boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h, 1, color, sb);
+	sb->draw(glm::vec4(boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h), glm::vec4((1.0f / 8.0f)*frame, 0, 1.0f/8.0f, 1), texture.id, 1, color, 1);
 }
 void Player::drawInventory(glm::vec2 _position) {
+	GameEngine::Color color;
+	color.r = 150;
+	color.g = 150;
+	color.b = 150;
+	color.a = 255;
 	inventory.draw(_position.x, _position.y);
+	
+}
+void Player::runAnimation() {
+	
 }

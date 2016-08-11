@@ -15,6 +15,7 @@ public:
 	void calcNewPos();
 	void draw();
 	void drawInventory(glm::vec2 _position);
+	void runAnimation();
 private:
 	WorldItemCollection* itemCollectionPointer;
 	BoundingBox boundingBox;
@@ -23,5 +24,8 @@ private:
 	bool useLatch;
 	GameEngine::SpriteBatch* sb;
 	Inventory inventory;
+	GameEngine::GLTexture texture;
+	int frame = 0;
+	int fs = 0;
 };
 

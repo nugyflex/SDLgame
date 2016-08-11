@@ -8,8 +8,8 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(1920),
-	_screenHeight(1080),
+	_screenWidth(500),
+	_screenHeight(400),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f),
@@ -220,10 +220,6 @@ void MainGame::drawGame() {
 	glLineWidth(1);
 	
 	glm::mat4 camera = _camera.getCameraMatrix();
-	glColor3f(1.0, 0.0, 0.0);
-	//GameEngine::drawRect(0, 0, 500, 500, _camera.getCameraMatrix());
-	glColor3f(0.0, 0.0, 0.0);
-	GameEngine::drawLine(glm::vec2(50, 50), glm::vec2(-50, 100), camera);
 
 	glColor3f(0.0, 0.0, 0.0);
 	glBegin(GL_POLYGON);
@@ -285,6 +281,7 @@ void MainGame::drawGame() {
 	if (_inputManager.isKeyPressed(SDLK_TAB)) {
 		player.drawInventory(_camera.getPosition() - _camera.getVelocity());
 	}
+	
 	drawText.draw(0, 0, "a", 2);
 	drawText.draw(10, 0, 1, 2);
 	drawText.draw(20, 0, 2, 2);
