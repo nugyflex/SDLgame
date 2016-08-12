@@ -4,6 +4,7 @@
 #include <GameEngine\SpriteBatch.h>
 #include "Inventory.h"
 #include "WorldItemCollection.h"
+#include <GameEngine\SpriteSheet.h>
 class Player
 {
 public:
@@ -15,7 +16,6 @@ public:
 	void calcNewPos();
 	void draw();
 	void drawInventory(glm::vec2 _position);
-	void runAnimation();
 private:
 	WorldItemCollection* itemCollectionPointer;
 	BoundingBox boundingBox;
@@ -24,7 +24,11 @@ private:
 	bool useLatch;
 	GameEngine::SpriteBatch* sb;
 	Inventory inventory;
-	GameEngine::GLTexture texture;
+	GameEngine::SpriteSheet walkRight;
+	GameEngine::SpriteSheet walkLeft;
+	GameEngine::SpriteSheet standRight;
+	GameEngine::SpriteSheet standLeft;
+	bool lastDirectionRight = true;
 	int frame = 0;
 	int fs = 0;
 };

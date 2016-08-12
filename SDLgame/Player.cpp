@@ -13,7 +13,7 @@ void Player::init(float _x, float _y, WorldItemCollection* _itemCollectionPointe
 	sb = _sb;
 	boundingBox.x = _x;
 	boundingBox.y = _y;
-	boundingBox.w = 26;
+	boundingBox.w = 10;
 	boundingBox.h = 50;
 	boundingBox.xv = 0;
 	boundingBox.yv = 0;
@@ -24,7 +24,14 @@ void Player::init(float _x, float _y, WorldItemCollection* _itemCollectionPointe
 	inventory.init(sb, _drawText);
 	inventory.addItem(InventoryFlare, 2);
 	inventory.addItem(InventoryGlowStick, 5);
-	texture = GameEngine::ResourceManager::getTexture("Textures/player_walk_right.png");
+	walkRight.init(sb, 13, 25, 2, 8, 6, -5, 0);
+	walkRight.loadTexture("textures/player_walk_right.png");
+	walkLeft.init(sb, 13, 25, 2, 8, 6, -4, 0);
+	walkLeft.loadTexture("textures/player_walk_left.png");
+	standRight.init(sb, 10, 25, 2, 1, 1, -4, 0);
+	standRight.loadTexture("textures/player_standing_right.png");
+	standLeft.init(sb, 10, 25, 2, 1, 1, -1, 0);
+	standLeft.loadTexture("textures/player_standing_left.png");
 }
 BoundingBox* Player::getBoundingBox() {
 	return &boundingBox;
@@ -83,25 +90,33 @@ void Player::calcNewPos() {
 	boundingBox.y += boundingBox.yv;
 }
 void Player::draw() {
-	GameEngine::Color color;
-
-	color.r = 150;
-	color.g = 150;
-	color.b = 150;
-	color.a = 255;
-	fs++;
-	if (fs == 5) {
-		fs = 0;
+	if (boundingBox.xv > 0) {
+		lastDirectionRight = true;
+		walkRight.run();
+		walkRight.draw(boundingBox.x, boundingBox.y);
 	}
-	if (fs == 0)
-	{
-		frame++;
-		if (frame == 9) {
-			frame = 0;
+	else {
+		walkRight.reset();
+		if (boundingBox.xv < 0) {
+			lastDirectionRight = false;
+			walkLeft.run();
+			walkLeft.draw(boundingBox.x, boundingBox.y);
+		}
+		else {
+			walkLeft.reset();
+			if (boundingBox.xv == 0) {
+				if (lastDirectionRight) {
+					standRight.draw(boundingBox.x, boundingBox.y);
+				}
+				else {
+					standLeft.draw(boundingBox.x, boundingBox.y);
+				}
+			}
 		}
 	}
+
 	//GameEngine::drawRect(boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h, 1, color, sb);
-	sb->draw(glm::vec4(boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h), glm::vec4((1.0f / 8.0f)*frame, 0, 1.0f/8.0f, 1), texture.id, 1, color, 1);
+	//sb->draw(glm::vec4(boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h), glm::vec4((1.0f / 8.0f)*frame, 0, 1.0f/8.0f, 1), texture.id, 1, color, 1);
 }
 void Player::drawInventory(glm::vec2 _position) {
 	GameEngine::Color color;
@@ -110,8 +125,5 @@ void Player::drawInventory(glm::vec2 _position) {
 	color.b = 150;
 	color.a = 255;
 	inventory.draw(_position.x, _position.y);
-	
-}
-void Player::runAnimation() {
 	
 }

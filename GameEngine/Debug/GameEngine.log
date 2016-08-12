@@ -1,4 +1,7 @@
-﻿  DrawText.cpp
+﻿  SpriteSheet.cpp
+c:\users\jack\documents\github\sdlgame\gameengine\spritesheet.cpp(16): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\gameengine\spritesheet.cpp(17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\gameengine\spritesheet.cpp(18): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 glew32.lib(glew32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
 glew32.lib(glew32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
 opengl32.lib(OPENGL32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
