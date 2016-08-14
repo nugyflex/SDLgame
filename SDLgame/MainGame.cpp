@@ -8,8 +8,8 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(1000),
-	_screenHeight(500),
+	_screenWidth(2000),
+	_screenHeight(1000),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f),
@@ -256,22 +256,24 @@ void MainGame::drawGame() {
 	static GameEngine::GLTexture texture = GameEngine::ResourceManager::getTexture("Textures/jimmyJump_pack/PNG/CharacterRight_Standing.png");
 	glm::vec4 pos1(-1000.0f, 1000.0f, 2000.0f, -2000.0f);
 	glm::vec4 uv1(0.0f, 0.0f, 1.0f, 1.0f);
-	static GameEngine::GLTexture newTexture = GameEngine::ResourceManager::getTexture("Textures/jimmyJump_pack/PNG/b1.png");
-	static GameEngine::GLTexture newTexture1 = GameEngine::ResourceManager::getTexture("Textures/jimmyJump_pack/PNG/b2.png");
+	//static GameEngine::GLTexture newTexture = GameEngine::ResourceManager::getTexture("Textures/jimmyJump_pack/PNG/b1.png");
+	//static GameEngine::GLTexture newTexture1 = GameEngine::ResourceManager::getTexture("Textures/jimmyJump_pack/PNG/b2.png");
 	static GameEngine::GLTexture db = GameEngine::ResourceManager::getTexture("Textures/decentBackground.png");
 	static GameEngine::GLTexture mb = GameEngine::ResourceManager::getTexture("Textures/meshBackground.png");
+	static GameEngine::GLTexture test = GameEngine::ResourceManager::getTexture("Textures/guardian.png");
     GameEngine::Color color;
     color.r = 255;
     color.g = 0;
     color.b = 255;
     color.a = 255;
-	_spriteBatch.draw(pos1, uv1, newTexture1.id, 0.0f, color, 0.5);
-	_spriteBatch.draw(pos1, uv1, newTexture.id, 0.0f, color, 1);
+	//_spriteBatch.draw(pos1, uv1, newTexture1.id, 0.0f, color, 0.5);
+	//_spriteBatch.draw(pos1, uv1, newTexture.id, 0.0f, color, 1);
+	
 	_spriteBatch.draw(glm::vec4(-6500 / 2, -6500 / 2, 6500, 6500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.8, 0.8, 0, 0), uv1, db.id, 0.0f, color, 0);
 	//_spriteBatch.draw(glm::vec4(-9500 / 2, -5500 / 2, 9500, 5500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.6, 0.7, 0, 0), uv1, mb.id, 0.0f, color, 0.5);
 	_spriteBatch.draw(glm::vec4(-9500 / 2, -5500 / 2, 9500, 5500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.6, 0.6, 0, 0), uv1, mb.id, 0.0f, color, 0.7);
 	_spriteBatch.draw(glm::vec4(-9500 / 2, -5500 / 2, 9500, 5500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.6, 0.6, 0, 0) + glm::vec4(3, 3, 0, 0), uv1, mb.id, 0.0f, color, 0.9);
-
+	_spriteBatch.draw(glm::vec4(0.0f, 3000.0f, 28 * 2, 67 * 2), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), test.id, 0.0f, color, 1);
 
     _spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
 	GameEngine::drawRect(300, 0, 600, 600, 1, color, &_spriteBatch);
