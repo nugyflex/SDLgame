@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Explosion.h" />
     <ClInclude Include="Flare.h" />
     <ClInclude Include="GlowStick.h" />
     <ClInclude Include="Inventory.h" />
@@ -32,6 +33,7 @@
     <ClInclude Include="WorldItemCollection.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="Flare.cpp" />
     <ClCompile Include="GlowStick.cpp" />
     <ClCompile Include="Inventory.cpp" />

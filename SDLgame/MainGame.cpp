@@ -68,9 +68,10 @@ void MainGame::initSystems() {
 	Platforms.addPlatform(0, -6600, 800, 16);
 	Platforms.addPlatform(-800, -7200, 800, 16);
 	player.init(-50, 3200, &WorldItems, &_spriteBatch, &drawText);
-	WorldItems.init(&Lights);
+	WorldItems.init(&Lights, &_spriteBatch);
 	drawText.init(&_spriteBatch);
 	_camera.setScreenShakeIntensity(10);
+	WorldItems.addItem(explosion, -100, 3200);
 }
 
 void MainGame::initShaders() {
@@ -199,7 +200,8 @@ void MainGame::processInput() {
 		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
 		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
 		if (!lastPressedR) {
-			WorldItems.addItem(flare, mouseCoords.x, -mouseCoords.y);
+			_camera.setScreenShakeIntensity(10);
+			WorldItems.addItem(explosion, mouseCoords.x, -mouseCoords.y);
 		}
 		lastPressedR = true;
 	}
@@ -287,9 +289,10 @@ void MainGame::drawGame() {
 	drawText.draw(10, 0, 1, 2);
 	drawText.draw(20, 0, 2, 2);
 	drawText.draw(30, 0, 3, 1);
-	drawText.draw(40, 0, 4, 1);\
+	drawText.draw(40, 0, 4, 1); 
 	//drawText.draw(-30, 3100, "a", 1);
-	drawText.drawAll(-30, 3100, 3);\
+	WorldItems.drawItems();
+	drawText.drawAll(-30, 3100, 3);
 	_spriteBatch.end();
 	
     _spriteBatch.renderBatch();

@@ -69,3 +69,13 @@ void WorldItem::runTimer() {
 int WorldItem::getTimer() {
 	return deSpawnTimer;
 }
+void WorldItem::drawSpriteSheet() {
+	spriteSheet.draw(boundingBox.x, boundingBox.y);
+	spriteSheet.run();
+}
+void WorldItem::loadSpriteSheet() {
+
+}
+void WorldItem::draw() {
+
+}

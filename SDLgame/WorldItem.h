@@ -2,7 +2,9 @@
 #include <glm.hpp>
 #include <GameEngine\BoundingBox.h>
 #include <GameEngine\GameEngine.h>
-enum WorldItemType { flare, flareParticle, glowStick, default };
+#include <GameEngine\SpriteSheet.h>
+#include <GameEngine\SpriteBatch.h>
+enum WorldItemType { flare, flareParticle, glowStick, default, explosion, fireParticle };
 class WorldItem {
 public:
 	WorldItem();
@@ -26,10 +28,17 @@ public:
 	void setType(WorldItemType _type) { type = _type; }
 	WorldItemType getType() { return type; }
 	bool despawns;
+	void drawSpriteSheet();
+	bool hasSpriteSheet = false;
+	virtual void loadSpriteSheet();
+	void linkSpriteBatch(GameEngine::SpriteBatch* _sb) { sb = _sb; }
+	virtual void draw();
 protected:
 	BoundingBox boundingBox;
 	glm::vec2 lightOffset;
 	int lightID;
 	int deSpawnTimer = 1;
 	WorldItemType type;
+	GameEngine::SpriteSheet spriteSheet;
+	GameEngine::SpriteBatch* sb;
 };

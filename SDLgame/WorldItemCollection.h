@@ -4,11 +4,12 @@
 #include "LightCollection.h"
 #include "Flare.h"
 #include "GlowStick.h"
+#include "Explosion.h"
 class WorldItemCollection {
 public:
 	WorldItemCollection();
 	~WorldItemCollection();
-	void init(LightCollection* _LC);
+	void init(LightCollection* _LC, GameEngine::SpriteBatch* _sb);
 	void addItem(WorldItemType _type, float x, float y); 
 	void addItem(WorldItemType _type, float x, float y, float xv, float yy);
 	void addItem(WorldItemType _type, float x, float y, int _lightID);
@@ -22,4 +23,5 @@ public:
 private:
 	std::vector<WorldItem*> worldItemVector;
 	LightCollection* LC;
+	GameEngine::SpriteBatch* sb;
 };

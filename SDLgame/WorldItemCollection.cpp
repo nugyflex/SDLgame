@@ -1,8 +1,9 @@
 #include "WorldItemCollection.h"
 WorldItemCollection::WorldItemCollection(){}
 WorldItemCollection::~WorldItemCollection(){}
-void WorldItemCollection::init(LightCollection* _LC) {
+void WorldItemCollection::init(LightCollection* _LC, GameEngine::SpriteBatch* _sb) {
 	LC = _LC;
+	sb = _sb;
 }
 void WorldItemCollection::addItem(WorldItemType _type, float _x, float _y, float _xv, float _yv) {
 	int lightID = 0;
@@ -22,10 +23,22 @@ void WorldItemCollection::addItem(WorldItemType _type, float _x, float _y, float
 		worldItemVector.push_back(new FlareParticle());
 		tempLight = worldItemVector[worldItemVector.size() - 1]->getLight();
 		lightID = LC->addLight(tempLight);
-		worldItemVector[worldItemVector.size() - 1]->init(0, 0, 1, 1, 80);
+		worldItemVector[worldItemVector.size() - 1]->init(0, 0, 6, 18, 80);
 		worldItemVector[worldItemVector.size() - 1]->getBoundingBox()->yv = _yv;
 		worldItemVector[worldItemVector.size() - 1]->getBoundingBox()->xv = _xv;
 		worldItemVector[worldItemVector.size() - 1]->setType(flareParticle);
+		break;
+	case fireParticle:
+		worldItemVector.push_back(new FireParticle());
+		tempLight = worldItemVector[worldItemVector.size() - 1]->getLight();
+		lightID = LC->addLight(tempLight);
+		worldItemVector[worldItemVector.size() - 1]->linkSpriteBatch(sb);
+		worldItemVector[worldItemVector.size() - 1]->init(0, 0, 1, 1, 200);
+		worldItemVector[worldItemVector.size() - 1]->setType(fireParticle);
+		worldItemVector[worldItemVector.size() - 1]->hasSpriteSheet = true;
+		worldItemVector[worldItemVector.size() - 1]->loadSpriteSheet();
+		worldItemVector[worldItemVector.size() - 1]->getBoundingBox()->yv = _yv;
+		worldItemVector[worldItemVector.size() - 1]->getBoundingBox()->xv = _xv;
 		break;
 	case glowStick:
 		worldItemVector.push_back(new GlowStick());
@@ -55,6 +68,26 @@ void WorldItemCollection::addItem(WorldItemType _type, float _x, float _y) {
 		lightID = LC->addLight(tempLight);
 		worldItemVector[worldItemVector.size() - 1]->init(0, 0, 1, 1, 700);
 		worldItemVector[worldItemVector.size() - 1]->setType(flare);
+		break;
+	case explosion:
+		worldItemVector.push_back(new Explosion());
+		tempLight = worldItemVector[worldItemVector.size() - 1]->getLight();
+		lightID = LC->addLight(tempLight);
+		worldItemVector[worldItemVector.size() - 1]->linkSpriteBatch(sb);
+		worldItemVector[worldItemVector.size() - 1]->init(0, 0, 60, 56, 35);
+		worldItemVector[worldItemVector.size() - 1]->setType(explosion);
+		worldItemVector[worldItemVector.size() - 1]->hasSpriteSheet = true;
+		worldItemVector[worldItemVector.size() - 1]->loadSpriteSheet();
+		break;
+	case fireParticle:
+		worldItemVector.push_back(new FireParticle());
+		tempLight = worldItemVector[worldItemVector.size() - 1]->getLight();
+		lightID = LC->addLight(tempLight);
+		worldItemVector[worldItemVector.size() - 1]->linkSpriteBatch(sb);
+		worldItemVector[worldItemVector.size() - 1]->init(0, 0, 1, 1, 200);
+		worldItemVector[worldItemVector.size() - 1]->setType(fireParticle);
+		worldItemVector[worldItemVector.size() - 1]->hasSpriteSheet = true;
+		worldItemVector[worldItemVector.size() - 1]->loadSpriteSheet();
 		break;
 	case flareParticle:
 		worldItemVector.push_back(new FlareParticle());
@@ -86,10 +119,22 @@ void WorldItemCollection::runItems() {
 		if (worldItemVector[i]->getType() == flare && ((double)rand() / (RAND_MAX)) > 0.85) {
 			addItem(flareParticle, worldItemVector[i]->getBoundingBox()->x, worldItemVector[i]->getBoundingBox()->y, ((double)rand() / (RAND_MAX)) * 6 - 3, ((double)rand() / (RAND_MAX)) * 16);
 		}
+		if (worldItemVector[i]->getType() == explosion && ((double)rand() / (RAND_MAX)) > 0.4 && worldItemVector[i]->getTimer() > 25) {
+			addItem(fireParticle, worldItemVector[i]->getBoundingBox()->x + worldItemVector[i]->getBoundingBox()->w/2, worldItemVector[i]->getBoundingBox()->y + worldItemVector[i]->getBoundingBox()->h / 2, ((double)rand() / (RAND_MAX)) * 6 - 3, ((double)rand() / (RAND_MAX)) * 14 - 4);
+		}
 		if (worldItemVector[i]->getTimer() <= 0 && worldItemVector[i]->despawns)
 		{
 			remove(i);
 		}
+	}
+}
+void WorldItemCollection::drawItems() {
+	for (int i = 0; i < worldItemVector.size(); i++)
+	{
+		if (worldItemVector[i]->hasSpriteSheet) {
+			worldItemVector[i]->drawSpriteSheet();
+		}
+		
 	}
 }
 void WorldItemCollection::linkToLights()
