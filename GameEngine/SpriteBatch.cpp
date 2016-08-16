@@ -139,6 +139,45 @@ void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuin
 	newGlyph->topRight.lightAlpha = _lightAlpha;
 	_glyphs.push_back(newGlyph);
 }
+void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color, float _lightAlpha, float _angle) {
+
+	Glyph* newGlyph = new Glyph;
+
+	newGlyph->texture = texture;
+	newGlyph->depth = depth;
+
+	newGlyph->topLeft.color = color;
+	newGlyph->topLeft.setPosition(destRect.x, destRect.y + destRect.w);
+	newGlyph->topLeft.setUV(uvRect.x, uvRect.y + uvRect.w);
+
+	newGlyph->bottomLeft.color = color;
+	newGlyph->bottomLeft.setPosition(destRect.x, destRect.y);
+	newGlyph->bottomLeft.setUV(uvRect.x, uvRect.y);
+
+	newGlyph->bottomRight.color = color;
+	newGlyph->bottomRight.setPosition(destRect.x + destRect.z, destRect.y);
+	newGlyph->bottomRight.setUV(uvRect.x + uvRect.z, uvRect.y);
+
+	newGlyph->topRight.color = color;
+	newGlyph->topRight.setPosition(destRect.x + destRect.z, destRect.y + destRect.w);
+	newGlyph->topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
+	if (texture != NULL) {
+		Color colorForTextures;
+		colorForTextures.r = 0;
+		colorForTextures.g = 0;
+		colorForTextures.b = 0;
+		colorForTextures.a = 0;
+		newGlyph->topLeft.color = colorForTextures;
+		newGlyph->bottomLeft.color = colorForTextures;
+		newGlyph->bottomRight.color = colorForTextures;
+		newGlyph->topRight.color = colorForTextures;
+	}
+	newGlyph->topLeft.lightAlpha = _lightAlpha;
+	newGlyph->bottomLeft.lightAlpha = _lightAlpha;
+	newGlyph->bottomRight.lightAlpha = _lightAlpha;
+	newGlyph->topRight.lightAlpha = _lightAlpha;
+	_glyphs.push_back(newGlyph);
+}
 void SpriteBatch::renderBatch() {
 
     // Bind our VAO. This sets up the opengl state we need, including the 

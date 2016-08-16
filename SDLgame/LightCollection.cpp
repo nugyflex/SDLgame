@@ -103,7 +103,7 @@ int LightCollection::getVectorIndexByID(int _ID) {
 		}
 	}
 	std::cout << "No Light found with ID " << _ID << std::endl;
-	return 0;
+	return -1;
 }
 void LightCollection::changePosition(int _ID, float _x, float _y) {
 	int index = getVectorIndexByID(_ID);
@@ -112,6 +112,9 @@ void LightCollection::changePosition(int _ID, float _x, float _y) {
 }
 void LightCollection::changeRadius(int _ID, float _radius) {
 	lightVector[getVectorIndexByID(_ID)].radius = _radius;
+}
+void LightCollection::addToRadius(int _ID, float _radius) {
+	lightVector[getVectorIndexByID(_ID)].radius =+ _radius;
 }
 void LightCollection::runFlicker() {
 	for (int i = 0; i < lightVector.size(); i++) {
@@ -123,5 +126,8 @@ void LightCollection::runFlicker() {
 void LightCollection::removeLight(int _ID) {
 	
 	int index = getVectorIndexByID(_ID);
-	lightVector.erase(lightVector.begin() + index);
+	if (index != -1) {
+		lightVector.erase(lightVector.begin() + index);
+	}
+	
 }

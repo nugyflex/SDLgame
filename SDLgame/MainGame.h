@@ -69,5 +69,6 @@ private:
 	PlatformCollection Platforms;
 	Player player;
 	GameEngine::DrawText drawText;
+	GameEngine::SpriteSheet drone;
 };
 

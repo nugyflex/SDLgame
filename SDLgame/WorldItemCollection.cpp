@@ -119,8 +119,12 @@ void WorldItemCollection::runItems() {
 		if (worldItemVector[i]->getType() == flare && ((double)rand() / (RAND_MAX)) > 0.85) {
 			addItem(flareParticle, worldItemVector[i]->getBoundingBox()->x, worldItemVector[i]->getBoundingBox()->y, ((double)rand() / (RAND_MAX)) * 6 - 3, ((double)rand() / (RAND_MAX)) * 16);
 		}
-		if (worldItemVector[i]->getType() == explosion && ((double)rand() / (RAND_MAX)) > 0.4 && worldItemVector[i]->getTimer() > 25) {
-			addItem(fireParticle, worldItemVector[i]->getBoundingBox()->x + worldItemVector[i]->getBoundingBox()->w/2, worldItemVector[i]->getBoundingBox()->y + worldItemVector[i]->getBoundingBox()->h / 2, ((double)rand() / (RAND_MAX)) * 6 - 3, ((double)rand() / (RAND_MAX)) * 14 - 4);
+		if (worldItemVector[i]->getType() == explosion) {
+			if (((double)rand() / (RAND_MAX)) > 0.4 && worldItemVector[i]->getTimer() > 25) {
+				addItem(fireParticle, worldItemVector[i]->getBoundingBox()->x + worldItemVector[i]->getBoundingBox()->w / 2, worldItemVector[i]->getBoundingBox()->y + worldItemVector[i]->getBoundingBox()->h / 2, ((double)rand() / (RAND_MAX)) * 6 - 3, ((double)rand() / (RAND_MAX)) * 14 - 4);
+
+			}
+			LC->changeRadius(worldItemVector[i]->getLightID(), 0);
 		}
 		if (worldItemVector[i]->getTimer() <= 0 && worldItemVector[i]->despawns)
 		{

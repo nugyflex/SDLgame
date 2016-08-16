@@ -14,6 +14,7 @@ public:
 	void setMaxLights(int _maxlights); 
 	void changePosition(int _ID, float _x, float _y);
 	void changeRadius(int _ID, float radius);
+	void addToRadius(int _ID, float radius);
 	void runFlicker();
 private:
 	int maxLights;

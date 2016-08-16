@@ -8,8 +8,8 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(2000),
-	_screenHeight(1000),
+	_screenWidth(1000),
+	_screenHeight(500),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f),
@@ -72,6 +72,8 @@ void MainGame::initSystems() {
 	drawText.init(&_spriteBatch);
 	_camera.setScreenShakeIntensity(10);
 	WorldItems.addItem(explosion, -100, 3200);
+	drone.init(&_spriteBatch, 9, 19, 2, 4, 9, 0, 0);
+	drone.loadTexture("Textures/enemyDrone1.png");
 }
 
 void MainGame::initShaders() {
@@ -293,6 +295,8 @@ void MainGame::drawGame() {
 	//drawText.draw(-30, 3100, "a", 1);
 	WorldItems.drawItems();
 	drawText.drawAll(-30, 3100, 3);
+	drone.run();
+	drone.draw(-200, 3200);
 	_spriteBatch.end();
 	
     _spriteBatch.renderBatch();
