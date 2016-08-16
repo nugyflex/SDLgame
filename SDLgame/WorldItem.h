@@ -4,7 +4,7 @@
 #include <GameEngine\GameEngine.h>
 #include <GameEngine\SpriteSheet.h>
 #include <GameEngine\SpriteBatch.h>
-enum WorldItemType { flare, flareParticle, glowStick, default, explosion, fireParticle };
+enum WorldItemType { flare, flareParticle, glowStick, default, explosion, fireParticle, explosionParticle };
 class WorldItem {
 public:
 	WorldItem();
@@ -33,6 +33,7 @@ public:
 	virtual void loadSpriteSheet();
 	void linkSpriteBatch(GameEngine::SpriteBatch* _sb) { sb = _sb; }
 	virtual void draw();
+	bool canBePickedUp;
 protected:
 	BoundingBox boundingBox;
 	glm::vec2 lightOffset;

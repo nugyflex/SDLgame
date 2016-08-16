@@ -40,6 +40,18 @@ void WorldItemCollection::addItem(WorldItemType _type, float _x, float _y, float
 		worldItemVector[worldItemVector.size() - 1]->getBoundingBox()->yv = _yv;
 		worldItemVector[worldItemVector.size() - 1]->getBoundingBox()->xv = _xv;
 		break;
+	case explosionParticle:
+		worldItemVector.push_back(new ExplosionParticle());
+		tempLight = worldItemVector[worldItemVector.size() - 1]->getLight();
+		lightID = LC->addLight(tempLight);
+		worldItemVector[worldItemVector.size() - 1]->linkSpriteBatch(sb);
+		worldItemVector[worldItemVector.size() - 1]->init(0, 0, 1, 1, 80);
+		worldItemVector[worldItemVector.size() - 1]->setType(explosionParticle);
+		worldItemVector[worldItemVector.size() - 1]->hasSpriteSheet = true;
+		worldItemVector[worldItemVector.size() - 1]->loadSpriteSheet();
+		worldItemVector[worldItemVector.size() - 1]->getBoundingBox()->yv = _yv;
+		worldItemVector[worldItemVector.size() - 1]->getBoundingBox()->xv = _xv;
+		break;
 	case glowStick:
 		worldItemVector.push_back(new GlowStick());
 		tempLight = worldItemVector[worldItemVector.size() - 1]->getLight();
@@ -74,7 +86,7 @@ void WorldItemCollection::addItem(WorldItemType _type, float _x, float _y) {
 		tempLight = worldItemVector[worldItemVector.size() - 1]->getLight();
 		lightID = LC->addLight(tempLight);
 		worldItemVector[worldItemVector.size() - 1]->linkSpriteBatch(sb);
-		worldItemVector[worldItemVector.size() - 1]->init(0, 0, 60, 56, 35);
+		worldItemVector[worldItemVector.size() - 1]->init(0, 0, 60, 56, 28);
 		worldItemVector[worldItemVector.size() - 1]->setType(explosion);
 		worldItemVector[worldItemVector.size() - 1]->hasSpriteSheet = true;
 		worldItemVector[worldItemVector.size() - 1]->loadSpriteSheet();
@@ -121,10 +133,10 @@ void WorldItemCollection::runItems() {
 		}
 		if (worldItemVector[i]->getType() == explosion) {
 			if (((double)rand() / (RAND_MAX)) > 0.4 && worldItemVector[i]->getTimer() > 25) {
-				addItem(fireParticle, worldItemVector[i]->getBoundingBox()->x + worldItemVector[i]->getBoundingBox()->w / 2, worldItemVector[i]->getBoundingBox()->y + worldItemVector[i]->getBoundingBox()->h / 2, ((double)rand() / (RAND_MAX)) * 6 - 3, ((double)rand() / (RAND_MAX)) * 14 - 4);
+				//addItem(explosionParticle, worldItemVector[i]->getBoundingBox()->x + worldItemVector[i]->getBoundingBox()->w / 2, worldItemVector[i]->getBoundingBox()->y + worldItemVector[i]->getBoundingBox()->h / 2, ((double)rand() / (RAND_MAX)) * 6 - 3, ((double)rand() / (RAND_MAX)) * 14 - 4);
 
 			}
-			LC->changeRadius(worldItemVector[i]->getLightID(), 0);
+			LC->addToRadius(worldItemVector[i]->getLightID(), -200/28 - 2);
 		}
 		if (worldItemVector[i]->getTimer() <= 0 && worldItemVector[i]->despawns)
 		{

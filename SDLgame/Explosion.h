@@ -9,6 +9,14 @@ public:
 	GameEngine::Light getLight();
 	void loadSpriteSheet();
 };
+class ExplosionParticle : public WorldItem {
+public:
+	ExplosionParticle();
+	~ExplosionParticle();
+	void run();
+	GameEngine::Light getLight();
+	void loadSpriteSheet();
+};
 class FireParticle : public WorldItem {
 public:
 	FireParticle();

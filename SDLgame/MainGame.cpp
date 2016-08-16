@@ -8,8 +8,8 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(1000),
-	_screenHeight(500),
+	_screenWidth(2000),
+	_screenHeight(1000),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f),
@@ -202,7 +202,7 @@ void MainGame::processInput() {
 		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
 		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
 		if (!lastPressedR) {
-			_camera.setScreenShakeIntensity(10);
+			_camera.setScreenShakeIntensity(6);
 			WorldItems.addItem(explosion, mouseCoords.x, -mouseCoords.y);
 		}
 		lastPressedR = true;

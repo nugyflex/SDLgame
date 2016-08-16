@@ -17,15 +17,15 @@ int LightCollection::addLight(float x, float y, float r, float g, float b, float
 		GameEngine::Light newLight;
 		newLight.x = x;
 		newLight.y = y;
-		newLight.radius = radius;
-		newLight.color = glm::vec3(r, g, b);
-		newLight.flicker = true;
-		newLight.flickerRange = _flickerRange;
-		newLight.ID = lastLightID + 1;
-		lastLightID++;
-		lightVector.push_back(newLight);
-		//std::cout << "lights: " << lightVector.size() << std::endl;
-		return newLight.ID;
+newLight.radius = radius;
+newLight.color = glm::vec3(r, g, b);
+newLight.flicker = true;
+newLight.flickerRange = _flickerRange;
+newLight.ID = lastLightID + 1;
+lastLightID++;
+lightVector.push_back(newLight);
+//std::cout << "lights: " << lightVector.size() << std::endl;
+return newLight.ID;
 	}
 	else {
 		std::cout << "Maximum amount of lights reached!" << std::endl;
@@ -114,7 +114,13 @@ void LightCollection::changeRadius(int _ID, float _radius) {
 	lightVector[getVectorIndexByID(_ID)].radius = _radius;
 }
 void LightCollection::addToRadius(int _ID, float _radius) {
-	lightVector[getVectorIndexByID(_ID)].radius =+ _radius;
+	if (lightVector[getVectorIndexByID(_ID)].radius > 0)
+	{
+		lightVector[getVectorIndexByID(_ID)].radius += _radius;
+		if (lightVector[getVectorIndexByID(_ID)].radius  < 0) {
+			lightVector[getVectorIndexByID(_ID)].radius = 0;
+		}
+	}
 }
 void LightCollection::runFlicker() {
 	for (int i = 0; i < lightVector.size(); i++) {

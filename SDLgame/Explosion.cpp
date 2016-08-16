@@ -7,16 +7,40 @@ void Explosion::run() {
 }
 GameEngine::Light Explosion::getLight() {
 	GameEngine::Light light;
-	light.radius = 0;
-	light.flicker = true;
+	light.radius = 200;
+	light.flicker = false;
 	light.flickerRange = glm::vec2(100, 200);
-	light.color = glm::vec3(1, 0.6, 0.2);
+	light.color = glm::vec3(1, 0.5, 0.1);
 	setLightOffset(30, 28);
 	return light;
 }
 void Explosion::loadSpriteSheet() {
-	spriteSheet.init(sb, 30, 28, 2, 7, 5, 0, 0);
+	spriteSheet.init(sb, 30, 28, 2, 7, 4, 0, 0);
 	spriteSheet.loadTexture("Textures/explosion.png");
+}
+ExplosionParticle::ExplosionParticle() {}
+ExplosionParticle::~ExplosionParticle() {}
+void ExplosionParticle::run() {
+	boundingBox.yv -= 0.3;
+	boundingBox.x += boundingBox.xv;
+	boundingBox.y += boundingBox.yv;
+	if (boundingBox.onGround) {
+		boundingBox.xv *= 0.9;
+	}
+	boundingBox.onGround = false;
+}
+GameEngine::Light ExplosionParticle::getLight() {
+	GameEngine::Light light;
+	light.radius = 0;
+	light.flicker = true;
+	light.flickerRange = glm::vec2(15, 20);
+	light.color = glm::vec3(1, 0.4, 0.0);
+	setLightOffset(3, 3);
+	return light;
+}
+void ExplosionParticle::loadSpriteSheet() {
+	spriteSheet.init(sb, 3, 3, 2, 9, 10, 0, 0);
+	spriteSheet.loadTexture("Textures/explosionParticle.png");
 }
 FireParticle::FireParticle() {}
 FireParticle::~FireParticle() {}
