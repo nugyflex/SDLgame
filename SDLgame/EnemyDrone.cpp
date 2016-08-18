@@ -15,11 +15,18 @@ void EnemyDrone::draw()
 {
 	spriteSheet.run();
 	spriteSheet.draw(boundingBox.x, boundingBox.y);
-	shootCooldown--;
 }
 
 void EnemyDrone::calcNewPos(float _x, float _y)
 {
+	boundingBox.y -= + hoverY;
+	hoverY += hoverVel;
+	if (hoverY > 4) {
+		hoverVel -= 0.15;
+	}
+	if (hoverY < -4) {
+		hoverVel += 0.15;
+	}
 	if (_x != NULL && _y != NULL) {
 		float theta = atan(-1 * (_y - boundingBox.y) / (_x - boundingBox.x));
 		if (_x > boundingBox.x) {
@@ -39,7 +46,7 @@ void EnemyDrone::calcNewPos(float _x, float _y)
 			}
 		}
 		boundingBox.x += boundingBox.xv;
-		boundingBox.y += boundingBox.yv;
+		boundingBox.y += boundingBox.yv + hoverY;
 	}
 }
 
@@ -50,9 +57,11 @@ void EnemyDrone::load()
 	maxShootCooldown = 20;
 	health = 10;
 	vel = 2.5;
+	hoverVel = -0.5;
 }
 void EnemyDrone::run()
 {
+	shootCooldown--;
 	calcNewPos(target.x, target.y);
 }
 void EnemyDrone::setPosition(float _x, float _y)

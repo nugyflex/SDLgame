@@ -5,6 +5,8 @@ in vec2 fragmentPosition;
 in vec4 fragmentColor;
 in vec2 fragmentUV;
 in float fragmentLightAlpha;
+in float fragmentType;
+in vec2 fragmentSize;
 
 uniform int lightArraySize;
 uniform float lightColours[200*3];
@@ -55,4 +57,5 @@ void main() {
 	float dv = distance(fragmentPosition.xy, vignette);
 	//vignette testing
 	//color.a -= dv/1000;
+
 }

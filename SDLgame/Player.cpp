@@ -86,21 +86,6 @@ void Player::handleInput(GameEngine::InputManager* _im) {
 	
 }
 void Player::calcNewPos() {
-
-
-	if (sqrt(pow(boundingBox.x - 400, 2) + pow(boundingBox.y - 3400, 2)) > 100) {
-		float theta = atan(-1 * (3400 - boundingBox.y) / (400 - boundingBox.x));
-		if (400 >= boundingBox.x) {
-			boundingBox.yv = sin(theta) * -1 * vel;
-			boundingBox.xv = cos(theta) * vel;
-		}
-		else {
-			boundingBox.yv = sin(theta) * vel;
-			boundingBox.xv = cos(theta) * -1 * vel;
-		}
-		//boundingBox.xv *= -1;
-		//boundingBox.yv *= -1;
-	}
 	boundingBox.yv -= 0.5;
 	boundingBox.x += boundingBox.xv;
 	boundingBox.y += boundingBox.yv;

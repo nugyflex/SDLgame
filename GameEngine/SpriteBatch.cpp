@@ -32,6 +32,14 @@ void SpriteBatch::end() {
     //sortGlyphs();
     createRenderBatches();
 }
+void SpriteBatch::drawLine(glm::vec2 _p1, glm::vec2 _p2, float _r, float _g, float _b, float _a) {
+	Color color;
+	color.r = _r;
+	color.g = _g;
+	color.b = _b;
+	color.a = _a;
+	drawLine(_p1, _p2, color);
+}
 void SpriteBatch::drawLine(glm::vec2 _p1, glm::vec2 _p2, const Color& color) {
 
 	Glyph* newGlyph = new Glyph;
@@ -39,20 +47,21 @@ void SpriteBatch::drawLine(glm::vec2 _p1, glm::vec2 _p2, const Color& color) {
 	newGlyph->texture = NULL;
 	newGlyph->depth = 1;
 
+
 	newGlyph->topLeft.color = color;
-	newGlyph->topLeft.setPosition(_p1.x, _p1.y);
+	newGlyph->topLeft.setPosition(_p1.x, _p1.y+1);
 	newGlyph->topLeft.setUV(uvRect.x, uvRect.y + uvRect.w);
 
 	newGlyph->bottomLeft.color = color;
-	newGlyph->bottomLeft.setPosition(_p2.x, _p2.y);
+	newGlyph->bottomLeft.setPosition(_p1.x, _p1.y);
 	newGlyph->bottomLeft.setUV(uvRect.x, uvRect.y);
 
 	newGlyph->bottomRight.color = color;
-	newGlyph->bottomRight.setPosition(_p2.x+0.5, _p2.y - 0.5);
+	newGlyph->bottomRight.setPosition(_p1.x+1, _p1.y);
 	newGlyph->bottomRight.setUV(uvRect.x + uvRect.z, uvRect.y);
 
 	newGlyph->topRight.color = color;
-	newGlyph->topRight.setPosition(_p1.x - 0.5, _p1.y + 0.5);
+	newGlyph->topRight.setPosition(_p1.x+1, _p1.y + 1);
 	newGlyph->topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
 	newGlyph->topLeft.lightAlpha = 0;
 	newGlyph->bottomLeft.lightAlpha = 0;
@@ -60,6 +69,82 @@ void SpriteBatch::drawLine(glm::vec2 _p1, glm::vec2 _p2, const Color& color) {
 	newGlyph->topRight.lightAlpha = 0;
 	_glyphs.push_back(newGlyph);
 
+	Glyph* next = new Glyph;
+	next->texture = NULL;
+	next->depth = 1;
+	next->topLeft.color = color;
+	next->topLeft.setUV(uvRect.x, uvRect.y + uvRect.w);
+	next->bottomLeft.color = color;
+	next->bottomLeft.setUV(uvRect.x, uvRect.y);
+	next->bottomRight.color = color;
+	next->bottomRight.setUV(uvRect.x + uvRect.z, uvRect.y);
+	next->topRight.color = color;
+	next->topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
+	next->topLeft.lightAlpha = 0;
+	next->bottomLeft.lightAlpha = 0;
+	next->bottomRight.lightAlpha = 0;
+	next->topRight.lightAlpha = 0;
+	next->topLeft.setPosition(_p2.x, _p2.y + 1);
+	next->bottomLeft.setPosition(_p2.x, _p2.y);
+	next->bottomRight.setPosition(_p2.x + 1, _p2.y);
+	next->topRight.setPosition(_p2.x + 1, _p2.y + 1);
+	_glyphs.push_back(next);
+
+	Glyph* glyph3 = new Glyph;
+	glyph3->texture = NULL;
+	next->depth = 1;
+
+	glyph3->topLeft.color = color;
+	glyph3->topLeft.setUV(uvRect.x, uvRect.y + uvRect.w);
+	glyph3->bottomLeft.color = color;
+	glyph3->bottomLeft.setUV(uvRect.x, uvRect.y);
+	glyph3->bottomRight.color = color;
+	glyph3->bottomRight.setUV(uvRect.x + uvRect.z, uvRect.y);
+	glyph3->topRight.color = color;
+	glyph3->topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
+	glyph3->topLeft.lightAlpha = 0;
+	glyph3->bottomLeft.lightAlpha = 0;
+	glyph3->bottomRight.lightAlpha = 0;
+	glyph3->topRight.lightAlpha = 0;
+	glyph3->topLeft.setPosition(_p1.x, _p1.y);
+	glyph3->bottomLeft.setPosition(_p1.x+1, _p1.y+1);
+	glyph3->bottomRight.setPosition(_p2.x, _p2.y);
+	glyph3->topRight.setPosition(_p2.x + 1, _p2.y+1);
+	_glyphs.push_back(glyph3)
+		;
+	Glyph* glyph4 = new Glyph;
+	glyph3->texture = NULL;
+	next->depth = 1;
+
+	glyph4->topLeft.color = color;
+	glyph4->topLeft.setUV(uvRect.x, uvRect.y + uvRect.w);
+	glyph4->bottomLeft.color = color;
+	glyph4->bottomLeft.setUV(uvRect.x, uvRect.y);
+	glyph4->bottomRight.color = color;
+	glyph4->bottomRight.setUV(uvRect.x + uvRect.z, uvRect.y);
+	glyph4->topRight.color = color;
+	glyph4->topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
+	glyph4->topLeft.lightAlpha = 0;
+	glyph4->bottomLeft.lightAlpha = 0;
+	glyph4->bottomRight.lightAlpha = 0;
+	glyph4->topRight.lightAlpha = 0;
+	glyph4->topLeft.setPosition(_p1.x+1, _p1.y);
+	glyph4->bottomLeft.setPosition(_p1.x, _p1.y+1);
+	glyph4->bottomRight.setPosition(_p2.x+1, _p2.y);
+	glyph4->topRight.setPosition(_p2.x, _p2.y+1);
+	_glyphs.push_back(glyph4);
+	/*
+	newGlyph->topLeft.setPosition(_p1.x, _p1.y + 1);
+	newGlyph->bottomLeft.setPosition(_p1.x, _p1.y);
+	newGlyph->bottomRight.setPosition(_p2.x + 1, _p2.y);
+	newGlyph->topRight.setPosition(_p2.x + 1, _p2.y + 1);
+	_glyphs.push_back(newGlyph);
+	newGlyph->topLeft.setPosition(_p1.x, _p1.y + 1);
+	newGlyph->bottomLeft.setPosition(_p1.x, _p1.y);
+	newGlyph->bottomRight.setPosition(_p1.x + 1, _p1.y);
+	newGlyph->topRight.setPosition(_p1.x + 1, _p1.y + 1);
+
+	_glyphs.push_back(newGlyph);*/
 }
 void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color) {
 
@@ -100,46 +185,8 @@ void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuin
 	newGlyph->topRight.lightAlpha = 1;
     _glyphs.push_back(newGlyph);
 }
+
 void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color, float _lightAlpha) {
-
-	Glyph* newGlyph = new Glyph;
-
-	newGlyph->texture = texture;
-	newGlyph->depth = depth;
-
-	newGlyph->topLeft.color = color;
-	newGlyph->topLeft.setPosition(destRect.x, destRect.y + destRect.w);
-	newGlyph->topLeft.setUV(uvRect.x, uvRect.y + uvRect.w);
-
-	newGlyph->bottomLeft.color = color;
-	newGlyph->bottomLeft.setPosition(destRect.x, destRect.y);
-	newGlyph->bottomLeft.setUV(uvRect.x, uvRect.y);
-
-	newGlyph->bottomRight.color = color;
-	newGlyph->bottomRight.setPosition(destRect.x + destRect.z, destRect.y);
-	newGlyph->bottomRight.setUV(uvRect.x + uvRect.z, uvRect.y);
-
-	newGlyph->topRight.color = color;
-	newGlyph->topRight.setPosition(destRect.x + destRect.z, destRect.y + destRect.w);
-	newGlyph->topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
-	if (texture != NULL) {
-		Color colorForTextures;
-		colorForTextures.r = 0;
-		colorForTextures.g = 0;
-		colorForTextures.b = 0;
-		colorForTextures.a = 0;
-		newGlyph->topLeft.color = colorForTextures;
-		newGlyph->bottomLeft.color = colorForTextures;
-		newGlyph->bottomRight.color = colorForTextures;
-		newGlyph->topRight.color = colorForTextures;
-	}
-	newGlyph->topLeft.lightAlpha = _lightAlpha;
-	newGlyph->bottomLeft.lightAlpha = _lightAlpha;
-	newGlyph->bottomRight.lightAlpha = _lightAlpha;
-	newGlyph->topRight.lightAlpha = _lightAlpha;
-	_glyphs.push_back(newGlyph);
-}
-void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color, float _lightAlpha, float _angle) {
 
 	Glyph* newGlyph = new Glyph;
 

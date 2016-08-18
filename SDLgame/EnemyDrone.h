@@ -2,8 +2,10 @@
 #include <GameEngine\SpriteSheet.h>
 #include <GameEngine\SpriteBatch.h>
 #include <GameEngine\BoundingBox.h>
+#include <GameEngine\GameEngine.h>
 
 enum behaviorType { active, inactive };
+enum hoverDirection { up, down };
 class EnemyDrone {
 
 public:
@@ -22,14 +24,22 @@ public:
 	void setMode(behaviorType _mode);
 	BoundingBox* getBoundingBox();
 	glm::vec2 getPosition();
+	int getLightID() { return lightID; }
+	GameEngine::Light getLight;
 private:
+	GameEngine::Light Light;
+	int lightID;
+	glm::vec2 lightOffset;
 	BoundingBox boundingBox;
 	GameEngine::SpriteSheet spriteSheet;
+	float hoverY;
+	float hoverVel;
 	int health;
 	float vel;
 	behaviorType mode;
 	int shootCooldown;
 	int maxShootCooldown;
+	hoverDirection hoverDir;
 	GameEngine::SpriteBatch* sb;
 	glm::vec2 target;
 };

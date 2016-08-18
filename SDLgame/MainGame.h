@@ -24,6 +24,7 @@
 #include "Player.h"
 #include <GameEngine\DrawText.h>
 #include "EnemyDroneCollection.h"
+#include "ProjectileCollection.h"
 
 enum class GameState {PLAY, EXIT};
 
@@ -71,5 +72,6 @@ private:
 	EnemyDroneCollection drones;
 	Player player;
 	GameEngine::DrawText drawText;
+	ProjectileCollection projectileCollection;
 };
 

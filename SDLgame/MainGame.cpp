@@ -43,6 +43,7 @@ void MainGame::initSystems() {
 
     _spriteBatch.init();
     _fpsLimiter.init(_maxFPS);
+	projectileCollection.init(&_spriteBatch);
 	Lights.setMaxLights(200);
 	Lights.addLight(0, 9000, 1, 1, 1, 12500);
 	Lights.addLight(-400, -7100, 0.2, 0.2, 1, 100);
@@ -67,7 +68,7 @@ void MainGame::initSystems() {
 	Platforms.addPlatform(-800, -6000, 800, 16);
 	Platforms.addPlatform(0, -6600, 800, 16);
 	Platforms.addPlatform(-800, -7200, 800, 16);
-	player.init(-50, 3200, &WorldItems, &_spriteBatch, &drawText);
+	player.init(360, 3400, &WorldItems, &_spriteBatch, &drawText);
 	WorldItems.init(&Lights, &_spriteBatch);
 	drawText.init(&_spriteBatch);
 	_camera.setScreenShakeIntensity(10);
@@ -121,6 +122,7 @@ void MainGame::updateGame() {
 	player.handleInput(&_inputManager);
 	WorldItems.runItems();
 	drones.run();
+	projectileCollection.run();
 	_camera.followObject(player.getBoundingBox());
 	for (int j = 0; j < Platforms.getVectorSize(); j++)
 	{
@@ -196,7 +198,7 @@ void MainGame::processInput() {
 		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
 		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
 		if (!lastPressedL) {
-			WorldItems.addItem(glowStick, mouseCoords.x, -mouseCoords.y);
+			WorldItems.addItem(flare, mouseCoords.x, -mouseCoords.y);
 		}
 		lastPressedL = true;
 	}
@@ -207,6 +209,7 @@ void MainGame::processInput() {
 		if (!lastPressedR) {
 			_camera.setScreenShakeIntensity(6);
 			WorldItems.addItem(explosion, mouseCoords.x, -mouseCoords.y);
+			projectileCollection.add(mouseCoords.x, -mouseCoords.y, 10, 10);
 		}
 		lastPressedR = true;
 	}
@@ -284,9 +287,11 @@ void MainGame::drawGame() {
 
     _spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
 	GameEngine::drawRect(300, 0, 600, 600, 1, color, &_spriteBatch);
-	_spriteBatch.drawLine(glm::vec2(0, 3200), glm::vec2(100, 3200), color);
+	_spriteBatch.drawLine(glm::vec2(0, 3200), glm::vec2(100, 3100), 255, 150, 0, 255);
+	//_spriteBatch.drawLine(glm::vec2(0, 3200), glm::vec2(100, 3100), color);
 	Platforms.drawPlatforms(&_spriteBatch);
 	player.draw();
+	projectileCollection.draw();
 	if (_inputManager.isKeyPressed(SDLK_TAB)) {
 		player.drawInventory(_camera.getPosition() - _camera.getVelocity());
 	}

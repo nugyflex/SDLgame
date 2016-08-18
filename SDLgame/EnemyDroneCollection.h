@@ -11,6 +11,7 @@ public:
 	void addTarget(BoundingBox* _boundingBox);
 	void draw();
 	void run();
+	void linkToLights();
 	int getVectorSize() { return enemyDroneVector.size(); }
 	BoundingBox* getBoundingBox(int _index);
 private:
