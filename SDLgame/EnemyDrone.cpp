@@ -15,16 +15,32 @@ void EnemyDrone::draw()
 {
 	spriteSheet.run();
 	spriteSheet.draw(boundingBox.x, boundingBox.y);
-	firing = false;
 	shootCooldown--;
 }
 
 void EnemyDrone::calcNewPos(float _x, float _y)
 {
-	boundingBox.x += boundingBox.w / 2;
-	boundingBox.y += boundingBox.h / 2;
-	boundingBox.x -= boundingBox.w / 2;
-	boundingBox.y -= boundingBox.h / 2;
+	if (_x != NULL && _y != NULL) {
+		float theta = atan(-1 * (_y - boundingBox.y) / (_x - boundingBox.x));
+		if (_x > boundingBox.x) {
+			boundingBox.yv = sin(theta) * -1 * vel;
+			boundingBox.xv = cos(theta) * vel;
+		}
+		else {
+			boundingBox.yv = sin(theta) * vel;
+			boundingBox.xv = cos(theta) * -1 * vel;
+		}
+		if (sqrt(pow(boundingBox.x - _x, 2) + pow(boundingBox.y - _y, 2)) < 100) {
+			boundingBox.xv *= -1;
+			boundingBox.yv *= -1;
+			if (sqrt(pow(boundingBox.x - _x, 2) + pow(boundingBox.y - _y, 2)) > 90) {
+				boundingBox.xv = 0;
+				boundingBox.yv = 0;
+			}
+		}
+		boundingBox.x += boundingBox.xv;
+		boundingBox.y += boundingBox.yv;
+	}
 }
 
 void EnemyDrone::load()
@@ -32,6 +48,26 @@ void EnemyDrone::load()
 	spriteSheet.init(sb, 9, 19, 2, 4, 9, 0, 0);
 	spriteSheet.loadTexture("Textures/enemyDrone1.png");
 	maxShootCooldown = 20;
+	health = 10;
+	vel = 2.5;
+}
+void EnemyDrone::run()
+{
+	calcNewPos(target.x, target.y);
+}
+void EnemyDrone::setPosition(float _x, float _y)
+{
+	boundingBox.x = _x;
+	boundingBox.y = _y;
+}
+void EnemyDrone::setTarget(float _x, float _y)
+{
+	target.x = _x;
+	target.y = _y;
+}
+void EnemyDrone::setTarget(glm::vec2 _target)
+{
+	target = _target;
 }
 void EnemyDrone::subtractHealth(int _amount)
 {
@@ -45,15 +81,13 @@ void EnemyDrone::setMode(behaviorType _mode)
 {
 	mode = _mode;
 }
-bool EnemyDrone::getFiring()
+
+BoundingBox * EnemyDrone::getBoundingBox()
 {
-	return firing;
+	return &boundingBox;
 }
-glm::vec3 EnemyDrone::getLaserColour()
+
+glm::vec2 EnemyDrone::getPosition()
 {
-	return laserColour;
-}
-behaviorType EnemyDrone::getBehaviorType()
-{
-	return mode;
+	return glm::vec2(boundingBox.x, boundingBox.y);
 }

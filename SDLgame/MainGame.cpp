@@ -8,8 +8,8 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(2000),
-	_screenHeight(1000),
+	_screenWidth(1400),
+	_screenHeight(800),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f),
@@ -72,8 +72,9 @@ void MainGame::initSystems() {
 	drawText.init(&_spriteBatch);
 	_camera.setScreenShakeIntensity(10);
 	WorldItems.addItem(explosion, -100, 3200);
-	drone.init(&_spriteBatch, 9, 19, 2, 4, 9, 0, 0);
-	drone.loadTexture("Textures/enemyDrone1.png");
+	drones.init(&_spriteBatch);
+	drones.add(0, 3200);
+	drones.addTarget(player.getBoundingBox());
 }
 
 void MainGame::initShaders() {
@@ -83,6 +84,7 @@ void MainGame::initShaders() {
     _colorProgram.addAttribute("vertexUV");
 	_colorProgram.addAttribute("test");
     _colorProgram.linkShaders();
+
 }
 
 //This is the main game loop for our program
@@ -118,6 +120,7 @@ void MainGame::gameLoop() {
 void MainGame::updateGame() {
 	player.handleInput(&_inputManager);
 	WorldItems.runItems();
+	drones.run();
 	_camera.followObject(player.getBoundingBox());
 	for (int j = 0; j < Platforms.getVectorSize(); j++)
 	{
@@ -295,8 +298,7 @@ void MainGame::drawGame() {
 	//drawText.draw(-30, 3100, "a", 1);
 	WorldItems.drawItems();
 	drawText.drawAll(-30, 3100, 3);
-	drone.run();
-	drone.draw(-200, 3200);
+	drones.draw();
 	_spriteBatch.end();
 	
     _spriteBatch.renderBatch();
