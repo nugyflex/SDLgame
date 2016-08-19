@@ -11,10 +11,14 @@ GameEngine::Light Explosion::getLight() {
 	light.flicker = false;
 	light.flickerRange = glm::vec2(100, 200);
 	light.color = glm::vec3(1, 0.5, 0.1);
-	setLightOffset(30, 28);
+	setLightOffset(0, 0);
+	centerLight = true;
 	return light;
 }
 void Explosion::loadSpriteSheet() {
+	centerSpriteSheet = true;
+	boundingBox.w = 60;
+	boundingBox.h = 56;
 	spriteSheet.init(sb, 30, 28, 2, 7, 4, 0, 0);
 	spriteSheet.loadTexture("Textures/explosion.png");
 }

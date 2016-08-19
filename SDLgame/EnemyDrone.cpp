@@ -3,9 +3,13 @@
 
 EnemyDrone::EnemyDrone() {}
 
-EnemyDrone::EnemyDrone(float x, float y, GameEngine::SpriteBatch* _sb)
+EnemyDrone::EnemyDrone(float _x, float _y, GameEngine::SpriteBatch* _sb)
 {
 	sb = _sb;
+	boundingBox.x = _x;
+	boundingBox.y = _y;
+	boundingBox.w = 18;
+	boundingBox.h = 18;
 }
 
 EnemyDrone::~EnemyDrone()
@@ -14,7 +18,7 @@ EnemyDrone::~EnemyDrone()
 void EnemyDrone::draw()
 {
 	spriteSheet.run();
-	spriteSheet.draw(boundingBox.x, boundingBox.y);
+	spriteSheet.draw(boundingBox.x + spriteSheetOffSet.x, boundingBox.y + spriteSheetOffSet.y);
 }
 
 void EnemyDrone::calcNewPos(float _x, float _y)
@@ -58,6 +62,7 @@ void EnemyDrone::load()
 	health = 10;
 	vel = 2.5;
 	hoverVel = -0.5;
+	spriteSheetOffSet = glm::vec2(0, -20);
 }
 void EnemyDrone::run()
 {

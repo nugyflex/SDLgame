@@ -11,6 +11,7 @@ public:
 	~WorldItemCollection();
 	void init(LightCollection* _LC, GameEngine::SpriteBatch* _sb);
 	void addItem(WorldItemType _type, float x, float y); 
+	void addItem(WorldItemType _type, glm::vec2 _pos);
 	void addItem(WorldItemType _type, float x, float y, float xv, float yy);
 	void addItem(WorldItemType _type, float x, float y, int _lightID);
 	void drawItems();

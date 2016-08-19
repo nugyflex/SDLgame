@@ -72,6 +72,6 @@ private:
 	EnemyDroneCollection drones;
 	Player player;
 	GameEngine::DrawText drawText;
-	ProjectileCollection projectileCollection;
+	ProjectileCollection projectiles;
 };
 

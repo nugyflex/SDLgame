@@ -20,7 +20,8 @@ public:
 	void setMouseCoords(float x, float y);
 	void addMouseCoords(glm::vec2 _pos);
     bool isKeyPressed(unsigned int keyID);
-
+	bool lastMouseL;
+	bool lastMouseR;
 	//getters
 	glm::vec2 getMouseCoords() const { return _mouseCoords; }
 private:

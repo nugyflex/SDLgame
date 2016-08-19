@@ -301,10 +301,76 @@ namespace GameEngine {
 		return check;
 	}
 	glm::vec2 CollisionDetection::getLineIntersect(glm::vec2 _p1, glm::vec2 _p2, glm::vec2 _p3, glm::vec2 _p4) {
-		return glm::vec2(((_p1.x*_p2.y - _p1.y*_p2.x)*(_p3.x - _p4.x) - (_p1.x - _p2.x)*(_p3.x*_p4.y - _p3.y*_p4.x))/((_p1.x - _p2.x)*(_p3.y - _p4.y) - (_p1.y - _p2.y)*(_p3.x - _p4.x)), ((_p1.x*_p2.y - _p1.y*_p2.x)*(_p3.y - _p4.y) - (_p1.y - _p2.y)*(_p3.x*_p4.y - _p3.y*_p4.x)) / ((_p1.x - _p2.x)*(_p3.y - _p4.y) - (_p1.y - _p2.y)*(_p3.x - _p4.x)));
+		if (((_p1.x - _p2.x)*(_p3.y - _p4.y) - (_p1.y - _p2.y)*(_p3.x - _p4.x)) == 0) {
+			return glm::vec2(NULL, NULL);
+		}
+		else {
+			return glm::vec2(((_p1.x*_p2.y - _p1.y*_p2.x)*(_p3.x - _p4.x) - (_p1.x - _p2.x)*(_p3.x*_p4.y - _p3.y*_p4.x)) / ((_p1.x - _p2.x)*(_p3.y - _p4.y) - (_p1.y - _p2.y)*(_p3.x - _p4.x)), ((_p1.x*_p2.y - _p1.y*_p2.x)*(_p3.y - _p4.y) - (_p1.y - _p2.y)*(_p3.x*_p4.y - _p3.y*_p4.x)) / ((_p1.x - _p2.x)*(_p3.y - _p4.y) - (_p1.y - _p2.y)*(_p3.x - _p4.x)));
+		}
 	}
 	float CollisionDetection::getDistance(glm::vec2 p1, glm::vec2 p2)
 	{
 		return sqrt(pow(p2.x - p1.x, 2) + pow(p2.y - p1.y,2));
+	}
+	bool CollisionDetection::lineRectCollision(glm::vec2 _p1, glm::vec2 _p2, BoundingBox* _boundingBox) {
+		glm::vec2 left = getLineIntersect(_p1, _p2, glm::vec2(_boundingBox->x, _boundingBox->y), glm::vec2(_boundingBox->x, _boundingBox->y + _boundingBox->h));
+		glm::vec2 right = getLineIntersect(_p1, _p2, glm::vec2(_boundingBox->x + _boundingBox->w, _boundingBox->y), glm::vec2(_boundingBox->x + _boundingBox->w, _boundingBox->y + _boundingBox->h));
+		glm::vec2 bottom = getLineIntersect(_p1, _p2, glm::vec2(_boundingBox->x, _boundingBox->y), glm::vec2(_boundingBox->x + _boundingBox->w, _boundingBox->y));
+		glm::vec2 top = getLineIntersect(_p1, _p2, glm::vec2(_boundingBox->x, _boundingBox->y + _boundingBox->w), glm::vec2(_boundingBox->x + _boundingBox->w, _boundingBox->y + _boundingBox->w));
+		if (isBetween(_boundingBox->y, _boundingBox->h + _boundingBox->y, left.y) && isBetween(_p1.x, _p2.x, left.x)) {
+			return true;
+		}
+		else if (isBetween(_boundingBox->y, _boundingBox->h + _boundingBox->y, right.y) && isBetween(_p1.x, _p2.x, left.x)) {
+			return true;
+		}
+		else if (isBetween(_boundingBox->x, _boundingBox->w + _boundingBox->x, top.x) && isBetween(_p1.x, _p2.x, left.x)) {
+			return true;
+		}
+		else if (isBetween(_boundingBox->x, _boundingBox->w + _boundingBox->x, bottom.x) && isBetween(_p1.x, _p2.x, left.x)) {
+			return true;
+		}
+		else { return false; }
+	}
+	glm::vec2 CollisionDetection::getLineRectCollision(glm::vec2 _p1, glm::vec2 _p2, BoundingBox* _boundingBox) {
+		int distance = 1000000000;
+		glm::vec2 final;
+		final = glm::vec2(NULL, NULL);
+		glm::vec2 left = getLineIntersect(_p1, _p2, glm::vec2(_boundingBox->x, _boundingBox->y), glm::vec2(_boundingBox->x, _boundingBox->y + _boundingBox->h));
+		glm::vec2 right = getLineIntersect(_p1, _p2, glm::vec2(_boundingBox->x+_boundingBox->w, _boundingBox->y), glm::vec2(_boundingBox->x + _boundingBox->w, _boundingBox->y + _boundingBox->h));
+		glm::vec2 bottom = getLineIntersect(_p1, _p2, glm::vec2(_boundingBox->x, _boundingBox->y), glm::vec2(_boundingBox->x + _boundingBox->w, _boundingBox->y));
+		glm::vec2 top = getLineIntersect(_p1, _p2, glm::vec2(_boundingBox->x, _boundingBox->y + _boundingBox->w), glm::vec2(_boundingBox->x + _boundingBox->w, _boundingBox->y + _boundingBox->w));
+		if (isBetween(_boundingBox->y, _boundingBox->h + _boundingBox->y, left.y) && isBetween(_p1.x, _p2.x, left.x)) {
+			if (getDistance(left, _p1) < distance) {
+				final = left;
+				distance = getDistance(left, _p1);
+			}
+		}
+		if (isBetween(_boundingBox->y, _boundingBox->h + _boundingBox->y, right.y) && isBetween(_p1.x, _p2.x, left.x)) {
+			if (getDistance(right, _p2) < distance) {
+				final = right;
+				distance = getDistance(right, _p1);
+			}
+		}
+		if (isBetween(_boundingBox->x, _boundingBox->w + _boundingBox->x, top.x) && isBetween(_p1.x, _p2.x, left.x)) {
+			if (getDistance(top, _p2) < distance) {
+				final = top;
+				distance = getDistance(top, _p1);
+			}
+		}
+		if (isBetween(_boundingBox->x, _boundingBox->w + _boundingBox->x, bottom.x) && isBetween(_p1.x, _p2.x, left.x)) {
+			if (getDistance(bottom, _p1) < distance) {
+				final = bottom;
+				distance = getDistance(bottom, _p1);
+			}
+		}
+		return final;
+	}
+	bool CollisionDetection::isBetween(float _1, float _2, float _3)
+	{
+		if (_3 == _2 || _3 == _1){return true;}else{
+			if (_1 > _2){
+			if (_3 > _2&&_3 < _1){	return true;}else{return false;}}
+			else if (_3 < _2 && _3 > _1){return true;}else{return false;}
+		}
 	}
 }

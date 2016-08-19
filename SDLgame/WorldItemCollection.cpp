@@ -69,6 +69,9 @@ void WorldItemCollection::addItem(WorldItemType _type, float _x, float _y, float
 	worldItemVector[worldItemVector.size() - 1]->setPosition(_x, _y);
 	worldItemVector[worldItemVector.size() - 1]->setLightID(lightID);
 }
+void WorldItemCollection::addItem(WorldItemType _type, glm::vec2 _pos) {
+	addItem(_type, _pos.x, _pos.y);
+}
 void WorldItemCollection::addItem(WorldItemType _type, float _x, float _y) {
 	int lightID = 0;
 	GameEngine::Light tempLight;

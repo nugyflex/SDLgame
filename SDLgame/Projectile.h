@@ -7,6 +7,8 @@ public:
 	~Projectile();
 	void init(GameEngine::SpriteBatch* _sb, float _x, float _y, float _xVel, float _yVel);
 	void calcNewPos();
+	glm::vec2 getPosition() { return position; }
+	glm::vec2 getLastPosition() { return lastPosition; }
 	void run();
 	void draw();
 private:

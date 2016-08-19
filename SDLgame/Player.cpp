@@ -9,7 +9,7 @@ Player::Player()
 Player::~Player()
 {
 }
-void Player::init(float _x, float _y, WorldItemCollection* _itemCollectionPointer, GameEngine::SpriteBatch* _sb, GameEngine::DrawText* _drawText) {
+void Player::init(float _x, float _y, WorldItemCollection* _itemCollectionPointer, GameEngine::SpriteBatch* _sb, GameEngine::DrawText* _drawText, ProjectileCollection* _projectileCollectionPointer) {
 	sb = _sb;
 	boundingBox.x = _x;
 	boundingBox.y = _y;
@@ -21,6 +21,7 @@ void Player::init(float _x, float _y, WorldItemCollection* _itemCollectionPointe
 	jumpLatch = true;
 	useLatch = true;
 	itemCollectionPointer = _itemCollectionPointer;
+	projectileCollectionPointer = _projectileCollectionPointer;
 	inventory.init(sb, _drawText);
 	inventory.addItem(InventoryFlare, 2);
 	inventory.addItem(InventoryGlowStick, 5);
@@ -36,7 +37,7 @@ void Player::init(float _x, float _y, WorldItemCollection* _itemCollectionPointe
 BoundingBox* Player::getBoundingBox() {
 	return &boundingBox;
 }
-void Player::handleInput(GameEngine::InputManager* _im) {
+void Player::handleInput(GameEngine::InputManager* _im, GameEngine::Camera2D* _c) {
 
 	if (_im->isKeyPressed(SDLK_w)) {
 		if (jumpLatch && boundingBox.onGround)
@@ -83,7 +84,13 @@ void Player::handleInput(GameEngine::InputManager* _im) {
 	else {
 		useLatch = true;
 	}
-	
+	if (_im->isKeyPressed(SDL_BUTTON_RIGHT)) {
+		glm::vec2 mouseCoords = _im->getMouseCoords();
+		mouseCoords = _c->convertScreenToWorld(mouseCoords);
+		if (!_im->lastMouseL) {
+			projectileCollectionPointer->launch(glm::vec2(boundingBox.x, boundingBox.y), glm::vec2(mouseCoords.x, -mouseCoords.y), 15);
+		}
+	}
 }
 void Player::calcNewPos() {
 	boundingBox.yv -= 0.5;

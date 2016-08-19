@@ -43,7 +43,7 @@ void MainGame::initSystems() {
 
     _spriteBatch.init();
     _fpsLimiter.init(_maxFPS);
-	projectileCollection.init(&_spriteBatch);
+	projectiles.init(&_spriteBatch);
 	Lights.setMaxLights(200);
 	Lights.addLight(0, 9000, 1, 1, 1, 12500);
 	Lights.addLight(-400, -7100, 0.2, 0.2, 1, 100);
@@ -68,7 +68,7 @@ void MainGame::initSystems() {
 	Platforms.addPlatform(-800, -6000, 800, 16);
 	Platforms.addPlatform(0, -6600, 800, 16);
 	Platforms.addPlatform(-800, -7200, 800, 16);
-	player.init(360, 3400, &WorldItems, &_spriteBatch, &drawText);
+	player.init(360, 3400, &WorldItems, &_spriteBatch, &drawText, &projectiles);
 	WorldItems.init(&Lights, &_spriteBatch);
 	drawText.init(&_spriteBatch);
 	_camera.setScreenShakeIntensity(10);
@@ -76,6 +76,7 @@ void MainGame::initSystems() {
 	drones.init(&_spriteBatch);
 	drones.add(0, 3200);
 	drones.addTarget(player.getBoundingBox());
+	drones.addWorldItemCollection(&WorldItems);
 }
 
 void MainGame::initShaders() {
@@ -119,11 +120,28 @@ void MainGame::gameLoop() {
     }
 }
 void MainGame::updateGame() {
-	player.handleInput(&_inputManager);
+	player.handleInput(&_inputManager, &_camera);
 	WorldItems.runItems();
 	drones.run();
-	projectileCollection.run();
+	projectiles.run();
 	_camera.followObject(player.getBoundingBox());
+	for (int i = 0; i < projectiles.getVectorSize(); i++) {
+		bool remove = false;
+		if (cd.lineRectCollision(projectiles.getProjectile(i)->getPosition(), projectiles.getProjectile(i)->getLastPosition(), player.getBoundingBox())) {
+			remove = true;
+		}
+		for (int j = 0; j < drones.getVectorSize(); j++) {
+			if (cd.lineRectCollision(projectiles.getProjectile(i)->getPosition(), projectiles.getProjectile(i)->getLastPosition(), drones.getBoundingBox(j))) {
+				remove = true;
+				glm::vec2 test = cd.getLineRectCollision(projectiles.getProjectile(i)->getPosition(), projectiles.getProjectile(i)->getLastPosition(), drones.getBoundingBox(j));
+				WorldItems.addItem(explosion, cd.getLineRectCollision(projectiles.getProjectile(i)->getPosition(), projectiles.getProjectile(i)->getLastPosition(), drones.getBoundingBox(j)));
+				drones.reduceHealth(j, 2);
+			}
+		}
+		if (remove) {
+			projectiles.remove(i);
+		}
+	}
 	for (int j = 0; j < Platforms.getVectorSize(); j++)
 	{
 		cd.correctPosition(player.getBoundingBox(), Platforms.getBoundingBox(j));
@@ -197,23 +215,23 @@ void MainGame::processInput() {
 	if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
 		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
 		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
-		if (!lastPressedL) {
-			WorldItems.addItem(flare, mouseCoords.x, -mouseCoords.y);
+		if (!_inputManager.lastMouseL) {
+			//WorldItems.addItem(flare, mouseCoords.x, -mouseCoords.y);
 		}
-		lastPressedL = true;
+		_inputManager.lastMouseL = true;
 	}
-	else { lastPressedL = false; }
+	else { _inputManager.lastMouseL = false; }
 	if (_inputManager.isKeyPressed(SDL_BUTTON_RIGHT)) {
 		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
 		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
-		if (!lastPressedR) {
-			_camera.setScreenShakeIntensity(6);
-			WorldItems.addItem(explosion, mouseCoords.x, -mouseCoords.y);
-			projectileCollection.add(mouseCoords.x, -mouseCoords.y, 10, 10);
+		if (!_inputManager.lastMouseR) {
+			//_camera.setScreenShakeIntensity(6);
+			//WorldItems.addItem(explosion, mouseCoords.x, -mouseCoords.y);
+			//projectiles.launch(glm::vec2(mouseCoords.x, -mouseCoords.y), glm::vec2(10, 10), 15);
 		}
-		lastPressedR = true;
+		_inputManager.lastMouseR = true;
 	}
-	else { lastPressedR = false; }
+	else { _inputManager.lastMouseR = false; }
 }
 
 //Draws the game using the almighty OpenGL
@@ -291,7 +309,7 @@ void MainGame::drawGame() {
 	//_spriteBatch.drawLine(glm::vec2(0, 3200), glm::vec2(100, 3100), color);
 	Platforms.drawPlatforms(&_spriteBatch);
 	player.draw();
-	projectileCollection.draw();
+	projectiles.draw();
 	if (_inputManager.isKeyPressed(SDLK_TAB)) {
 		player.drawInventory(_camera.getPosition() - _camera.getVelocity());
 	}

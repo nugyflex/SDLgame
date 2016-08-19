@@ -70,7 +70,12 @@ int WorldItem::getTimer() {
 	return deSpawnTimer;
 }
 void WorldItem::drawSpriteSheet() {
-	spriteSheet.draw(boundingBox.x, boundingBox.y);
+	if (centerSpriteSheet) {
+		spriteSheet.draw(boundingBox.x - boundingBox.w / 2, boundingBox.y - boundingBox.h / 2);
+	}
+	else {
+		spriteSheet.draw(boundingBox.x + spriteSheetOffset.x, boundingBox.y + spriteSheetOffset.y);
+	}
 	spriteSheet.run();
 }
 void WorldItem::loadSpriteSheet() {

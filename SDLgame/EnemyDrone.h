@@ -42,4 +42,5 @@ private:
 	hoverDirection hoverDir;
 	GameEngine::SpriteBatch* sb;
 	glm::vec2 target;
+	glm::vec2 spriteSheetOffSet;
 };

@@ -34,12 +34,15 @@ public:
 	void linkSpriteBatch(GameEngine::SpriteBatch* _sb) { sb = _sb; }
 	virtual void draw();
 	bool canBePickedUp;
+	bool centerLight = false;
 protected:
 	BoundingBox boundingBox;
 	glm::vec2 lightOffset;
+	glm::vec2 spriteSheetOffset = glm::vec2(0,0);
 	int lightID;
 	int deSpawnTimer = 1;
 	WorldItemType type;
 	GameEngine::SpriteSheet spriteSheet;
+	bool centerSpriteSheet = false;
 	GameEngine::SpriteBatch* sb;
 };

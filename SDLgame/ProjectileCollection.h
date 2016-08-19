@@ -11,8 +11,10 @@ public:
 	void draw();
 	void run();
 	int getVectorSize() { return projectileVector.size(); }
-private:
+	Projectile* getProjectile(int _index) { return projectileVector[_index]; }
 	void remove(int _index);
+	void launch(glm::vec2 _p1, glm::vec2 _p2, float _vel);
+private:
 	std::vector<Projectile*> projectileVector;
 	GameEngine::SpriteBatch* sb;
 	GameEngine::CollisionDetection cd;

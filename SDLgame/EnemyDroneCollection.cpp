@@ -10,6 +10,11 @@ void EnemyDroneCollection::add(float _x, float _y) {
 	enemyDroneVector[enemyDroneVector.size() - 1]->load();
 }
 
+void EnemyDroneCollection::addWorldItemCollection(WorldItemCollection* _worldItems)
+{
+	worldItems = _worldItems;
+}
+
 void EnemyDroneCollection::run() {
 	for (int i = 0; i < enemyDroneVector.size(); i++)
 	{
@@ -19,6 +24,18 @@ void EnemyDroneCollection::run() {
 			remove(i);
 			i--;
 		}
+	}
+}
+EnemyDrone* EnemyDroneCollection::getDrone(int _index)
+{
+	return enemyDroneVector[_index];
+}
+void EnemyDroneCollection::reduceHealth(int _index, float _health)
+{
+	enemyDroneVector[_index]->subtractHealth(_health);
+	if (enemyDroneVector[_index]->getHealth() <= 0) {
+		worldItems->addItem(explosion, enemyDroneVector[_index]->getBoundingBox()->x + enemyDroneVector[_index]->getBoundingBox()->w / 2, enemyDroneVector[_index]->getBoundingBox()->y + enemyDroneVector[_index]->getBoundingBox()->h / 2);
+		remove(_index);
 	}
 }
 void EnemyDroneCollection::draw() {
