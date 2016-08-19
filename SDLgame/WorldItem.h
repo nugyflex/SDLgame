@@ -1,9 +1,12 @@
 #pragma once
+
 #include <glm.hpp>
+
 #include <GameEngine\BoundingBox.h>
 #include <GameEngine\GameEngine.h>
 #include <GameEngine\SpriteSheet.h>
 #include <GameEngine\SpriteBatch.h>
+
 enum WorldItemType { flare, flareParticle, glowStick, default, explosion, fireParticle, explosionParticle };
 class WorldItem {
 public:

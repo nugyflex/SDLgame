@@ -1,5 +1,8 @@
-#include "Platform.h"
+
 #include <GameEngine\GameEngine.h>
+
+#include "Platform.h"
+
 Platform::Platform(){}
 Platform::~Platform() {}
 void Platform::init(float _x, float _y, float _width, float _height) {

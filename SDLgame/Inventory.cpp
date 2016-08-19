@@ -1,5 +1,7 @@
-#include "Inventory.h"
+
 #include <GameEngine\ResourceManager.h>
+
+#include "Inventory.h"
 
 Inventory::Inventory()
 {

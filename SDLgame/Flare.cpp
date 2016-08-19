@@ -1,3 +1,4 @@
+
 #include "Flare.h"
 
 Flare::Flare() {}

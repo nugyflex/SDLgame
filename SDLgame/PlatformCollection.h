@@ -1,7 +1,10 @@
 #pragma once
-#include "Platform.h"
+
 #include <vector>
 #include <string>
+
+#include "Platform.h"
+
 class PlatformCollection {
 public:
 	PlatformCollection();

@@ -1,4 +1,6 @@
+
 #include "PlatformCollection.h"
+
 PlatformCollection::PlatformCollection() {}
 PlatformCollection::~PlatformCollection() {}
 void PlatformCollection::addPlatform(float _x, float _y, float _width, float _height) {

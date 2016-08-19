@@ -1,7 +1,10 @@
 #pragma once
 #include <vector>
-#include "Projectile.h"
+
 #include <GameEngine\CollisionDetection.h>
+
+#include "Projectile.h"
+
 class ProjectileCollection {
 public:
 	ProjectileCollection();
@@ -14,6 +17,8 @@ public:
 	Projectile* getProjectile(int _index) { return projectileVector[_index]; }
 	void remove(int _index);
 	void launch(glm::vec2 _p1, glm::vec2 _p2, float _vel);
+	void setToDelete(int _index, bool _bool);
+	bool getToDelete(int _index);
 private:
 	std::vector<Projectile*> projectileVector;
 	GameEngine::SpriteBatch* sb;

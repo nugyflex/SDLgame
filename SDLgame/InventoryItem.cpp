@@ -1,6 +1,5 @@
+
 #include "InventoryItem.h"
-
-
 
 InventoryItem::InventoryItem()
 {

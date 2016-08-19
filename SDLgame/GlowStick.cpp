@@ -1,3 +1,4 @@
+
 #include "GlowStick.h"
 
 GlowStick::GlowStick() {}

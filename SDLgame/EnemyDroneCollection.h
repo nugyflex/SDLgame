@@ -1,16 +1,19 @@
 #pragma once
 #include <vector>
-#include "EnemyDrone.h"
+
 #include <GameEngine\CollisionDetection.h>
+#include <GameEngine\Camera2D.h>
+
+#include "EnemyDrone.h"
 #include "Projectile.h"
 #include "WorldItemCollection.h"
+
 class EnemyDroneCollection {
 public:
 	EnemyDroneCollection();
 	~EnemyDroneCollection();
-	void init(GameEngine::SpriteBatch* _sb);
+	void init(GameEngine::SpriteBatch* _sb, WorldItemCollection* _worldItems, GameEngine::Camera2D* _camera, LightCollection* _LC);
 	void add(float x, float y);
-	void addWorldItemCollection(WorldItemCollection* _worldItems);
 	void addTarget(BoundingBox* _boundingBox);
 	void draw();
 	void run();
@@ -27,4 +30,6 @@ private:
 	GameEngine::SpriteBatch* sb;
 	GameEngine::CollisionDetection cd;
 	WorldItemCollection* worldItems;
+	GameEngine::Camera2D* camera;
+	LightCollection* LC;
 };

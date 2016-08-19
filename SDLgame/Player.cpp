@@ -1,7 +1,10 @@
-#include "Player.h"
+
 #include <SDL.h>
-#include <GameEngine\GameEngine.h>
 #include <iostream>
+
+#include <GameEngine\GameEngine.h>
+
+#include "Player.h"
 
 Player::Player()
 {
@@ -84,11 +87,11 @@ void Player::handleInput(GameEngine::InputManager* _im, GameEngine::Camera2D* _c
 	else {
 		useLatch = true;
 	}
-	if (_im->isKeyPressed(SDL_BUTTON_RIGHT)) {
+	if (_im->isKeyPressed(SDL_BUTTON_LEFT)) {
 		glm::vec2 mouseCoords = _im->getMouseCoords();
 		mouseCoords = _c->convertScreenToWorld(mouseCoords);
 		if (!_im->lastMouseL) {
-			projectileCollectionPointer->launch(glm::vec2(boundingBox.x, boundingBox.y), glm::vec2(mouseCoords.x, -mouseCoords.y), 15);
+			projectileCollectionPointer->launch(glm::vec2(boundingBox.x, boundingBox.y), glm::vec2(mouseCoords.x, -mouseCoords.y), 30);
 		}
 	}
 }

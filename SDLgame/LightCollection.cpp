@@ -1,5 +1,7 @@
-#include "LightCollection.h"
 #include <iostream>
+
+#include "LightCollection.h"
+
 LightCollection::LightCollection()
 {
 
@@ -114,13 +116,17 @@ void LightCollection::changeRadius(int _ID, float _radius) {
 	lightVector[getVectorIndexByID(_ID)].radius = _radius;
 }
 void LightCollection::addToRadius(int _ID, float _radius) {
-	if (lightVector[getVectorIndexByID(_ID)].radius > 0)
+	if (lightVector[getVectorIndexByID(_ID)].radius > 0 || _radius > 0)
 	{
 		lightVector[getVectorIndexByID(_ID)].radius += _radius;
 		if (lightVector[getVectorIndexByID(_ID)].radius  < 0) {
 			lightVector[getVectorIndexByID(_ID)].radius = 0;
 		}
 	}
+}
+float LightCollection::getRadius(int _ID)
+{
+	return lightVector[getVectorIndexByID(_ID)].radius;
 }
 void LightCollection::runFlicker() {
 	for (int i = 0; i < lightVector.size(); i++) {

@@ -1,4 +1,6 @@
+
 #include "WorldItemCollection.h"
+
 WorldItemCollection::WorldItemCollection(){}
 WorldItemCollection::~WorldItemCollection(){}
 void WorldItemCollection::init(LightCollection* _LC, GameEngine::SpriteBatch* _sb) {

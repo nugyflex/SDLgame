@@ -1,18 +1,21 @@
+
 #include "EnemyDroneCollection.h"
+
 EnemyDroneCollection::EnemyDroneCollection() {}
 EnemyDroneCollection::~EnemyDroneCollection() {}
-void EnemyDroneCollection::init(GameEngine::SpriteBatch* _sb) {
+void EnemyDroneCollection::init(GameEngine::SpriteBatch* _sb, WorldItemCollection* _worldItems, GameEngine::Camera2D* _camera, LightCollection* _LC) {
 	sb = _sb;
+	worldItems = _worldItems;
+	camera = _camera;
+	LC = _LC;
 }
 void EnemyDroneCollection::add(float _x, float _y) {
 	enemyDroneVector.push_back(new EnemyDrone(_x, _y, sb));
 	enemyDroneVector[enemyDroneVector.size() - 1]->setPosition(_x, _y);
 	enemyDroneVector[enemyDroneVector.size() - 1]->load();
-}
-
-void EnemyDroneCollection::addWorldItemCollection(WorldItemCollection* _worldItems)
-{
-	worldItems = _worldItems;
+	GameEngine::Light tempLight;
+	tempLight = enemyDroneVector[enemyDroneVector.size() - 1]->getLight();
+	enemyDroneVector[enemyDroneVector.size() - 1]->setLightID(LC->addLight(tempLight));
 }
 
 void EnemyDroneCollection::run() {
@@ -25,6 +28,7 @@ void EnemyDroneCollection::run() {
 			i--;
 		}
 	}
+	linkToLights();
 }
 EnemyDrone* EnemyDroneCollection::getDrone(int _index)
 {
@@ -35,12 +39,26 @@ void EnemyDroneCollection::reduceHealth(int _index, float _health)
 	enemyDroneVector[_index]->subtractHealth(_health);
 	if (enemyDroneVector[_index]->getHealth() <= 0) {
 		worldItems->addItem(explosion, enemyDroneVector[_index]->getBoundingBox()->x + enemyDroneVector[_index]->getBoundingBox()->w / 2, enemyDroneVector[_index]->getBoundingBox()->y + enemyDroneVector[_index]->getBoundingBox()->h / 2);
+		camera->setScreenShakeIntensity(5);
 		remove(_index);
+	}
+}
+void EnemyDroneCollection::linkToLights()
+{
+	for (int i = 0; i < enemyDroneVector.size(); i++)
+	{
+		if (enemyDroneVector[i]->getLightID() != -1) {
+			glm::vec2 temppos = enemyDroneVector[i]->getLightOffSet() + glm::vec2(enemyDroneVector[i]->getBoundingBox()->x, enemyDroneVector[i]->getBoundingBox()->y);
+			LC->changePosition(enemyDroneVector[i]->getLightID(), temppos.x, temppos.y);
+		}
 	}
 }
 void EnemyDroneCollection::draw() {
 	for (int i = 0; i < enemyDroneVector.size(); i++)
 	{
+		if (enemyDroneVector[i]->getMode() == active && LC->getRadius(enemyDroneVector[i]->getLightID()) < 20) {
+			LC->addToRadius(enemyDroneVector[i]->getLightID(), 1);
+		}
 		enemyDroneVector[i]->draw();
 	}
 }
@@ -48,6 +66,9 @@ BoundingBox* EnemyDroneCollection::getBoundingBox(int _index) {
 	return enemyDroneVector[_index]->getBoundingBox();
 }
 void EnemyDroneCollection::remove(int _index) {
+	if (enemyDroneVector[_index]->getLightID() != -1) {
+		LC->removeLight(enemyDroneVector[_index]->getLightID());
+	}
 	enemyDroneVector.erase(enemyDroneVector.begin() + _index);
 }
 

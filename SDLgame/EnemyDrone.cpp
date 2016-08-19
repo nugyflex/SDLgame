@@ -1,5 +1,6 @@
-#include "EnemyDrone.h"
 #include <math.h>
+
+#include "EnemyDrone.h"
 
 EnemyDrone::EnemyDrone() {}
 
@@ -10,6 +11,8 @@ EnemyDrone::EnemyDrone(float _x, float _y, GameEngine::SpriteBatch* _sb)
 	boundingBox.y = _y;
 	boundingBox.w = 18;
 	boundingBox.h = 18;
+	lightOffSet = glm::vec2(3, 14);
+	mode = inactive;
 }
 
 EnemyDrone::~EnemyDrone()
@@ -23,34 +26,53 @@ void EnemyDrone::draw()
 
 void EnemyDrone::calcNewPos(float _x, float _y)
 {
-	boundingBox.y -= + hoverY;
-	hoverY += hoverVel;
-	if (hoverY > 4) {
-		hoverVel -= 0.15;
+	if (mode == inactive && sqrt(pow(boundingBox.x - _x, 2) + pow(boundingBox.y - _y, 2)) < 300) {
+		mode = active;
 	}
-	if (hoverY < -4) {
-		hoverVel += 0.15;
-	}
-	if (_x != NULL && _y != NULL) {
-		float theta = atan(-1 * (_y - boundingBox.y) / (_x - boundingBox.x));
-		if (_x > boundingBox.x) {
-			boundingBox.yv = sin(theta) * -1 * vel;
-			boundingBox.xv = cos(theta) * vel;
+	if (mode == active)
+	{
+		boundingBox.y -= +hoverY;
+		hoverY += hoverVel;
+		if (hoverY > 2) {
+			hoverVel -= 0.04;
 		}
-		else {
-			boundingBox.yv = sin(theta) * vel;
-			boundingBox.xv = cos(theta) * -1 * vel;
+		if (hoverY < -2) {
+			hoverVel += 0.04;
 		}
-		if (sqrt(pow(boundingBox.x - _x, 2) + pow(boundingBox.y - _y, 2)) < 100) {
-			boundingBox.xv *= -1;
-			boundingBox.yv *= -1;
-			if (sqrt(pow(boundingBox.x - _x, 2) + pow(boundingBox.y - _y, 2)) > 90) {
-				boundingBox.xv = 0;
-				boundingBox.yv = 0;
+		if (_x != NULL && _y != NULL) {
+
+			float theta = atan(-1 * (_y - boundingBox.y) / (_x - boundingBox.x));
+			if (_x > boundingBox.x) {
+				if (boundingBox.y > _y + 30) {
+					boundingBox.yv = sin(theta) * -1 * vel;
+				}
+				else {
+					boundingBox.yv = vel*1.25;
+				}
+				boundingBox.xv = cos(theta) * vel;
+
 			}
+			else {
+				if (boundingBox.y > _y + 30) {
+					boundingBox.yv = sin(theta) * vel;
+				}
+				else {
+					boundingBox.yv = vel*1.25;
+				}
+				boundingBox.xv = cos(theta) * -1 * vel;
+
+			}
+			if (sqrt(pow(boundingBox.x - _x, 2) + pow(boundingBox.y - _y, 2)) < 100 && boundingBox.y > _y + 30) {
+				boundingBox.xv *= -1;
+				boundingBox.yv *= -1;
+				if (sqrt(pow(boundingBox.x - _x, 2) + pow(boundingBox.y - _y, 2)) > 90 && boundingBox.y > _y + 30) {
+					boundingBox.xv = 0;
+					boundingBox.yv = 0;
+				}
+			}
+			boundingBox.x += boundingBox.xv;
+			boundingBox.y += boundingBox.yv + hoverY;
 		}
-		boundingBox.x += boundingBox.xv;
-		boundingBox.y += boundingBox.yv + hoverY;
 	}
 }
 
@@ -104,4 +126,28 @@ BoundingBox * EnemyDrone::getBoundingBox()
 glm::vec2 EnemyDrone::getPosition()
 {
 	return glm::vec2(boundingBox.x, boundingBox.y);
+}
+
+int EnemyDrone::getLightID()
+{
+	return lightID;
+}
+
+glm::vec2 EnemyDrone::getLightOffSet()
+{
+	return lightOffSet;
+}
+
+behaviorType EnemyDrone::getMode()
+{
+	return mode;
+}
+
+GameEngine::Light EnemyDrone::getLight()
+{
+	GameEngine::Light tempLight;
+	tempLight.radius = 0;
+	tempLight.flicker = false;
+	tempLight.color = glm::vec3(1, 0, 0);
+	return tempLight;
 }

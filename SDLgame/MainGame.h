@@ -2,6 +2,7 @@
 
 #include <SDL.h>
 #include <GL/glew.h>
+#include <vector>
 
 #include <GameEngine/GameEngine.h>
 #include <GameEngine/GLSLProgram.h>
@@ -11,12 +12,8 @@
 #include <GameEngine/InputManager.h>
 #include <GameEngine/Timing.h>
 #include <GameEngine/CollisionDetection.h>
-
 #include <GameEngine/SpriteBatch.h>
-
 #include <GameEngine/Camera2D.h>
-
-#include <vector>
 
 #include "LightCollection.h"
 #include "WorldItemCollection.h"

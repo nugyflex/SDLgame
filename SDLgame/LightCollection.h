@@ -1,7 +1,10 @@
 #pragma once
+
+#include <vector>
+
 #include <GameEngine/GameEngine.h>
 #include <GameEngine/GLSLProgram.h>
-#include <vector>
+
 class LightCollection {
 public:
 	LightCollection();
@@ -15,6 +18,7 @@ public:
 	void changePosition(int _ID, float _x, float _y);
 	void changeRadius(int _ID, float radius);
 	void addToRadius(int _ID, float radius);
+	float getRadius(int _index);
 	void runFlicker();
 private:
 	int maxLights;

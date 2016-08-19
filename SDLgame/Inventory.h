@@ -1,9 +1,11 @@
 #pragma once
-#include "InventoryItem.h"
 #include <GameEngine\SpriteBatch.h>
 #include <GameEngine\GameEngine.h>
 #include <GameEngine\GLTexture.h>
 #include <GameEngine\DrawText.h>
+
+#include "InventoryItem.h"
+
 class Inventory
 {
 public:

@@ -1,12 +1,15 @@
 #pragma once
+
 #include <GameEngine\BoundingBox.h>
 #include <GameEngine\InputManager.h>
 #include <GameEngine\SpriteBatch.h>
+#include <GameEngine\SpriteSheet.h>
+#include <GameEngine\Camera2D.h>
+
 #include "Inventory.h"
 #include "WorldItemCollection.h"
-#include <GameEngine\SpriteSheet.h>
 #include "ProjectileCollection.h"
-#include <GameEngine\Camera2D.h>
+
 class Player
 {
 public:

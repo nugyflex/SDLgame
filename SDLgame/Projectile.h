@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GameEngine\SpriteBatch.h>
+
 class Projectile {
 public:
 	Projectile();
@@ -11,6 +12,8 @@ public:
 	glm::vec2 getLastPosition() { return lastPosition; }
 	void run();
 	void draw();
+	bool toDelete;
+	void setPosition(glm::vec2 _position);
 private:
 	glm::vec2 position;
 	glm::vec2 velocity;

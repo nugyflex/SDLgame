@@ -1,10 +1,13 @@
 #pragma once
+
 #include <vector>
 #include <string>
+
 #include "LightCollection.h"
 #include "Flare.h"
 #include "GlowStick.h"
 #include "Explosion.h"
+
 class WorldItemCollection {
 public:
 	WorldItemCollection();

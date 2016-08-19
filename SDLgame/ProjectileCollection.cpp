@@ -1,3 +1,4 @@
+
 #include "ProjectileCollection.h"
 
 ProjectileCollection::ProjectileCollection()
@@ -52,4 +53,14 @@ void ProjectileCollection::launch(glm::vec2 _p1, glm::vec2 _p2, float _vel)
 		xVel = cos(theta) * -1 * _vel;
 	}
 	add(_p1.x, _p1.y, -xVel, -yVel);
+}
+
+void ProjectileCollection::setToDelete(int _index, bool _bool)
+{
+	projectileVector[_index]->toDelete = _bool;
+}
+
+bool ProjectileCollection::getToDelete(int _index)
+{
+	return projectileVector[_index]->toDelete;
 }
