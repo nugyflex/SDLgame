@@ -1,4 +1,5 @@
 #pragma once
+
 #include <GameEngine\SpriteBatch.h>
 #include <GameEngine\GameEngine.h>
 #include <GameEngine\GLTexture.h>

@@ -320,13 +320,13 @@ namespace GameEngine {
 		if (isBetween(_boundingBox->y, _boundingBox->h + _boundingBox->y, left.y) && isBetween(_p1.x, _p2.x, left.x)) {
 			return true;
 		}
-		else if (isBetween(_boundingBox->y, _boundingBox->h + _boundingBox->y, right.y) && isBetween(_p1.x, _p2.x, left.x)) {
+		else if (isBetween(_boundingBox->y, _boundingBox->h + _boundingBox->y, right.y) && isBetween(_p1.x, _p2.x, right.x)) {
 			return true;
 		}
-		else if (isBetween(_boundingBox->x, _boundingBox->w + _boundingBox->x, top.x) && isBetween(_p1.x, _p2.x, left.x)) {
+		else if (isBetween(_boundingBox->x, _boundingBox->w + _boundingBox->x, top.x) && isBetween(_p1.y, _p2.y, top.y)) {
 			return true;
 		}
-		else if (isBetween(_boundingBox->x, _boundingBox->w + _boundingBox->x, bottom.x) && isBetween(_p1.x, _p2.x, left.x)) {
+		else if (isBetween(_boundingBox->x, _boundingBox->w + _boundingBox->x, bottom.x) && isBetween(_p1.y, _p2.y, bottom.y)) {
 			return true;
 		}
 		else { return false; }
@@ -345,19 +345,19 @@ namespace GameEngine {
 				distance = getDistance(left, _p1);
 			}
 		}
-		if (isBetween(_boundingBox->y, _boundingBox->h + _boundingBox->y, right.y) && isBetween(_p1.x, _p2.x, left.x)) {
+		if (isBetween(_boundingBox->y, _boundingBox->h + _boundingBox->y, right.y) && isBetween(_p1.x, _p2.x, right.x)) {
 			if (getDistance(right, _p2) < distance) {
 				final = right;
 				distance = getDistance(right, _p1);
 			}
 		}
-		if (isBetween(_boundingBox->x, _boundingBox->w + _boundingBox->x, top.x) && isBetween(_p1.x, _p2.x, left.x)) {
+		if (isBetween(_boundingBox->x, _boundingBox->w + _boundingBox->x, top.x) && isBetween(_p1.y, _p2.y, top.y)) {
 			if (getDistance(top, _p2) < distance) {
 				final = top;
 				distance = getDistance(top, _p1);
 			}
 		}
-		if (isBetween(_boundingBox->x, _boundingBox->w + _boundingBox->x, bottom.x) && isBetween(_p1.x, _p2.x, left.x)) {
+		if (isBetween(_boundingBox->x, _boundingBox->w + _boundingBox->x, bottom.x) && isBetween(_p1.y, _p2.y, bottom.y)) {
 			if (getDistance(bottom, _p1) < distance) {
 				final = bottom;
 				distance = getDistance(bottom, _p1);
