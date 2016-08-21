@@ -1,6 +1,3 @@
-
-#include <GameEngine\GameEngine.h>
-
 #include "Platform.h"
 
 Platform::Platform(){}

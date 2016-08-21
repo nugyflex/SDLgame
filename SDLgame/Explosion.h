@@ -1,30 +1,28 @@
 #pragma once
 
-#include <glm.hpp>
-
 #include "WorldItem.h"
 
 class Explosion : public WorldItem {
 public:
 	Explosion();
 	~Explosion();
-	void run();
-	GameEngine::Light getLight();
-	void loadSpriteSheet();
+	virtual void run() override;
+	GameEngine::Light getLight() override;
+	void loadSpriteSheet() override;
 };
 class ExplosionParticle : public WorldItem {
 public:
 	ExplosionParticle();
 	~ExplosionParticle();
-	void run();
-	GameEngine::Light getLight();
-	void loadSpriteSheet();
+	void run() override;
+	GameEngine::Light getLight() override;
+	void loadSpriteSheet() override;
 };
 class FireParticle : public WorldItem {
 public:
 	FireParticle();
 	~FireParticle();
-	void run();
-	GameEngine::Light getLight();
-	void loadSpriteSheet();
+	void run() override;
+	GameEngine::Light getLight() override;
+	void loadSpriteSheet() override;
 };

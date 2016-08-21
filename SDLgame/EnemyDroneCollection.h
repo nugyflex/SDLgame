@@ -2,11 +2,10 @@
 
 #include <vector>
 
-#include <GameEngine\CollisionDetection.h>
-#include <GameEngine\Camera2D.h>
+#include "GameEngine/CollisionDetection.h"
+#include "GameEngine/Camera2D.h"
 
 #include "EnemyDrone.h"
-#include "Projectile.h"
 #include "WorldItemCollection.h"
 
 class EnemyDroneCollection {

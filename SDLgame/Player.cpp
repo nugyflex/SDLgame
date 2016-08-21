@@ -1,8 +1,5 @@
 
 #include <SDL.h>
-#include <iostream>
-
-#include <GameEngine\GameEngine.h>
 
 #include "Player.h"
 

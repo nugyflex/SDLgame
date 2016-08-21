@@ -41,7 +41,8 @@ void main() {
 	}
 	else {
 		color = color * newLightColor;
-		color = color*ambientLight;
+		color = color * ambientLight;
+		color *= 2;
 	}
 	color.a = textureColor.a;
 	if (fragmentColor.a > 0) {

@@ -20,7 +20,10 @@ EnemyDrone::~EnemyDrone()
 }
 void EnemyDrone::draw()
 {
-	spriteSheet.run();
+	if (mode == active)
+	{
+		spriteSheet.run();
+	}
 	spriteSheet.draw(boundingBox.x + spriteSheetOffSet.x, boundingBox.y + spriteSheetOffSet.y);
 }
 

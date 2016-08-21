@@ -10,8 +10,8 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(2500),
-	_screenHeight(1500),
+	_screenWidth(2000),
+	_screenHeight(1000),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f),
@@ -47,8 +47,8 @@ void MainGame::initSystems() {
     _fpsLimiter.init(_maxFPS);
 	projectiles.init(&_spriteBatch);
 	Lights.setMaxLights(200);
-	Lights.addLight(0, 9000, 1, 1, 1, 12500);
 	Lights.addLight(-400, -7100, 0.2, 0.2, 1, 100);
+	Lights.addLight(0, 10000, 1, 1, 1, 7500);
 	Platforms.addPlatform(-200, 3000, 800, 16);
 	Platforms.addPlatform(-800, 3000, 400, 16);
 	Platforms.addPlatform(-400, 3040, 400, 16);
@@ -190,8 +190,7 @@ void MainGame::processInput() {
 			case SDL_MOUSEBUTTONUP:
 				_inputManager.releaseKey(evnt.button.button);
 				break;
-				
-		}
+        }
     }
 	/*
     if (_inputManager.isKeyPressed(SDLK_w)) {
@@ -223,7 +222,6 @@ void MainGame::processInput() {
 			drones.add(mouseCoords.x, -mouseCoords.y);
 		}
 	}
-
 }
 
 //Draws the game using the almighty OpenGL
@@ -297,20 +295,13 @@ void MainGame::drawGame() {
 
     _spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
 	GameEngine::drawRect(300, 0, 600, 600, 1, color, &_spriteBatch);
-	_spriteBatch.drawLine(glm::vec2(0, 3200), glm::vec2(100, 3100), 255, 150, 0, 255);
+	//_spriteBatch.drawLine(glm::vec2(0, 3200), glm::vec2(100, 3100), 255, 150, 0, 255);
 	//_spriteBatch.drawLine(glm::vec2(0, 3200), glm::vec2(100, 3100), color);
 	Platforms.drawPlatforms(&_spriteBatch);
 	player.draw();
 	projectiles.draw();
-
-	drawText.draw(0, 0, "a", 2);
-	drawText.draw(10, 0, 1, 2);
-	drawText.draw(20, 0, 2, 2);
-	drawText.draw(30, 0, 3, 1);
-	drawText.draw(40, 0, 4, 1); 
 	//drawText.draw(-30, 3100, "a", 1);
 	WorldItems.drawItems();
-	drawText.drawAll(-30, 3100, 3);
 	drones.draw();
 	if (_inputManager.isKeyPressed(SDLK_TAB)) {
 		player.drawInventory(_camera.getPosition() - _camera.getVelocity());

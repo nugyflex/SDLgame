@@ -1,8 +1,6 @@
-﻿  CollisionDetection.cpp
-c:\users\jack\documents\github\sdlgame\gameengine\collisiondetection.cpp(345): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\jack\documents\github\sdlgame\gameengine\collisiondetection.cpp(351): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\jack\documents\github\sdlgame\gameengine\collisiondetection.cpp(357): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\jack\documents\github\sdlgame\gameengine\collisiondetection.cpp(363): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+﻿  DrawText.cpp
+c:\users\jack\documents\github\sdlgame\gameengine\drawtext.cpp(81): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\gameengine\drawtext.cpp(174): warning C4715: 'GameEngine::DrawText::getIndexFromString': not all control paths return a value
 glew32.lib(glew32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
 glew32.lib(glew32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
 opengl32.lib(OPENGL32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored

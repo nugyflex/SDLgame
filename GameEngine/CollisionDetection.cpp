@@ -206,18 +206,18 @@ namespace GameEngine {
 	void CollisionDetection::correctPosition(BoundingBox* bb1, BoundingBox* bb2) {
 		collisionResult result;
 		if (bb1->x + bb1->w > bb2->x && bb1->x < bb2->x + bb2->w) {
-			if (bb1->y <= bb2->y && bb1->y + bb1->h + bb1->yv > bb2->y) {
+			if (bb1->y < bb2->y && bb1->y + bb1->h + bb1->yv > bb2->y) {
 				result.bottom = true;
 			}
-			else if (bb1->y + bb1->h >= bb2->y + bb2->h && bb1->y + bb1->yv < bb2->y + bb2->h) {
+			else if (bb1->y + bb1->h > bb2->y + bb2->h && bb1->y + bb1->yv < bb2->y + bb2->h) {
 				result.top = true;
 			}
 		}
 		if (bb1->y + bb1->h > bb2->y && bb1->y < bb2->y + bb2->h) {
-			if (bb1->x <= bb2->x && bb1->x + bb1->w + bb1->xv > bb2->x) {
+			if (bb1->x < bb2->x && bb1->x + bb1->w + bb1->xv > bb2->x) {
 				result.left = true;
 			}
-			else if (bb1->x + bb1->w >= bb2->x + bb2->w && bb1->x + bb1->xv < bb2->x + bb2->w) {
+			else if (bb1->x + bb1->w > bb2->x + bb2->w && bb1->x + bb1->xv < bb2->x + bb2->w) {
 				result.right = true;
 			}
 		}
@@ -308,9 +308,9 @@ namespace GameEngine {
 			return glm::vec2(((_p1.x*_p2.y - _p1.y*_p2.x)*(_p3.x - _p4.x) - (_p1.x - _p2.x)*(_p3.x*_p4.y - _p3.y*_p4.x)) / ((_p1.x - _p2.x)*(_p3.y - _p4.y) - (_p1.y - _p2.y)*(_p3.x - _p4.x)), ((_p1.x*_p2.y - _p1.y*_p2.x)*(_p3.y - _p4.y) - (_p1.y - _p2.y)*(_p3.x*_p4.y - _p3.y*_p4.x)) / ((_p1.x - _p2.x)*(_p3.y - _p4.y) - (_p1.y - _p2.y)*(_p3.x - _p4.x)));
 		}
 	}
-	float CollisionDetection::getDistance(glm::vec2 p1, glm::vec2 p2)
+	float CollisionDetection::getDistance(glm::vec2 _p1, glm::vec2 _p2)
 	{
-		return sqrt(pow(p2.x - p1.x, 2) + pow(p2.y - p1.y,2));
+		return sqrt(pow(_p2.x - _p1.x, 2) + pow(_p2.y - _p1.y,2));
 	}
 	bool CollisionDetection::lineRectCollision(glm::vec2 _p1, glm::vec2 _p2, BoundingBox* _boundingBox) {
 		glm::vec2 left = getLineIntersect(_p1, _p2, glm::vec2(_boundingBox->x, _boundingBox->y), glm::vec2(_boundingBox->x, _boundingBox->y + _boundingBox->h));

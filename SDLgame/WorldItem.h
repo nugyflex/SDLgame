@@ -11,7 +11,7 @@ enum WorldItemType { flare, flareParticle, glowStick, default, explosion, firePa
 class WorldItem {
 public:
 	WorldItem();
-	~WorldItem();
+	virtual ~WorldItem();
 	void init(float _x, float _y, float _w, float _h);
 	void init(float _x, float _y, float _w, float _h, int _timer);
 	BoundingBox* getBoundingBox();

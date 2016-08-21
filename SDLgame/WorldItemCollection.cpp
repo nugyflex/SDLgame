@@ -17,9 +17,12 @@ void WorldItemCollection::addItem(WorldItemType _type, float _x, float _y, float
 		tempLight = worldItemVector[worldItemVector.size() - 1]->getLight();
 		lightID = LC->addLight(tempLight);
 		worldItemVector[worldItemVector.size() - 1]->init(0, 0, 1, 1, 700);
+		worldItemVector[worldItemVector.size() - 1]->linkSpriteBatch(sb);
 		worldItemVector[worldItemVector.size() - 1]->getBoundingBox()->yv = _yv;
 		worldItemVector[worldItemVector.size() - 1]->getBoundingBox()->xv = _xv;
 		worldItemVector[worldItemVector.size() - 1]->setType(flare);
+		worldItemVector[worldItemVector.size() - 1]->hasSpriteSheet = true;
+		worldItemVector[worldItemVector.size() - 1]->loadSpriteSheet();
 		break;
 	case flareParticle:
 		worldItemVector.push_back(new FlareParticle());
@@ -59,9 +62,12 @@ void WorldItemCollection::addItem(WorldItemType _type, float _x, float _y, float
 		tempLight = worldItemVector[worldItemVector.size() - 1]->getLight();
 		lightID = LC->addLight(tempLight);
 		worldItemVector[worldItemVector.size() - 1]->init(0, 0, 1, 1);
+		worldItemVector[worldItemVector.size() - 1]->linkSpriteBatch(sb);
 		worldItemVector[worldItemVector.size() - 1]->getBoundingBox()->yv = _yv;
 		worldItemVector[worldItemVector.size() - 1]->getBoundingBox()->xv = _xv;
 		worldItemVector[worldItemVector.size() - 1]->setType(glowStick);
+		worldItemVector[worldItemVector.size() - 1]->hasSpriteSheet = true;
+		worldItemVector[worldItemVector.size() - 1]->loadSpriteSheet();
 		break;
 	case default:
 
@@ -85,6 +91,8 @@ void WorldItemCollection::addItem(WorldItemType _type, float _x, float _y) {
 		lightID = LC->addLight(tempLight);
 		worldItemVector[worldItemVector.size() - 1]->init(0, 0, 1, 1, 700);
 		worldItemVector[worldItemVector.size() - 1]->setType(flare);
+		worldItemVector[worldItemVector.size() - 1]->hasSpriteSheet = true;
+		worldItemVector[worldItemVector.size() - 1]->loadSpriteSheet();
 		break;
 	case explosion:
 		worldItemVector.push_back(new Explosion());
@@ -134,7 +142,8 @@ void WorldItemCollection::runItems() {
 		worldItemVector[i]->run();
 		worldItemVector[i]->runTimer();
 		if (worldItemVector[i]->getType() == flare && ((double)rand() / (RAND_MAX)) > 0.85) {
-			addItem(flareParticle, worldItemVector[i]->getBoundingBox()->x, worldItemVector[i]->getBoundingBox()->y, ((double)rand() / (RAND_MAX)) * 6 - 3, ((double)rand() / (RAND_MAX)) * 16);
+			//addItem(flareParticle, worldItemVector[i]->getBoundingBox()->x, worldItemVector[i]->getBoundingBox()->y, ((double)rand() / (RAND_MAX)) * 6 - 3, ((double)rand() / (RAND_MAX)) * 16);
+			addItem(flareParticle, worldItemVector[i]->getBoundingBox()->x, worldItemVector[i]->getBoundingBox()->y+1, ((double)rand() / (RAND_MAX)) * -8, ((double)rand() / (RAND_MAX)) * 20 - 10);
 		}
 		if (worldItemVector[i]->getType() == explosion) {
 			if (((double)rand() / (RAND_MAX)) > 0.4 && worldItemVector[i]->getTimer() > 25) {

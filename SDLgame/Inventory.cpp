@@ -82,6 +82,7 @@ bool Inventory::removeItem(inventoryitemType _type, int _amount) {
 void Inventory::draw(float _x, float _y) {
 	_x = _x - (4 * cellDrawSize) / 2;
 	_y = _y - (4 * cellDrawSize) / 2;
+	drawText->drawString(_x, _y + cellDrawSize * 4.2, "inventory", 2);
 	GameEngine::Color color;
 	color.r = 120;
 	color.g = 200;

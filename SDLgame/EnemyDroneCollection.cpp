@@ -57,7 +57,7 @@ void EnemyDroneCollection::draw() {
 	for (int i = 0; i < enemyDroneVector.size(); i++)
 	{
 		if (enemyDroneVector[i]->getMode() == active && LC->getRadius(enemyDroneVector[i]->getLightID()) < 20) {
-			LC->addToRadius(enemyDroneVector[i]->getLightID(), 1);
+			LC->addToRadius(enemyDroneVector[i]->getLightID(), 0.5);
 		}
 		enemyDroneVector[i]->draw();
 	}

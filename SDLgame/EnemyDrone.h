@@ -1,11 +1,9 @@
 #pragma once
 
-#include <GameEngine\SpriteSheet.h>
-#include <GameEngine\SpriteBatch.h>
-#include <GameEngine\BoundingBox.h>
-#include <GameEngine\GameEngine.h>
-
-#include "ProjectileCollection.h"
+#include "GameEngine/SpriteSheet.h"
+#include "GameEngine/SpriteBatch.h"
+#include <GameEngine/BoundingBox.h>
+#include <GameEngine/GameEngine.h>
 
 enum behaviorType { active, inactive };
 enum hoverDirection { up, down };

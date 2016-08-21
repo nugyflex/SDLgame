@@ -1,5 +1,5 @@
 #include "DrawText.h"
-
+#include <sstream>
 
 
 namespace GameEngine {
@@ -75,6 +75,15 @@ namespace GameEngine {
 		color.a = 255;
 		sb->draw(glm::vec4(_x, _y, 7.0f * _scale, 10.0f * _scale), glm::vec4(7.0f*test / 252.0f, 0, 7.0f / 252.0f, 1), texture.id, 0.0f, color, -1);
 	}
+
+	void DrawText::drawString(float _x, float _y, std::string _string, float _scale)
+	{
+		for (int i = 0; i < _string.size(); i++)
+		{
+			draw(_x + i*(7 * _scale + 2), _y, std::string(1, _string[i]), _scale);
+		}
+	}
+
 	void DrawText::drawAll(float _x, float _y, float _scale) {
 		for (int i = 0; i < 36; i++) {
 			GameEngine::Color color;
@@ -89,7 +98,6 @@ namespace GameEngine {
 		return 26 + _int;
 	}
 	int DrawText::getIndexFromString(std::string _string) {
-		return 0;
 		if (_string == "a") {
 			return 0;
 		} else 	if (_string == "b") {

@@ -12,6 +12,16 @@ void Flare::run() {
 	}
 	boundingBox.onGround = false;
 }
+
+void Flare::loadSpriteSheet()
+{
+	centerSpriteSheet = false;
+	boundingBox.w = 12;
+	boundingBox.h = 2;
+	spriteSheet.init(sb, 6, 1, 2, 1, 1, 0, 0);
+	spriteSheet.loadTexture("Textures/flare.png");
+}
+
 GameEngine::Light Flare::getLight() {
 	GameEngine::Light light;
 	light.radius = 0;
