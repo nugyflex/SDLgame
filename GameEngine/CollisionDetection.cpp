@@ -373,4 +373,36 @@ namespace GameEngine {
 			else if (_3 < _2 && _3 > _1){return true;}else{return false;}
 		}
 	}
+
+	bool CollisionDetection::doLinesColide(glm::vec2 _p1, glm::vec2 _p2, glm::vec2 _p3, glm::vec2 _p4)
+	{
+		glm::vec2 intersect = getLineIntersect(_p1, _p2, _p3, _p4);
+		if (isBetween(_p1.y, _p2.y, intersect.y) && isBetween(_p3.y, _p4.y, intersect.y) && isBetween(_p1.x, _p2.x, intersect.x) && isBetween(_p3.x, _p4.x, intersect.x)) {
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	float CollisionDetection::getAngle(glm::vec2 _p1, glm::vec2 _p2)
+	{
+		if (_p1.x < _p2.x && _p1.y < _p2.y)
+		{//top right
+			return atan((_p2.x - _p1.x) / (_p2.y - _p1.y));
+		}
+		else 	if (_p1.x < _p2.x && _p1.y > _p2.y)
+		{//bottom right
+			return 3.1415 - atan((_p2.x - _p1.x) / (_p1.y - _p2.y));
+		}
+		else if (_p1.x > _p2.x && _p1.y > _p2.y)
+		{// bottom left
+			return atan((_p1.x - _p2.x) / (_p1.y - _p2.y)) + 3.1415;
+		}
+		else if (_p1.x > _p2.x && _p1.y < _p2.y)
+		{// top left
+			return 2 * 3.1415 - atan((_p1.x - _p2.x) / (_p2.y - _p1.y));
+		}
+	}
 }

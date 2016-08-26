@@ -55,10 +55,13 @@ public:
 
     // Adds a glyph to the spritebatch
     void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color);
+	void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth);
+	void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, float angle);
+	void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, float _lightAlpha, float angle);
 	void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color, float _lightAlpha);
 	void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color, float _lightAlpha, float _angle);
-	void drawLine(glm::vec2 _p1, glm::vec2 _p2, const Color& color);
-	void drawLine(glm::vec2 _p1, glm::vec2 _p2, float r, float g, float b, float a);
+	void drawLine(glm::vec2 _p1, glm::vec2 _p2, const Color& color, float _thickness);
+	void drawLine(glm::vec2 _p1, glm::vec2 _p2, float r, float g, float b, float a, float _thickness);
     // Renders the entire SpriteBatch to the screen
     void renderBatch();
 

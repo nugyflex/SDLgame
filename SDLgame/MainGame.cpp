@@ -75,7 +75,7 @@ void MainGame::initSystems() {
 	drawText.init(&_spriteBatch);
 	_camera.setScreenShakeIntensity(10);
 	WorldItems.addItem(explosion, -100, 3200);
-	drones.init(&_spriteBatch, &WorldItems, &_camera, &Lights);
+	drones.init(&_spriteBatch, &WorldItems, &_camera, &Lights, &projectiles);
 	drones.add(0, 3200);
 	drones.addTarget(player.getBoundingBox());
 }
@@ -131,14 +131,29 @@ void MainGame::updateGame() {
 		if (projectiles.getToDelete(i))
 		{
 			projectiles.remove(i);
+			i--;
 		}
 		else {
-			for (int j = 0; j < drones.getVectorSize(); j++) {
-				if (cd.lineRectCollision(projectiles.getProjectile(i)->getPosition(), projectiles.getProjectile(i)->getLastPosition(), drones.getBoundingBox(j))) {
+			if (projectiles.getProjectile(i)->getDamageType() == damageDrone) {
+				for (int j = 0; j < drones.getVectorSize(); j++) {
+					if (cd.lineRectCollision(projectiles.getProjectile(i)->getPosition(), projectiles.getProjectile(i)->getLastPosition(), drones.getBoundingBox(j))) {
+						remove = true;
+						//WorldItems.addItem(explosion, cd.getLineRectCollision(projectiles.getProjectile(i)->getPosition(), projectiles.getProjectile(i)->getLastPosition(), drones.getBoundingBox(j)));
+						projectiles.getProjectile(i)->setPosition(cd.getLineRectCollision(projectiles.getProjectile(i)->getPosition(), projectiles.getProjectile(i)->getLastPosition(), drones.getBoundingBox(j)));
+						drones.reduceHealth(j, 2);
+					}
+				}
+			} else if (projectiles.getProjectile(i)->getDamageType() == damagePlayer)
+			{
+				if (cd.doLinesColide(player.shield1, player.shield2, projectiles.getProjectile(i)->getPosition(), projectiles.getProjectile(i)->getLastPosition()))
+				{
 					remove = true;
-					//WorldItems.addItem(explosion, cd.getLineRectCollision(projectiles.getProjectile(i)->getPosition(), projectiles.getProjectile(i)->getLastPosition(), drones.getBoundingBox(j)));
-					projectiles.getProjectile(i)->setPosition(cd.getLineRectCollision(projectiles.getProjectile(i)->getPosition(), projectiles.getProjectile(i)->getLastPosition(), drones.getBoundingBox(j)));
-					drones.reduceHealth(j, 2);
+					projectiles.getProjectile(i)->setPosition(cd.getLineIntersect(player.shield1, player.shield2, projectiles.getProjectile(i)->getPosition(), projectiles.getProjectile(i)->getLastPosition()));
+				}
+				if (cd.lineRectCollision(projectiles.getProjectile(i)->getPosition(), projectiles.getProjectile(i)->getLastPosition(), player.getBoundingBox())) {
+					remove = true;
+					projectiles.getProjectile(i)->setPosition(cd.getLineRectCollision(projectiles.getProjectile(i)->getPosition(), projectiles.getProjectile(i)->getLastPosition(), player.getBoundingBox()));
+					player.reduceHealth(2);
 				}
 			}
 			if (remove) {
@@ -225,7 +240,7 @@ void MainGame::processInput() {
 }
 
 //Draws the game using the almighty OpenGL
-void MainGame::drawGame() {
+void MainGame::drawGame() { 
 	
 	WorldItems.linkToLights();
 	Lights.runFlicker();

@@ -4,9 +4,10 @@
 
 EnemyDrone::EnemyDrone() {}
 
-EnemyDrone::EnemyDrone(float _x, float _y, GameEngine::SpriteBatch* _sb)
+EnemyDrone::EnemyDrone(float _x, float _y, GameEngine::SpriteBatch* _sb, ProjectileCollection* _pc)
 {
 	sb = _sb;
+	pc = _pc;
 	boundingBox.x = _x;
 	boundingBox.y = _y;
 	boundingBox.w = 18;
@@ -84,6 +85,7 @@ void EnemyDrone::load()
 	spriteSheet.init(sb, 9, 19, 2, 4, 9, 0, 0);
 	spriteSheet.loadTexture("Textures/enemyDrone1.png");
 	maxShootCooldown = 20;
+	shootCooldown = maxShootCooldown;
 	health = 10;
 	vel = 2.5;
 	hoverVel = -0.5;
@@ -91,8 +93,12 @@ void EnemyDrone::load()
 }
 void EnemyDrone::run()
 {
-	shootCooldown--;
+	if (mode == active)
+	{
+		shootCooldown--;
+	}
 	calcNewPos(target.x, target.y);
+	attack();
 }
 void EnemyDrone::setPosition(float _x, float _y)
 {
@@ -144,6 +150,15 @@ glm::vec2 EnemyDrone::getLightOffSet()
 behaviorType EnemyDrone::getMode()
 {
 	return mode;
+}
+
+void EnemyDrone::attack()
+{
+	if (sqrt(pow(boundingBox.x - target.x, 2) + pow(boundingBox.y - target.y, 2)) < 400 && shootCooldown <= 0 && mode == active)
+	{
+		shootCooldown = maxShootCooldown;
+		pc->launch(glm::vec2(boundingBox.x + boundingBox.w/2, boundingBox.y + boundingBox.h/2), glm::vec2(target.x, target.y), 15, damagePlayer);
+	}
 }
 
 GameEngine::Light EnemyDrone::getLight()

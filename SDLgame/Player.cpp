@@ -18,6 +18,7 @@ void Player::init(float _x, float _y, WorldItemCollection* _itemCollectionPointe
 	boundingBox.xv = 0;
 	boundingBox.yv = 0;
 	vel = 4;
+	health = 10;
 	jumpLatch = true;
 	useLatch = true;
 	itemCollectionPointer = _itemCollectionPointer;
@@ -33,6 +34,8 @@ void Player::init(float _x, float _y, WorldItemCollection* _itemCollectionPointe
 	standRight.loadTexture("textures/player_standing_right.png");
 	standLeft.init(sb, 10, 25, 2, 1, 1, -1, 0);
 	standLeft.loadTexture("textures/player_standing_left.png");
+	shieldLength = 100;
+	shieldDistance = 80;
 }
 BoundingBox* Player::getBoundingBox() {
 	return &boundingBox;
@@ -88,9 +91,16 @@ void Player::handleInput(GameEngine::InputManager* _im, GameEngine::Camera2D* _c
 		glm::vec2 mouseCoords = _im->getMouseCoords();
 		mouseCoords = _c->convertScreenToWorld(mouseCoords);
 		if (!_im->lastMouseL) {
-			projectileCollectionPointer->launch(glm::vec2(boundingBox.x, boundingBox.y), glm::vec2(mouseCoords.x, -mouseCoords.y), 30);
+			projectileCollectionPointer->launch(glm::vec2(boundingBox.x, boundingBox.y), glm::vec2(mouseCoords.x, -mouseCoords.y), 30, damageDrone);
 		}
 	}
+	glm::vec2 mouseCoords = _im->getMouseCoords();
+	mouseCoords = _c->convertScreenToWorld(mouseCoords);
+	mouseCoords.y *= -1;
+	float theta = atan((mouseCoords.x - (boundingBox.x + boundingBox.w / 2)) /  (mouseCoords.y - (boundingBox.y + boundingBox.h / 2)));
+	float alpha = atan((mouseCoords.y - (boundingBox.y + boundingBox.h / 2)) / -(mouseCoords.x - (boundingBox.x + boundingBox.w / 2)));
+	shield1 = glm::vec2(shieldDistance * sin(theta) + (boundingBox.x + boundingBox.w / 2) + sin(alpha)*shieldLength / 2, shieldDistance * cos(theta) + (boundingBox.y + boundingBox.h / 2) + cos(alpha)*shieldLength / 2);
+	shield2 = glm::vec2(shieldDistance * sin(theta) + (boundingBox.x + boundingBox.w / 2) - sin(alpha)*shieldLength / 2, shieldDistance * cos(theta) + (boundingBox.y + boundingBox.h / 2) - cos(alpha)*shieldLength / 2);
 }
 void Player::calcNewPos() {
 	boundingBox.yv -= 0.5;
@@ -122,16 +132,16 @@ void Player::draw() {
 			}
 		}
 	}
-
+	
+	sb->drawLine(shield1, shield2, 10, 255, 10, 255, 1);
 	//GameEngine::drawRect(boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h, 1, color, sb);
 	//sb->draw(glm::vec4(boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h), glm::vec4((1.0f / 8.0f)*frame, 0, 1.0f/8.0f, 1), texture.id, 1, color, 1);
 }
 void Player::drawInventory(glm::vec2 _position) {
-	GameEngine::Color color;
-	color.r = 150;
-	color.g = 150;
-	color.b = 150;
-	color.a = 255;
 	inventory.draw(_position.x, _position.y);
-	
+}
+
+void Player::reduceHealth(int _damage)
+{
+	health -= _damage;
 }

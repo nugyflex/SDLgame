@@ -21,6 +21,9 @@ public:
 	void calcNewPos();
 	void draw();
 	void drawInventory(glm::vec2 _position);
+	void reduceHealth(int _damage);
+	glm::vec2 shield1;
+	glm::vec2 shield2;
 private:
 	WorldItemCollection* itemCollectionPointer;
 	BoundingBox boundingBox;
@@ -36,6 +39,9 @@ private:
 	bool lastDirectionRight = true;
 	int frame = 0;
 	int fs = 0;
+	float health;
+	float shieldLength;
+	float shieldDistance;
 	ProjectileCollection* projectileCollectionPointer;
 };
 

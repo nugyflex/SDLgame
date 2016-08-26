@@ -19,6 +19,8 @@ namespace GameEngine {
 		glm::vec2 getLineRectCollision(glm::vec2 _p1, glm::vec2 _p2, BoundingBox* _boundingBox);
 		float getDistance(glm::vec2 p1, glm::vec2 p2);
 		bool isBetween(float _1, float _2, float _3);
+		bool doLinesColide(glm::vec2 _p1, glm::vec2 _p2, glm::vec2 _p3, glm::vec2 _p4);
+		float getAngle(glm::vec2 _p1, glm::vec2 _p2);
 	private:
 		bool test1(glm::vec4* _rect1, glm::vec4* _rect2);
 		bool test2(glm::vec4* _rect1, glm::vec4* _rect2);

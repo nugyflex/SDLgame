@@ -12,7 +12,7 @@ class EnemyDroneCollection {
 public:
 	EnemyDroneCollection();
 	~EnemyDroneCollection();
-	void init(GameEngine::SpriteBatch* _sb, WorldItemCollection* _worldItems, GameEngine::Camera2D* _camera, LightCollection* _LC);
+	void init(GameEngine::SpriteBatch* _sb, WorldItemCollection* _worldItems, GameEngine::Camera2D* _camera, LightCollection* _LC, ProjectileCollection* _pc);
 	void add(float x, float y);
 	void addTarget(BoundingBox* _boundingBox);
 	void draw();
@@ -32,4 +32,5 @@ private:
 	WorldItemCollection* worldItems;
 	GameEngine::Camera2D* camera;
 	LightCollection* LC;
+	ProjectileCollection* pc;
 };

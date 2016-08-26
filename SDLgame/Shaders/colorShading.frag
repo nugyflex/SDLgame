@@ -5,14 +5,12 @@ in vec2 fragmentPosition;
 in vec4 fragmentColor;
 in vec2 fragmentUV;
 in float fragmentLightAlpha;
-in float fragmentType;
-in vec2 fragmentSize;
 
 uniform int lightArraySize;
 uniform float lightColours[200*3];
 uniform float lightPositions[200*2];
 uniform float lightRadii[200];
-uniform vec2 vignette;
+uniform vec2 vignette; 
 //This is the 3 component float vector that gets outputted to the screen
 //for each pixel.
 out vec4 color;
@@ -21,7 +19,8 @@ uniform sampler2D mySampler;
 uniform float ambientLight;
 void main() {
 	vec4 textureColor = texture(mySampler, fragmentUV);
-	color = textureColor+fragmentColor;
+
+	color = textureColor + fragmentColor;
 	vec4 newLightColor = vec4(0.1, 0.1, 0.1, 1);
 	float newLightIntensity = 0;
 	for(int j = 0; j < lightArraySize; j++)

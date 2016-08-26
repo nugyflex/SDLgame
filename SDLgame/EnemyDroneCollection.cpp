@@ -3,14 +3,15 @@
 
 EnemyDroneCollection::EnemyDroneCollection() {}
 EnemyDroneCollection::~EnemyDroneCollection() {}
-void EnemyDroneCollection::init(GameEngine::SpriteBatch* _sb, WorldItemCollection* _worldItems, GameEngine::Camera2D* _camera, LightCollection* _LC) {
+void EnemyDroneCollection::init(GameEngine::SpriteBatch* _sb, WorldItemCollection* _worldItems, GameEngine::Camera2D* _camera, LightCollection* _LC, ProjectileCollection* _pc) {
 	sb = _sb;
 	worldItems = _worldItems;
 	camera = _camera;
 	LC = _LC;
+	pc = _pc;
 }
 void EnemyDroneCollection::add(float _x, float _y) {
-	enemyDroneVector.push_back(new EnemyDrone(_x, _y, sb));
+	enemyDroneVector.push_back(new EnemyDrone(_x, _y, sb, pc));
 	enemyDroneVector[enemyDroneVector.size() - 1]->setPosition(_x, _y);
 	enemyDroneVector[enemyDroneVector.size() - 1]->load();
 	GameEngine::Light tempLight;
@@ -21,7 +22,7 @@ void EnemyDroneCollection::add(float _x, float _y) {
 void EnemyDroneCollection::run() {
 	for (int i = 0; i < enemyDroneVector.size(); i++)
 	{
-		enemyDroneVector[i]->setTarget(glm::vec2(targets[getClosestTarget(i)]->x, targets[getClosestTarget(i)]->y));
+		enemyDroneVector[i]->setTarget(glm::vec2(targets[getClosestTarget(i)]->x + targets[getClosestTarget(i)]->w/2, targets[getClosestTarget(i)]->y + targets[getClosestTarget(i)]->h/2));
 		enemyDroneVector[i]->run();
 		if (enemyDroneVector[i]->getHealth() <= 0) {
 			remove(i);
@@ -77,8 +78,8 @@ int EnemyDroneCollection::getClosestTarget(int _index)
 	float distance = 1000000;
 	int index = -1;
 	for (int i = 0; i < targets.size(); i++) {
-		if (cd.getDistance(glm::vec2(targets[i]->x, targets[i]->y), enemyDroneVector[_index]->getPosition()) < distance) {
-			distance = cd.getDistance(glm::vec2(targets[i]->x, targets[i]->y), enemyDroneVector[_index]->getPosition());
+		if (cd.getDistance(glm::vec2(targets[i]->x + targets[i]->w/2, targets[i]->y + targets[i]->h / 2), enemyDroneVector[_index]->getPosition()) < distance) {
+			distance = cd.getDistance(glm::vec2(targets[i]->x + targets[i]->w / 2, targets[i]->y + targets[i]->h), enemyDroneVector[_index]->getPosition());
 			index = i;
 		}
 	}

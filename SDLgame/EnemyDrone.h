@@ -5,13 +5,15 @@
 #include <GameEngine/BoundingBox.h>
 #include <GameEngine/GameEngine.h>
 
+#include "ProjectileCollection.h"
+
 enum behaviorType { active, inactive };
 enum hoverDirection { up, down };
 class EnemyDrone {
 
 public:
 	EnemyDrone();
-	EnemyDrone(float x, float y, GameEngine::SpriteBatch* _sb);
+	EnemyDrone(float x, float y, GameEngine::SpriteBatch* _sb, ProjectileCollection* _pc);
 	~EnemyDrone();
 	void load();
 	void run();
@@ -30,6 +32,7 @@ public:
 	glm::vec2 getLightOffSet();;
 	void setLightID(int _ID) { lightID = _ID; }
 	behaviorType getMode();
+	void attack();
 private:
 	GameEngine::Light Light;
 	int lightID;
@@ -48,4 +51,5 @@ private:
 	glm::vec2 target;
 	glm::vec2 spriteSheetOffSet;
 	glm::vec2 lightOffSet;
+	ProjectileCollection* pc;
 };

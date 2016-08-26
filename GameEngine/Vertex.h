@@ -20,6 +20,7 @@ namespace GameEngine {
         float u;
         float v;
     };
+	
 
     //The vertex definition
     struct Vertex {
