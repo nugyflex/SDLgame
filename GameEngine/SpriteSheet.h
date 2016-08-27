@@ -12,6 +12,8 @@ namespace GameEngine {
 		void loadTexture(std::string _path);
 		void run();
 		void draw(float _x, float _y);
+		void draw(float _x, float _y, float _angle);
+		void draw(float _x, float _y, float _angle, float _lightAlpha);
 		void reset();
 	private:
 		int frame;

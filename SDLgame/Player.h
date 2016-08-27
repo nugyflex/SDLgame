@@ -36,12 +36,14 @@ private:
 	GameEngine::SpriteSheet walkLeft;
 	GameEngine::SpriteSheet standRight;
 	GameEngine::SpriteSheet standLeft;
+	GameEngine::SpriteSheet shieldTexture;
 	bool lastDirectionRight = true;
 	int frame = 0;
 	int fs = 0;
 	float health;
 	float shieldLength;
 	float shieldDistance;
+	float shieldAngle;
 	ProjectileCollection* projectileCollectionPointer;
 };
 
