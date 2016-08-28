@@ -196,6 +196,7 @@ void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuin
 	color.a = 0;
 	draw(destRect, uvRect, texture, depth, color);
 }
+
 void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, float _lightAlpha, float angle) {
 
 	Color color;

@@ -26,17 +26,24 @@ public:
 	glm::vec2 shield2;
 private:
 	WorldItemCollection* itemCollectionPointer;
+	GameEngine::SpriteBatch* sb;
+	ProjectileCollection* projectileCollectionPointer;
 	BoundingBox boundingBox;
 	float vel;
 	bool jumpLatch;
 	bool useLatch;
-	GameEngine::SpriteBatch* sb;
+
 	Inventory inventory;
+
 	GameEngine::SpriteSheet walkRight;
 	GameEngine::SpriteSheet walkLeft;
 	GameEngine::SpriteSheet standRight;
 	GameEngine::SpriteSheet standLeft;
-	GameEngine::SpriteSheet shieldTexture;
+	GameEngine::GLTexture shieldTexture;
+
+	glm::vec2 shieldSize;
+	glm::vec2 shieldTexturePos;
+	glm::vec2 shieldTextureVel;
 	bool lastDirectionRight = true;
 	int frame = 0;
 	int fs = 0;
@@ -44,6 +51,6 @@ private:
 	float shieldLength;
 	float shieldDistance;
 	float shieldAngle;
-	ProjectileCollection* projectileCollectionPointer;
+	
 };
 
