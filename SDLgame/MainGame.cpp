@@ -10,8 +10,8 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(2000),
-	_screenHeight(1000),
+	_screenWidth(1600),
+	_screenHeight(800),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f),
@@ -48,7 +48,8 @@ void MainGame::initSystems() {
 	projectiles.init(&_spriteBatch);
 	Lights.setMaxLights(200);
 	Lights.addLight(-400, -7100, 0.2, 0.2, 1, 100);
-	Lights.addLight(0, 10000, 1, 1, 1, 7500);
+	Lights.addLight(0, 10000, 1, 1, 1, 15000);
+	Platforms.addPlatform(500, 3080, 100, 16);
 	Platforms.addPlatform(-200, 3000, 800, 16);
 	Platforms.addPlatform(-800, 3000, 400, 16);
 	Platforms.addPlatform(-400, 3040, 400, 16);
@@ -225,10 +226,10 @@ void MainGame::processInput() {
 		lightPos.x+=10;
     }*/
     if (_inputManager.isKeyPressed(SDLK_q)) {
-        _camera.setScale(_camera.getScale() + SCALE_SPEED);
+        //_camera.setScale(_camera.getScale() + SCALE_SPEED);
     }
     if (_inputManager.isKeyPressed(SDLK_e)) {
-        _camera.setScale(_camera.getScale() - SCALE_SPEED);
+        //_camera.setScale(_camera.getScale() - SCALE_SPEED);
     }
 	if (_inputManager.isKeyPressed(SDL_BUTTON_RIGHT)) {
 		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
@@ -304,8 +305,8 @@ void MainGame::drawGame() {
 	
 	_spriteBatch.draw(glm::vec4(-6500 / 2, -6500 / 2, 6500, 6500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.8, 0.8, 0, 0), uv1, db.id, 0.0f, color, 0);
 	//_spriteBatch.draw(glm::vec4(-9500 / 2, -5500 / 2, 9500, 5500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.6, 0.7, 0, 0), uv1, mb.id, 0.0f, color, 0.5);
-	_spriteBatch.draw(glm::vec4(-9500 / 2, -5500 / 2, 9500, 5500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.6, 0.6, 0, 0), uv1, mb.id, 0.0f, color, 0.7);
-	_spriteBatch.draw(glm::vec4(-9500 / 2, -5500 / 2, 9500, 5500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.6, 0.6, 0, 0) + glm::vec4(3, 3, 0, 0), uv1, mb.id, 0.0f, color, 0.9);
+	_spriteBatch.draw(glm::vec4(-9500 / 2, -5500 / 2, 9500, 5500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.6, 0.6, 0, 0), uv1, mb.id, 0.0f, color, 0.3);
+	_spriteBatch.draw(glm::vec4(-9500 / 2, -5500 / 2, 9500, 5500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.6, 0.6, 0, 0) + glm::vec4(3, 3, 0, 0), uv1, mb.id, 0.0f, color, 0.4);
 	_spriteBatch.draw(glm::vec4(0.0f, 3000.0f, 28 * 2, 67 * 2), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), test.id, 0.0f, color, 1);
 
     _spriteBatch.draw(pos, uv, texture.id, 0.0f, color);

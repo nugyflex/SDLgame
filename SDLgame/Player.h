@@ -39,8 +39,13 @@ private:
 	GameEngine::SpriteSheet walkLeft;
 	GameEngine::SpriteSheet standRight;
 	GameEngine::SpriteSheet standLeft;
+	GameEngine::SpriteSheet landingLeft;
+	GameEngine::SpriteSheet landingRight;
 	GameEngine::GLTexture shieldTexture;
+	GameEngine::SpriteSheet dust;
 
+	float lastyv;
+	int landingAnimation = 0;
 	glm::vec2 shieldSize;
 	glm::vec2 shieldTexturePos;
 	glm::vec2 shieldTextureVel;

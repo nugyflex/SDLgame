@@ -34,8 +34,14 @@ void Player::init(float _x, float _y, WorldItemCollection* _itemCollectionPointe
 	standRight.loadTexture("textures/player_standing_right.png");
 	standLeft.init(sb, 10, 25, 2, 1, 1, -1, 0);
 	standLeft.loadTexture("textures/player_standing_left.png");
+	landingRight.init(sb, 10, 25, 2, 3, 6, -4, 0);
+	landingRight.loadTexture("textures/player_land_right.png");
+	landingLeft.init(sb, 10, 25, 2, 3, 6, -1, 0);
+	landingLeft.loadTexture("textures/player_land_left.png");
+	dust.init(sb, 24, 24, 2, 8, 5, 0, 0);
+	dust.loadTexture("textures/dustAnimation.png");
 	shieldTexture = GameEngine::ResourceManager::getTexture("textures/shieldTexture.png");
-	shieldSize = glm::vec2(60, 5);
+	shieldSize = glm::vec2(60, 10);
 	shieldLength = shieldSize.x;
 	shieldDistance = 60;
 	shieldAngle = 0;
@@ -60,15 +66,19 @@ void Player::handleInput(GameEngine::InputManager* _im, GameEngine::Camera2D* _c
 		jumpLatch = true;
 	}
 	boundingBox.onGround = false;
-	if (_im->isKeyPressed(SDLK_a) && _im->isKeyPressed(SDLK_d))
+	if (_im->isKeyPressed(SDLK_a) && _im->isKeyPressed(SDLK_d) || landingAnimation > 0)
 	{
 		boundingBox.xv *= 0.75;
 	}
 	else if (_im->isKeyPressed(SDLK_a)) {
-		boundingBox.xv = -vel;
+		if (boundingBox.xv > -vel) {
+			boundingBox.xv += -vel / 6;
+		}
 	}
 	else if (_im->isKeyPressed(SDLK_d)) {
-		boundingBox.xv = vel;
+		if (boundingBox.xv < vel) {
+			boundingBox.xv += vel / 6;
+		}
 	}
 	else
 	{
@@ -122,7 +132,25 @@ void Player::calcNewPos() {
 	boundingBox.y += boundingBox.yv;
 }
 void Player::draw() {
-	if (boundingBox.xv > vel*0.7) {
+	if (lastyv < -10 && boundingBox.yv >= -0.5) {
+		landingAnimation = 6 * 3;
+	}
+	else if (lastyv < -5 && boundingBox.yv >= -0.5) {
+		landingAnimation = 6;
+	}
+	if (landingAnimation > 0)
+	{
+		if (lastDirectionRight) {
+			landingRight.run();
+			landingRight.draw(boundingBox.x, boundingBox.y);
+		}
+		else {
+			landingLeft.run();
+			landingLeft.draw(boundingBox.x, boundingBox.y);
+		}
+		landingAnimation--;
+	}
+	else if (boundingBox.xv > vel*0.7) {
 		lastDirectionRight = true;
 		walkRight.run();
 		walkRight.draw(boundingBox.x, boundingBox.y);
@@ -146,12 +174,15 @@ void Player::draw() {
 			}
 		}
 	}
-	
+
+	lastyv = boundingBox.yv;
 	//sb->drawLine(shield1, shield2, 10, 255, 10, 255, 1);
 	shieldTexturePos += shieldTextureVel;
-	sb->draw(glm::vec4(shield2.x, shield2.y, shieldSize.x, shieldSize.y), glm::vec4(shieldTexturePos.x / 50, shieldTexturePos.y/50, (shieldSize.x/2)/50, (shieldSize.y/2)/50), shieldTexture.id, 1, 0 , shieldAngle + 3.1415 / 2 + 3.1415);
+	sb->draw(glm::vec4(shield2.x, shield2.y, shieldSize.x, shieldSize.y), glm::vec4(shieldTexturePos.x / 50, shieldTexturePos.y/50, (shieldSize.x/1)/50, (shieldSize.y/1)/50), shieldTexture.id, 1, 0 , shieldAngle + 3.1415 / 2 + 3.1415);
 	//GameEngine::drawRect(boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h, 1, color, sb);
 	//sb->draw(glm::vec4(boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h), glm::vec4((1.0f / 8.0f)*frame, 0, 1.0f/8.0f, 1), texture.id, 1, color, 1);
+	dust.run();
+	dust.draw(boundingBox.x, boundingBox.y);
 }
 void Player::drawInventory(glm::vec2 _position) {
 	inventory.draw(_position.x, _position.y);

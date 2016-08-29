@@ -56,16 +56,16 @@ namespace GameEngine {
 	}
 	void Camera2D::followObject(BoundingBox* _bb) {
 		if (truePosition.x < _bb->x) {
-			xyVel.x = floor((_bb->x - truePosition.x) / 30);
+			xyVel.x = floor((_bb->x - truePosition.x) / 20);
 		}
 		if (truePosition.x > _bb->x) {
-			xyVel.x = floor((_position.x - _bb->x) / -30);
+			xyVel.x = floor((_position.x - _bb->x) / -20);
 		}
 		if (truePosition.y < _bb->y ) {
-			xyVel.y = floor(((_bb->y) - truePosition.y) / 30);
+			xyVel.y = floor(((_bb->y) - truePosition.y) / 20);
 		}
 		if (truePosition.y > _bb->y ) {
-			xyVel.y = floor((truePosition.y - (_bb->y)) / -30);
+			xyVel.y = floor((truePosition.y - (_bb->y)) / -20);
 		}
 		truePosition.x += xyVel.x;
 		truePosition.y += xyVel.y;

@@ -146,8 +146,8 @@ void WorldItemCollection::runItems() {
 			addItem(flareParticle, worldItemVector[i]->getBoundingBox()->x, worldItemVector[i]->getBoundingBox()->y+1, ((double)rand() / (RAND_MAX)) * -8, ((double)rand() / (RAND_MAX)) * 20 - 10);
 		}
 		if (worldItemVector[i]->getType() == explosion) {
-			if (((double)rand() / (RAND_MAX)) > 0.4 && worldItemVector[i]->getTimer() > 25) {
-				//addItem(explosionParticle, worldItemVector[i]->getBoundingBox()->x + worldItemVector[i]->getBoundingBox()->w / 2, worldItemVector[i]->getBoundingBox()->y + worldItemVector[i]->getBoundingBox()->h / 2, ((double)rand() / (RAND_MAX)) * 6 - 3, ((double)rand() / (RAND_MAX)) * 14 - 4);
+			if (((double)rand() / (RAND_MAX)) > 0.4 && worldItemVector[i]->getTimer() > 20) {
+				addItem(fireParticle, worldItemVector[i]->getBoundingBox()->x, worldItemVector[i]->getBoundingBox()->y, ((double)rand() / (RAND_MAX)) * 6 - 3, ((double)rand() / (RAND_MAX)) * 14 - 4);
 
 			}
 			LC->addToRadius(worldItemVector[i]->getLightID(), -200/28 - 2);

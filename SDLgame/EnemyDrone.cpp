@@ -83,7 +83,7 @@ void EnemyDrone::calcNewPos(float _x, float _y)
 void EnemyDrone::load()
 {
 	spriteSheet.init(sb, 9, 19, 2, 4, 9, 0, 0);
-	spriteSheet.loadTexture("Textures/enemyDrone1.png");
+	spriteSheet.loadTexture("Textures/enemyDrone2.png");
 	maxShootCooldown = 20;
 	shootCooldown = maxShootCooldown;
 	health = 10;
