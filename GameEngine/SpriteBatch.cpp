@@ -204,9 +204,20 @@ void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuin
 	color.g = 0;
 	color.b = 0;
 	color.a = 0;
-	draw(destRect, uvRect, texture, depth, color, _lightAlpha, angle);
+	draw(destRect, uvRect, texture, depth, color, _lightAlpha, angle, false);
 }
-void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color, float _lightAlpha, float angle) {
+
+void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, float _lightAlpha, float angle, bool _flip)
+{
+	Color color;
+	color.r = 0;
+	color.g = 0;
+	color.b = 0;
+	color.a = 0;
+	draw(destRect, uvRect, texture, depth, color, _lightAlpha, angle, _flip);
+}
+
+void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color, float _lightAlpha, float angle, bool flip) {
 
 
 	Glyph* newGlyph = new Glyph;
@@ -249,6 +260,12 @@ void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuin
 	newGlyph->bottomLeft.lightAlpha = _lightAlpha;
 	newGlyph->bottomRight.lightAlpha = _lightAlpha;
 	newGlyph->topRight.lightAlpha = _lightAlpha;
+	if (flip)
+	{
+		newGlyph->bottomRight.position.x = newGlyph->bottomLeft.position.x - (newGlyph->bottomRight.position.x - newGlyph->bottomLeft.position.x);
+		newGlyph->topRight.position.x = newGlyph->bottomLeft.position.x - (newGlyph->topRight.position.x - newGlyph->bottomLeft.position.x);
+		newGlyph->topLeft.position.x = newGlyph->bottomLeft.position.x - (newGlyph->topLeft.position.x - newGlyph->bottomLeft.position.x);
+	}
 	_glyphs.push_back(newGlyph);
 }
 void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color, float _lightAlpha) {

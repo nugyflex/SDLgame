@@ -7,7 +7,7 @@
 #include <GameEngine\SpriteSheet.h>
 #include <GameEngine\SpriteBatch.h>
 
-enum WorldItemType { flare, flareParticle, glowStick, default, explosion, fireParticle, explosionParticle };
+enum WorldItemType { flare, flareParticle, glowStick, default, explosion, fireParticle, explosionParticle, dustCloudLanding };
 class WorldItem {
 public:
 	WorldItem();

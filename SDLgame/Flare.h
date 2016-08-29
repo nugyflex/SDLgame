@@ -17,3 +17,10 @@ public:
 	void run() override;
 	GameEngine::Light getLight() override;
 };
+class DustCloudLanding : public WorldItem
+{
+public:
+	DustCloudLanding();
+	~DustCloudLanding();
+	void loadSpriteSheet() override;
+};

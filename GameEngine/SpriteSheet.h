@@ -14,6 +14,7 @@ namespace GameEngine {
 		void draw(float _x, float _y);
 		void draw(float _x, float _y, float _angle);
 		void draw(float _x, float _y, float _angle, float _lightAlpha);
+		void draw(float _x, float _y, float _angle, bool _flip);
 		void reset();
 	private:
 		int frame;

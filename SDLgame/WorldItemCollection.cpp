@@ -81,10 +81,18 @@ void WorldItemCollection::addItem(WorldItemType _type, glm::vec2 _pos) {
 	addItem(_type, _pos.x, _pos.y);
 }
 void WorldItemCollection::addItem(WorldItemType _type, float _x, float _y) {
-	int lightID = 0;
+	int lightID = -1;
 	GameEngine::Light tempLight;
 	switch (_type)
 	{ 
+	case dustCloudLanding:
+		worldItemVector.push_back(new DustCloudLanding());
+		worldItemVector[worldItemVector.size() - 1]->linkSpriteBatch(sb);
+		worldItemVector[worldItemVector.size() - 1]->init(0, 0, 10, 10, 24);
+		worldItemVector[worldItemVector.size() - 1]->setType(dustCloudLanding);
+		worldItemVector[worldItemVector.size() - 1]->hasSpriteSheet = true;
+		worldItemVector[worldItemVector.size() - 1]->loadSpriteSheet();
+		break;
 	case flare:
 		worldItemVector.push_back(new Flare());
 		tempLight = worldItemVector[worldItemVector.size() - 1]->getLight();

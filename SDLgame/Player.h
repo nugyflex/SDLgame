@@ -15,9 +15,9 @@ class Player
 public:
 	Player();
 	~Player();
-	void init(float _x, float _y, WorldItemCollection* _itemCollectionPointer, GameEngine::SpriteBatch* _sb, GameEngine::DrawText* _drawText, ProjectileCollection* _projectileCollectionPointer);
+	void init(float _x, float _y, WorldItemCollection* _itemCollectionPointer, GameEngine::SpriteBatch* _sb, GameEngine::DrawText* _drawText, ProjectileCollection* _projectileCollectionPointer, GameEngine::CollisionDetection* _cd, GameEngine::Camera2D* _c);
 	BoundingBox* getBoundingBox();
-	void handleInput(GameEngine::InputManager* _im, GameEngine::Camera2D* _c);
+	void handleInput(GameEngine::InputManager* _im);
 	void calcNewPos();
 	void draw();
 	void drawInventory(glm::vec2 _position);
@@ -25,9 +25,11 @@ public:
 	glm::vec2 shield1;
 	glm::vec2 shield2;
 private:
+	GameEngine::Camera2D* camera;
 	WorldItemCollection* itemCollectionPointer;
 	GameEngine::SpriteBatch* sb;
 	ProjectileCollection* projectileCollectionPointer;
+	GameEngine::CollisionDetection* cd;
 	BoundingBox boundingBox;
 	float vel;
 	bool jumpLatch;
@@ -41,9 +43,13 @@ private:
 	GameEngine::SpriteSheet standLeft;
 	GameEngine::SpriteSheet landingLeft;
 	GameEngine::SpriteSheet landingRight;
+	GameEngine::SpriteSheet jumpingLeft;
+	GameEngine::SpriteSheet jumpingRight;
+	GameEngine::SpriteSheet laserGun;
 	GameEngine::GLTexture shieldTexture;
-	GameEngine::SpriteSheet dust;
 
+	glm::vec2 mouseCoords;
+	float gunAngle;
 	float lastyv;
 	int landingAnimation = 0;
 	glm::vec2 shieldSize;

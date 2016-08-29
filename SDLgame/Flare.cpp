@@ -1,5 +1,6 @@
 
 #include "Flare.h"
+#include "Explosion.h"
 
 Flare::Flare() {}
 Flare::~Flare() {}
@@ -48,4 +49,13 @@ GameEngine::Light FlareParticle::getLight() {
 	light.flicker = false;
 	light.color = glm::vec3(1, 0.25, 0.25);
 	return light;
+}
+DustCloudLanding::DustCloudLanding(){}
+DustCloudLanding::~DustCloudLanding(){}
+void DustCloudLanding::loadSpriteSheet() {
+	centerSpriteSheet = true;
+	boundingBox.w = 10;
+	boundingBox.h = 10;
+	spriteSheet.init(sb, 24, 24, 2, 8, 3, 0, 0);
+	spriteSheet.loadTexture("textures/dustAnimation2.png");
 }

@@ -74,6 +74,24 @@ namespace GameEngine {
 		glm::vec4 uv = glm::vec4((1.0f / (float)numberOfFrames)*(float)frame, 0, (1.0f / (float)numberOfFrames), 1.0f);
 		sb->draw(pos, uv, texture.id, 1, _lightAlpha, _angle);
 	}
+	void SpriteSheet::draw(float _x, float _y, float _angle, bool _flip)
+	{
+		GameEngine::Color color;
+		color.r = 150;
+		color.g = 150;
+		color.b = 150;
+		color.a = 255;
+		glm::vec4 pos = glm::vec4(_x + offSetX*scale, _y + offSetY*scale, width*scale, height*scale);
+		glm::vec4 uv = glm::vec4((1.0f / (float)numberOfFrames)*(float)frame, 0, (1.0f / (float)numberOfFrames), 1.0f);
+		if (_flip)
+		{
+			sb->draw(pos, uv, texture.id, 1, 1, _angle, true);
+		}
+		else
+		{
+			sb->draw(pos, uv, texture.id, 1, 1, _angle);
+		}
+	}
 
 	void SpriteSheet::reset()
 	{

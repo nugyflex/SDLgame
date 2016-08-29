@@ -10,8 +10,8 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(1600),
-	_screenHeight(800),
+	_screenWidth(2400),
+	_screenHeight(1500),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f),
@@ -54,7 +54,11 @@ void MainGame::initSystems() {
 	Platforms.addPlatform(-800, 3000, 400, 16);
 	Platforms.addPlatform(-400, 3040, 400, 16);
 	Platforms.addPlatform(400, 3040, 400, 16);
-	Platforms.addPlatform(-800, 2400, 800, 16);
+	Platforms.addPlatform(-1400, 2700, 400, 16);
+	Platforms.addPlatform(-1400, 2400, 400, 16);
+	Platforms.addPlatform(-1400, 2100, 400, 16);
+	Platforms.addPlatform(-1400, 1800, 400, 16);
+	Platforms.addPlatform(-800, 1500, 800, 16);
 	Platforms.addPlatform(0, 1800, 800, 16);
 	Platforms.addPlatform(-800, 1200, 800, 16);
 	Platforms.addPlatform(0, 600, 800, 16);
@@ -71,7 +75,7 @@ void MainGame::initSystems() {
 	Platforms.addPlatform(-800, -6000, 800, 16);
 	Platforms.addPlatform(0, -6600, 800, 16);
 	Platforms.addPlatform(-800, -7200, 800, 16);
-	player.init(360, 3400, &WorldItems, &_spriteBatch, &drawText, &projectiles);
+	player.init(360, 3400, &WorldItems, &_spriteBatch, &drawText, &projectiles, &cd, &_camera);
 	WorldItems.init(&Lights, &_spriteBatch);
 	drawText.init(&_spriteBatch);
 	_camera.setScreenShakeIntensity(10);
@@ -122,7 +126,7 @@ void MainGame::gameLoop() {
     }
 }
 void MainGame::updateGame() {
-	player.handleInput(&_inputManager, &_camera);
+	player.handleInput(&_inputManager);
 	WorldItems.runItems();
 	drones.run();
 	projectiles.run();
@@ -220,11 +224,12 @@ void MainGame::processInput() {
     if (_inputManager.isKeyPressed(SDLK_a)) {
         _camera.setPosition(_camera.getPosition() + glm::vec2(-CAMERA_SPEED, 0.0f));
 		lightPos.x-=10;
-    }
-    if (_inputManager.isKeyPressed(SDLK_d)) {
-        _camera.setPosition(_camera.getPosition() + glm::vec2(CAMERA_SPEED, 0.0f));
-		lightPos.x+=10;
     }*/
+    if (_inputManager.isKeyPressed(SDLK_y)) {
+		player.getBoundingBox()->y = 3100;
+		player.getBoundingBox()->x = -100;
+		lightPos.x+=10;
+    }
     if (_inputManager.isKeyPressed(SDLK_q)) {
         //_camera.setScale(_camera.getScale() + SCALE_SPEED);
     }

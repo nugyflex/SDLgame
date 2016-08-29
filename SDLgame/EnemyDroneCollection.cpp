@@ -40,7 +40,7 @@ void EnemyDroneCollection::reduceHealth(int _index, float _health)
 	enemyDroneVector[_index]->subtractHealth(_health);
 	if (enemyDroneVector[_index]->getHealth() <= 0) {
 		worldItems->addItem(explosion, enemyDroneVector[_index]->getBoundingBox()->x + enemyDroneVector[_index]->getBoundingBox()->w / 2, enemyDroneVector[_index]->getBoundingBox()->y + enemyDroneVector[_index]->getBoundingBox()->h / 2);
-		camera->setScreenShakeIntensity(5);
+		camera->setScreenShakeIntensity(7.5);
 		remove(_index);
 	}
 }
