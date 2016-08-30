@@ -1,12 +1,2 @@
-﻿  Player.cpp
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(102): warning C4305: '*=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(148): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(150): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(163): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(166): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(170): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(175): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(178): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(182): warning C4305: 'argument': truncation from 'double' to 'float'
-  SDLgame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\SDLgame.exe
-  SDLgame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\SDLgame.pdb (Partial PDB)
+﻿  SDLgame.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\SDLgame.exe
+  SDLgame.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\SDLgame.pdb (Partial PDB)

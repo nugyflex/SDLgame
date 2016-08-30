@@ -69,6 +69,12 @@
     <ClCompile Include="ProjectileCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyWalker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyWalkerCollection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\colorShading.frag">
@@ -125,6 +131,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ProjectileCollection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyWalker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyWalkerCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -21,6 +21,7 @@ namespace GameEngine {
 		bool isBetween(float _1, float _2, float _3);
 		bool doLinesColide(glm::vec2 _p1, glm::vec2 _p2, glm::vec2 _p3, glm::vec2 _p4);
 		float getAngle(glm::vec2 _p1, glm::vec2 _p2);
+		float getDistBetween(float _1, float _2);
 	private:
 		bool test1(glm::vec4* _rect1, glm::vec4* _rect2);
 		bool test2(glm::vec4* _rect1, glm::vec4* _rect2);

@@ -49,6 +49,8 @@ private:
 	GameEngine::GLTexture shieldTexture;
 
 	glm::vec2 mouseCoords;
+
+	float gravity;
 	float gunAngle;
 	float lastyv;
 	int landingAnimation = 0;

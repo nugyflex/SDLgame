@@ -10,8 +10,8 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(2400),
-	_screenHeight(1500),
+	_screenWidth(1000),
+	_screenHeight(700),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f),
@@ -83,6 +83,9 @@ void MainGame::initSystems() {
 	drones.init(&_spriteBatch, &WorldItems, &_camera, &Lights, &projectiles);
 	drones.add(0, 3200);
 	drones.addTarget(player.getBoundingBox());
+	walkers.init(&_spriteBatch, &WorldItems, &_camera, &Lights, &projectiles);
+	walkers.add(200, 3200);
+	walkers.addTarget(player.getBoundingBox());
 }
 
 void MainGame::initShaders() {
@@ -129,6 +132,7 @@ void MainGame::updateGame() {
 	player.handleInput(&_inputManager);
 	WorldItems.runItems();
 	drones.run();
+	walkers.run();
 	projectiles.run();
 	_camera.followObject(player.getBoundingBox());
 	for (int i = 0; i < projectiles.getVectorSize(); i++) {
@@ -175,6 +179,9 @@ void MainGame::updateGame() {
 			{
 				cd.correctPosition(WorldItems.getBoundingBox(i), Platforms.getBoundingBox(j));
 			}
+		}
+		for (int i = 0; i < walkers.getVectorSize(); i++) {
+			cd.correctPosition(walkers.getBoundingBox(i), Platforms.getBoundingBox(j));
 		}
 	}
 	player.calcNewPos();
@@ -324,6 +331,7 @@ void MainGame::drawGame() {
 	//drawText.draw(-30, 3100, "a", 1);
 	WorldItems.drawItems();
 	drones.draw();
+	walkers.draw();
 	if (_inputManager.isKeyPressed(SDLK_TAB)) {
 		player.drawInventory(_camera.getPosition() - _camera.getVelocity());
 	}

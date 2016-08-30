@@ -83,7 +83,7 @@ namespace GameEngine {
 		screenShake.y = ((double)rand() / (RAND_MAX)) * screenShakeIntensity * 2 - screenShakeIntensity;
 	}
 	void Camera2D::settleScreenShake() {
-		screenShakeIntensity *= 0.98;
+		screenShakeIntensity *= 0.97;
 		if (screenShakeIntensity > -1 && screenShakeIntensity < 1) {
 			screenShakeIntensity = 0;
 		}

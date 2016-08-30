@@ -66,9 +66,11 @@ void Player::handleInput(GameEngine::InputManager* _im) {
 				jumpLatch = false;
 			}
 		}
+		gravity = 0.45;
 	}
 	else
 	{
+		gravity = 0.8;
 		jumpLatch = true;
 	}
 	if (_im->isKeyPressed(SDLK_a) && _im->isKeyPressed(SDLK_d) || landingAnimation > 0)
@@ -102,6 +104,7 @@ void Player::handleInput(GameEngine::InputManager* _im) {
 		boundingBox.xv *= 0.95;
 	}
 	boundingBox.onGround = false;
+	boundingBox.fullyOnGround = false;
 	if (_im->isKeyPressed(SDLK_s)) {
 		//boundingBox.yv = -vel;
 	}
@@ -125,24 +128,46 @@ void Player::handleInput(GameEngine::InputManager* _im) {
 	else {
 		useLatch = true;
 	}
+	mouseCoords = _im->getMouseCoords();
+	mouseCoords = camera->convertScreenToWorld(mouseCoords);
+	mouseCoords.y *= -1;
 	if (_im->isKeyPressed(SDL_BUTTON_LEFT)) {
-		glm::vec2 mouseCoords = _im->getMouseCoords();
-		mouseCoords = camera->convertScreenToWorld(mouseCoords);
+		glm::vec2 shootCoords;
+		float theta;
+		if (lastDirectionRight)
+		{
+			theta = atan(cd->getDistBetween(mouseCoords.y,boundingBox.y + 33) / cd->getDistBetween(mouseCoords.x, (boundingBox.x + 3)));
+		}
+		else {
+			theta = atan((mouseCoords.y - (boundingBox.y + 33)) / (mouseCoords.x - (boundingBox.x + 6)));
+		}
+		if ((boundingBox.x + 3) > mouseCoords.x) {
+			shootCoords.x = cos(theta) * -34;
+		}
+		else {
+			shootCoords.x = cos(theta) * 34;
+		}
+		if ((boundingBox.y + 33) > mouseCoords.y) {
+			shootCoords.y = sin(theta) * -34 ;
+		}
+		else {
+			shootCoords.y = sin(theta) * 34;
+		}
+		if ((boundingBox.y + 33) < mouseCoords.y && (boundingBox.x + 3) > mouseCoords.x) {
+			shootCoords.y *= -1;
+		}
 		if (!_im->lastMouseL) {
 			if (lastDirectionRight)
 			{
-				projectileCollectionPointer->launch(glm::vec2(boundingBox.x + 3, boundingBox.y + 33), glm::vec2(mouseCoords.x, -mouseCoords.y), 30, damageDrone);
+				projectileCollectionPointer->launch(glm::vec2(boundingBox.x + 3 + shootCoords.x, boundingBox.y + 33 + shootCoords.y), glm::vec2(mouseCoords.x, mouseCoords.y), 30, damageDrone);
 			}
 			else
 			{
-				projectileCollectionPointer->launch(glm::vec2(boundingBox.x + 6, boundingBox.y + 33), glm::vec2(mouseCoords.x, -mouseCoords.y), 30, damageDrone);
+				projectileCollectionPointer->launch(glm::vec2(boundingBox.x + 6 + shootCoords.x, boundingBox.y + 33 + shootCoords.y), glm::vec2(mouseCoords.x, mouseCoords.y), 30, damageDrone);
 			}
 			//projectileCollectionPointer->launch(glm::vec2(boundingBox.x, boundingBox.y), glm::vec2(mouseCoords.x, -mouseCoords.y), 30, damageDrone);
 		}
 	}
-	mouseCoords = _im->getMouseCoords();
-	mouseCoords = camera->convertScreenToWorld(mouseCoords);
-	mouseCoords.y *= -1;
 	float theta = atan((mouseCoords.x - (boundingBox.x + boundingBox.w / 2)) /  (mouseCoords.y - (boundingBox.y + boundingBox.h / 2)));
 	if (mouseCoords.y <= boundingBox.y + boundingBox.h / 2) {
 		theta += 3.1415;
@@ -153,9 +178,9 @@ void Player::handleInput(GameEngine::InputManager* _im) {
 	//shield2 = glm::vec2(shieldDistance * sin(theta) + (boundingBox.x + boundingBox.w / 2) - sin(alpha)*shieldLength / 2, shieldDistance * cos(theta) + (boundingBox.y + boundingBox.h / 2) - cos(alpha)*shieldLength / 2);
 }
 void Player::calcNewPos() {
-	boundingBox.yv -= 0.5;
 	boundingBox.x += boundingBox.xv;
 	boundingBox.y += boundingBox.yv;
+	boundingBox.yv -= gravity;
 }
 void Player::draw() {
 	if (lastDirectionRight)
@@ -190,14 +215,14 @@ void Player::draw() {
 	{
 		lastDirectionRight = false;
 	}
-	if (lastyv < -15 && boundingBox.yv >= -0.5) {
+	if (lastyv < -15 && boundingBox.yv >= -gravity) {
 		landingAnimation = 6 * 3;
 		itemCollectionPointer->addItem(dustCloudLanding, boundingBox.x-10, boundingBox.y);
-		camera->setScreenShakeIntensity(4);
-	}
-	else if (lastyv < -10 && boundingBox.yv >= -0.5) {
-		landingAnimation = 6;
 		camera->setScreenShakeIntensity(2);
+	}
+	else if (lastyv < -10 && boundingBox.yv >= -gravity) {
+		landingAnimation = 6;
+		camera->setScreenShakeIntensity(1);
 	}
 	if (landingAnimation > 0)
 	{
@@ -249,7 +274,15 @@ void Player::draw() {
 	//sb->drawLine(shield1, shield2, 10, 255, 10, 255, 1);
 	shieldTexturePos += shieldTextureVel;
 	//sb->draw(glm::vec4(shield2.x, shield2.y, shieldSize.x, shieldSize.y), glm::vec4(shieldTexturePos.x / 50, shieldTexturePos.y/50, (shieldSize.x/1)/50, (shieldSize.y/1)/50), shieldTexture.id, 1, 0 , shieldAngle + 3.1415 / 2 + 3.1415);
-	//GameEngine::drawRect(boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h, 1, color, sb);
+	/*GameEngine::Color color;
+	color.r = 0;
+	color.g = 0;
+	color.b = 255;
+	color.a = 255;
+	if (boundingBox.fullyOnGround)
+	{
+		GameEngine::drawRect(boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h, 1, color, sb);
+	}*/
 	//sb->draw(glm::vec4(boundingBox.x, boundingBox.y, boundingBox.w, boundingBox.h), glm::vec4((1.0f / 8.0f)*frame, 0, 1.0f/8.0f, 1), texture.id, 1, color, 1);
 }
 void Player::drawInventory(glm::vec2 _position) {

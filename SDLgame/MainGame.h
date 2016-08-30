@@ -22,6 +22,7 @@
 #include <GameEngine\DrawText.h>
 #include "EnemyDroneCollection.h"
 #include "ProjectileCollection.h"
+#include "EnemyWalkerCollection.h"
 
 enum class GameState {PLAY, EXIT};
 
@@ -67,6 +68,7 @@ private:
 	WorldItemCollection WorldItems;
 	PlatformCollection Platforms;
 	EnemyDroneCollection drones;
+	EnemyWalkerCollection walkers;
 	Player player;
 	GameEngine::DrawText drawText;
 	ProjectileCollection projectiles;
