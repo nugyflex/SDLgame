@@ -1,5 +1,33 @@
-﻿  EnemyWalker.cpp
+﻿  main.cpp
+  Player.cpp
+c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(69): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(73): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(104): warning C4305: '*=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(173): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(175): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(188): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(191): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(195): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(200): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(203): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(207): warning C4305: 'argument': truncation from 'double' to 'float'
+  MainGame.cpp
+c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(50): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(110): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(206): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(282): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(320): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(321): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(353): warning C4018: '<': signed/unsigned mismatch
+  EnemyWalkerCollection.cpp
+c:\users\jack\documents\github\sdlgame\sdlgame\enemywalkercollection.cpp(23): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\sdlgame\enemywalkercollection.cpp(49): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\sdlgame\enemywalkercollection.cpp(58): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\sdlgame\enemywalkercollection.cpp(80): warning C4018: '<': signed/unsigned mismatch
+  EnemyWalker.cpp
 c:\users\jack\documents\github\sdlgame\sdlgame\enemywalker.cpp(14): warning C4305: '=': truncation from 'double' to 'float'
 c:\users\jack\documents\github\sdlgame\sdlgame\enemywalker.cpp(100): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  SDLgame.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\SDLgame.exe
-  SDLgame.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\SDLgame.pdb (Partial PDB)
+  Generating Code...
+  LINK : C:\Users\jack\Documents\GitHub\SDLgame\Debug\SDLgame.exe not found or not built by the last incremental link; performing full link
+  SDLgame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\SDLgame.exe
+  SDLgame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\SDLgame.pdb (Partial PDB)
