@@ -1,12 +1,12 @@
 ﻿  CollisionDetection.cpp
-c:\users\jack\documents\github\sdlgame\gameengine\collisiondetection.cpp(359): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\jack\documents\github\sdlgame\gameengine\collisiondetection.cpp(365): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\jack\documents\github\sdlgame\gameengine\collisiondetection.cpp(371): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\jack\documents\github\sdlgame\gameengine\collisiondetection.cpp(377): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\jack\documents\github\sdlgame\gameengine\collisiondetection.cpp(411): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-c:\users\jack\documents\github\sdlgame\gameengine\collisiondetection.cpp(415): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-c:\users\jack\documents\github\sdlgame\gameengine\collisiondetection.cpp(419): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-c:\users\jack\documents\github\sdlgame\gameengine\collisiondetection.cpp(421): warning C4715: 'GameEngine::CollisionDetection::getAngle': not all control paths return a value
+c:\users\jack\documents\github\sdlgame\gameengine\collisiondetection.cpp(375): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\jack\documents\github\sdlgame\gameengine\collisiondetection.cpp(381): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\jack\documents\github\sdlgame\gameengine\collisiondetection.cpp(387): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\jack\documents\github\sdlgame\gameengine\collisiondetection.cpp(393): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\jack\documents\github\sdlgame\gameengine\collisiondetection.cpp(427): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\gameengine\collisiondetection.cpp(431): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\gameengine\collisiondetection.cpp(435): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\gameengine\collisiondetection.cpp(437): warning C4715: 'GameEngine::CollisionDetection::getAngle': not all control paths return a value
 glew32.lib(glew32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
 glew32.lib(glew32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
 opengl32.lib(OPENGL32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored

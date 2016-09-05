@@ -257,9 +257,18 @@ namespace GameEngine {
 					bb1->y = bb2->y + bb2->h;
 					if (bb1->yv < 0) { bb1->yv = 0; }
 					bb1->onGround = true;
-					bb1->halfSideLeft = true;
+					//fullyOnGroundTest
+					if (bb1->x > bb2->x && bb2->x + bb2->w > bb1->x + bb1->w) {
+						bb1->fullyOnGround = true;
+					}
+					else if (bb1->x < bb2->x) {
+						bb1->halfSideLeft = true;
+					}
+					else if (bb1->x + bb1->w> bb2->x + bb2->w) {
+						bb1->halfSideLeft = false;
+					}
 				}
-				bb1->fullyOnGround = false;
+				
 			}
 			else if (result.right) {
 				if (bb1->y + bb1->yv - bb2->y + bb2->h > bb1->x + bb1->w + bb1->xv - bb2->x) {
@@ -272,23 +281,30 @@ namespace GameEngine {
 					bb1->y = bb2->y + bb2->h;
 					if (bb1->yv < 0) { bb1->yv = 0; }
 					bb1->onGround = true;
+					//fullyOnGroundTest
+					if (bb1->x > bb2->x && bb2->x + bb2->w > bb1->x + bb1->w) {
+						bb1->fullyOnGround = true;
+					}
+					else if (bb1->x < bb2->x) {
+						bb1->halfSideLeft = true;
+					}
+					else if (bb1->x + bb1->w> bb2->x + bb2->w) {
+						bb1->halfSideLeft = false;
+					}
 				}
-				bb1->fullyOnGround = false;
 			}
 			else {
 				bb1->y = bb2->y + bb2->h;
 				bb1->yv = 0;
 				bb1->onGround = true;
-				if (bb1->x < bb2->x) {
-					bb1->fullyOnGround = false;
+				if (bb1->x > bb2->x && bb2->x + bb2->w > bb1->x + bb1->w) {
+					bb1->fullyOnGround = true;
+				}
+				else if (bb1->x < bb2->x) {
 					bb1->halfSideLeft = true;
 				}
 				else if (bb1->x + bb1->w> bb2->x + bb2->w) {
-					bb1->fullyOnGround = false;
 					bb1->halfSideLeft = false;
-				}
-				else {
-					bb1->halfSideLeft = true;
 				}
 			}
 		}

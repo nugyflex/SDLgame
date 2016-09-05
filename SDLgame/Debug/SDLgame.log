@@ -1,2 +1,5 @@
-﻿  SDLgame.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\SDLgame.exe
+﻿  EnemyWalker.cpp
+c:\users\jack\documents\github\sdlgame\sdlgame\enemywalker.cpp(14): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\sdlgame\enemywalker.cpp(100): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  SDLgame.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\SDLgame.exe
   SDLgame.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\SDLgame.pdb (Partial PDB)

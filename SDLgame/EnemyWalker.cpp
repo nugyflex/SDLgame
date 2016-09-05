@@ -3,7 +3,7 @@
 EnemyWalker::EnemyWalker(float _x, float _y, GameEngine::SpriteBatch* _sb, ProjectileCollection* _pc){
 	sb = _sb;
 	pc = _pc;
-	vel = 1.5;
+	vel = 2.5;
 	boundingBox.w = 23;
 	boundingBox.h = 23;
 	boundingBox.x = _x;
