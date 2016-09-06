@@ -10,8 +10,8 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(1000),
-	_screenHeight(700),
+	_screenWidth(1400),
+	_screenHeight(800),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f),
@@ -79,7 +79,6 @@ void MainGame::initSystems() {
 	WorldItems.init(&Lights, &_spriteBatch);
 	drawText.init(&_spriteBatch);
 	_camera.setScreenShakeIntensity(10);
-	WorldItems.addItem(explosion, -100, 3200);
 	drones.init(&_spriteBatch, &WorldItems, &_camera, &Lights, &projectiles);
 	drones.add(0, 3200);
 	drones.addTarget(player.getBoundingBox());
@@ -152,6 +151,14 @@ void MainGame::updateGame() {
 						drones.reduceHealth(j, 2);
 					}
 				}
+				for (int j = 0; j < walkers.getVectorSize(); j++) {
+					if (cd.lineRectCollision(projectiles.getProjectile(i)->getPosition(), projectiles.getProjectile(i)->getLastPosition(), walkers.getBoundingBox(j))) {
+						remove = true;
+						//WorldItems.addItem(explosion, cd.getLineRectCollision(projectiles.getProjectile(i)->getPosition(), projectiles.getProjectile(i)->getLastPosition(), drones.getBoundingBox(j)));
+						projectiles.getProjectile(i)->setPosition(cd.getLineRectCollision(projectiles.getProjectile(i)->getPosition(), projectiles.getProjectile(i)->getLastPosition(), walkers.getBoundingBox(j)));
+						walkers.reduceHealth(j, 2);
+					}
+				}
 			} else if (projectiles.getProjectile(i)->getDamageType() == damagePlayer)
 			{
 				if (cd.doLinesColide(player.shield1, player.shield2, projectiles.getProjectile(i)->getPosition(), projectiles.getProjectile(i)->getLastPosition()))
@@ -187,6 +194,7 @@ void MainGame::updateGame() {
 	player.calcNewPos();
 	_inputManager.lastMouseR = _inputManager.isKeyPressed(SDL_BUTTON_RIGHT);
 	_inputManager.lastMouseL = _inputManager.isKeyPressed(SDL_BUTTON_LEFT);
+	_inputManager.lastMouseM = _inputManager.isKeyPressed(SDL_BUTTON_MIDDLE);
 }
 //Processes input with SDL
 void MainGame::processInput() {
@@ -248,6 +256,13 @@ void MainGame::processInput() {
 		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
 		if (!_inputManager.lastMouseR) {
 			drones.add(mouseCoords.x, -mouseCoords.y);
+		}
+	}
+	if (_inputManager.isKeyPressed(SDL_BUTTON_MIDDLE)) {
+		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
+		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
+		if (!_inputManager.lastMouseM) {
+			walkers.add(mouseCoords.x, -mouseCoords.y);
 		}
 	}
 }

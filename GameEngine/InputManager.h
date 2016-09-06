@@ -22,6 +22,7 @@ public:
     bool isKeyPressed(unsigned int keyID);
 	bool lastMouseL;
 	bool lastMouseR;
+	bool lastMouseM;
 	//getters
 	glm::vec2 getMouseCoords() const { return _mouseCoords; }
 private:

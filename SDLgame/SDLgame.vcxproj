@@ -35,6 +35,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="ProjectileCollection.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="WorldItem.h" />
     <ClInclude Include="WorldItemCollection.h" />
   </ItemGroup>
@@ -62,6 +63,14 @@
   <ItemGroup>
     <None Include="Shaders\colorShading.frag" />
     <None Include="Shaders\colorShading.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SDLgame.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Pictures\icon.png" />
+    <Image Include="icon1.ico" />
+    <Image Include="icon2.ico" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BDD0FB6C-5153-4D5B-91FF-3F21D0E7EE07}</ProjectGuid>

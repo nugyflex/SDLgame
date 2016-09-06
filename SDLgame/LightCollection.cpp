@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "LightCollection.h"
+#include "GameEngine/Errors.h"
 
 LightCollection::LightCollection()
 {
@@ -141,5 +142,4 @@ void LightCollection::removeLight(int _ID) {
 	if (index != -1) {
 		lightVector.erase(lightVector.begin() + index);
 	}
-	
 }

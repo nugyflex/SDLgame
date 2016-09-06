@@ -66,7 +66,13 @@ void Player::handleInput(GameEngine::InputManager* _im) {
 				jumpLatch = false;
 			}
 		}
-		gravity = 0.45;
+		if (boundingBox.yv > 0) {
+			gravity = 0.45;
+		}
+		else
+		{
+			gravity = 0.8;
+		}
 	}
 	else
 	{
@@ -159,11 +165,19 @@ void Player::handleInput(GameEngine::InputManager* _im) {
 		if (!_im->lastMouseL) {
 			if (lastDirectionRight)
 			{
-				projectileCollectionPointer->launch(glm::vec2(boundingBox.x + 3 + shootCoords.x, boundingBox.y + 33 + shootCoords.y), glm::vec2(mouseCoords.x, mouseCoords.y), 30, damageDrone);
+				if (mouseCoords.x > boundingBox.x+6)
+				{
+					projectileCollectionPointer->launch(glm::vec2(boundingBox.x + 3 + shootCoords.x, boundingBox.y + 33 + shootCoords.y), glm::vec2(mouseCoords.x, mouseCoords.y), 30, damageDrone);
+				}
 			}
 			else
 			{
-				projectileCollectionPointer->launch(glm::vec2(boundingBox.x + 6 + shootCoords.x, boundingBox.y + 33 + shootCoords.y), glm::vec2(mouseCoords.x, mouseCoords.y), 30, damageDrone);
+				{
+					if (mouseCoords.x < boundingBox.x + 3)
+					{
+						projectileCollectionPointer->launch(glm::vec2(boundingBox.x + 6 + shootCoords.x, boundingBox.y + 33 + shootCoords.y), glm::vec2(mouseCoords.x, mouseCoords.y), 30, damageDrone);
+					}
+				}
 			}
 			//projectileCollectionPointer->launch(glm::vec2(boundingBox.x, boundingBox.y), glm::vec2(mouseCoords.x, -mouseCoords.y), 30, damageDrone);
 		}
@@ -174,8 +188,24 @@ void Player::handleInput(GameEngine::InputManager* _im) {
 	}
 	float alpha = theta - 3.1415 / 2;// atan((mouseCoords.y - (boundingBox.y + boundingBox.h / 2)) / -(mouseCoords.x - (boundingBox.x + boundingBox.w / 2)));
 	shieldAngle = alpha;
-	//shield1 = glm::vec2(shieldDistance * sin(theta) + (boundingBox.x + boundingBox.w / 2) + sin(alpha)*shieldLength / 2, shieldDistance * cos(theta) + (boundingBox.y + boundingBox.h / 2) + cos(alpha)*shieldLength / 2);
-	//shield2 = glm::vec2(shieldDistance * sin(theta) + (boundingBox.x + boundingBox.w / 2) - sin(alpha)*shieldLength / 2, shieldDistance * cos(theta) + (boundingBox.y + boundingBox.h / 2) - cos(alpha)*shieldLength / 2);
+	if (_im->isKeyPressed(SDLK_x))
+	{
+		shield1 = glm::vec2(shieldDistance * sin(theta) + (boundingBox.x + boundingBox.w / 2) + sin(alpha)*shieldLength / 2, shieldDistance * cos(theta) + (boundingBox.y + boundingBox.h / 2) + cos(alpha)*shieldLength / 2);
+		shield2 = glm::vec2(shieldDistance * sin(theta) + (boundingBox.x + boundingBox.w / 2) - sin(alpha)*shieldLength / 2, shieldDistance * cos(theta) + (boundingBox.y + boundingBox.h / 2) - cos(alpha)*shieldLength / 2);
+	}
+	else
+	{
+		shield1.x = 100000;
+		shield2.x = 100000;
+	}
+	if (health <= 0)
+	{
+		itemCollectionPointer->addItem(explosion, boundingBox.x, boundingBox.y);
+		boundingBox.x = 0;
+		boundingBox.y = 3600;
+		health = 10;
+		camera->setScreenShakeIntensity(6);
+	}
 }
 void Player::calcNewPos() {
 	boundingBox.x += boundingBox.xv;
@@ -215,12 +245,12 @@ void Player::draw() {
 	{
 		lastDirectionRight = false;
 	}
-	if (lastyv < -15 && boundingBox.yv >= -gravity) {
+	if (lastyv < -16 && boundingBox.yv >= -gravity) {
 		landingAnimation = 6 * 3;
 		itemCollectionPointer->addItem(dustCloudLanding, boundingBox.x-10, boundingBox.y);
-		camera->setScreenShakeIntensity(2);
+		camera->setScreenShakeIntensity(-lastyv / 8);
 	}
-	else if (lastyv < -10 && boundingBox.yv >= -gravity) {
+	else if (lastyv < -12 && boundingBox.yv >= -gravity) {
 		landingAnimation = 6;
 		camera->setScreenShakeIntensity(1);
 	}
@@ -273,7 +303,7 @@ void Player::draw() {
 	lastyv = boundingBox.yv;
 	//sb->drawLine(shield1, shield2, 10, 255, 10, 255, 1);
 	shieldTexturePos += shieldTextureVel;
-	//sb->draw(glm::vec4(shield2.x, shield2.y, shieldSize.x, shieldSize.y), glm::vec4(shieldTexturePos.x / 50, shieldTexturePos.y/50, (shieldSize.x/1)/50, (shieldSize.y/1)/50), shieldTexture.id, 1, 0 , shieldAngle + 3.1415 / 2 + 3.1415);
+	sb->draw(glm::vec4(shield2.x, shield2.y, shieldSize.x, shieldSize.y), glm::vec4(shieldTexturePos.x / 50, shieldTexturePos.y/50, (shieldSize.x/1)/50, (shieldSize.y/1)/50), shieldTexture.id, 1, 0 , shieldAngle + 3.1415 / 2 + 3.1415);
 	/*GameEngine::Color color;
 	color.r = 0;
 	color.g = 0;

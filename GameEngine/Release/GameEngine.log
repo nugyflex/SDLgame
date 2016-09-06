@@ -1,48 +1,4 @@
-﻿  Camera2D.cpp
-Camera2D.cpp(27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-Camera2D.cpp(28): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-Camera2D.cpp(82): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-Camera2D.cpp(83): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-Camera2D.cpp(86): warning C4305: '*=': truncation from 'double' to 'float'
-  CollisionDetection.cpp
-CollisionDetection.cpp(375): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-CollisionDetection.cpp(381): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-CollisionDetection.cpp(387): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-CollisionDetection.cpp(393): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-CollisionDetection.cpp(427): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-CollisionDetection.cpp(431): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-CollisionDetection.cpp(435): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-  DrawText.cpp
-DrawText.cpp(81): warning C4018: '<': signed/unsigned mismatch
-  Errors.cpp
-  GameEngine.cpp
-  GLSLProgram.cpp
-  ImageLoader.cpp
-  InputManager.cpp
-  IOManager.cpp
-IOManager.cpp(18): warning C4244: 'initializing': conversion from 'std::streamoff' to 'int', possible loss of data
-IOManager.cpp(22): warning C4244: '-=': conversion from 'std::streamoff' to 'int', possible loss of data
-  picoPNG.cpp
-  ResourceManager.cpp
-  Sprite.cpp
-  SpriteBatch.cpp
-SpriteBatch.cpp(25): warning C4018: '<': signed/unsigned mismatch
-SpriteBatch.cpp(37): warning C4244: '=': conversion from 'float' to 'GLubyte', possible loss of data
-SpriteBatch.cpp(38): warning C4244: '=': conversion from 'float' to 'GLubyte', possible loss of data
-SpriteBatch.cpp(39): warning C4244: '=': conversion from 'float' to 'GLubyte', possible loss of data
-SpriteBatch.cpp(40): warning C4244: '=': conversion from 'float' to 'GLubyte', possible loss of data
-SpriteBatch.cpp(316): warning C4018: '<': signed/unsigned mismatch
-SpriteBatch.cpp(355): warning C4018: '<': signed/unsigned mismatch
-  SpriteSheet.cpp
-SpriteSheet.cpp(16): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-SpriteSheet.cpp(17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-SpriteSheet.cpp(18): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  TextureCache.cpp
-  Timing.cpp
-Timing.cpp(24): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
-Timing.cpp(41): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
-Timing.cpp(44): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
-  Window.cpp
+﻿LINK : warning LNK4068: /MACHINE not specified; defaulting to X86
 glew32.lib(glew32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
 opengl32.lib(OPENGL32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
   GameEngine.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Release\GameEngine.lib
