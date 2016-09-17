@@ -35,6 +35,7 @@ private:
     void processInput();
     void drawGame();
 	void updateGame();
+	void runAI(Grid* _grid);
     GameEngine::Window _window;
     int _screenWidth;
     int _screenHeight;
@@ -56,4 +57,3 @@ private:
 	GameEngine::DrawText drawText;
 	Grid* grid;
 };
-

@@ -1,8 +1,7 @@
 #pragma once
 enum cellDirection {up, right, down, left};
-class Cell
+struct Cell
 {
-public:
 	cellDirection direction;
 	bool isWall;
 	bool searched;
@@ -11,7 +10,8 @@ public:
 	bool isEnd;
 	bool isStart;
 	bool isPath;
+	int score;
+	int priority;
 	int x;
 	int y;
-private:
 };

@@ -1,25 +1,17 @@
 #include "Grid.h"
 #include <GameEngine/GameEngine.h>
 #include <iostream>
+#include <functional>
+#include <algorithm>
+
 Grid::Grid(GameEngine::SpriteBatch* _sb)
 {
 	sb = _sb;
-	for (int i = 0; i < gridSize; i++)
-	{
-		for (int j = 0; j < gridSize; j++)
-		{
-			grid[i][j] = Cell();
-			grid[i][j].x = i;
-			grid[i][j].y = j;
-			grid[i][j].isNew = true;
-			grid[i][j].isStart = false;
-			grid[i][j].isEnd = false;
-		}
-	}
 	setStart(1, 1);
-	setEnd(9, 7);
-	searched.push_back(&grid[int(start.x)][int(start.y)]);
-	isEndFound = false;
+	setEnd(10, 10);
+	reset();
+	setStart(1, 1);
+	setEnd(10, 10);
 }
 
 Grid::~Grid()
@@ -28,6 +20,8 @@ Grid::~Grid()
 
 void Grid::draw(int _x, int _y)
 {
+	_x -= (gridSize + gridSize * 10)/2;
+	_y -=( gridSize + gridSize * 10)/2;
 	for (int i = 0; i < gridSize; i++)
 	{
 		for (int j = 0; j < gridSize; j++)
@@ -42,21 +36,21 @@ void Grid::draw(int _x, int _y)
 			}
 			else
 			{
-				color.r = 100;
-				color.g = 100;
-				color.b = 100;
-				color.a = 255;
+				color.r = 0;
+				color.g = 0;
+				color.b = 0;
+				color.a = 0;
 				if (grid[i][j].searched)
 				{
-					color.r = 255;
-					color.g = 255;
-					color.b = 255;
+					color.r = 60;
+					color.g = 60;
+					color.b = 60;
 				}
 				if (grid[i][j].finished)
 				{
-					color.r = 255;
-					color.g = 50;
-					color.b = 50;
+					color.r = 0;
+					color.g = 0;
+					color.b = 0;
 				}
 				if (grid[i][j].isPath)
 				{
@@ -64,120 +58,289 @@ void Grid::draw(int _x, int _y)
 					color.g = 255;
 					color.b = 0;
 				}
-				if (grid[i][j].isStart)
-				{
-					color.r = 255;
-					color.g = 255;
-					color.b = 0;
-					color.a = 255;
-				}
-				if (grid[i][j].isEnd)
-				{
-					color.r = 255;
-					color.g = 255;
-					color.b = 0;
-					color.a = 255;
-				}
+
+			}
+
+			if (searched.size() > 0)
+			{
+				color.r += (255 - color.r)*(1 - float(grid[i][j].score) / searched[0]->score);
+				color.b += (255 - color.b)*(float(grid[i][j].score) / searched[0]->score);
+			}
+			else
+			{
+				color.r += (255 - color.r)*(1 - float(grid[i][j].score) / 180);
+				color.b += (255 - color.b)*(float(grid[i][j].score) / 180);
+			}
+			if (grid[i][j].isWall)
+			{
+				color.r = 200;
+				color.g = 200;
+				color.b = 200;
+				color.a = 255;
+			}
+			if (grid[i][j].score > 10000 && !grid[i][j].isWall)
+			{
+				color.r = 255;
+				color.g = 255;
+				color.b = 255;
+				color.a = 255;
+			}
+			if (grid[i][j].isEnd | grid[i][j].isStart)
+			{
+				color.r = 0;
+				color.g = 0;
+				color.b = 0;
+				color.a = 0;
 			}
 			GameEngine::drawRect(_x + i*10 + i, _y + j*10 + j, cellSize, cellSize, 1, color, sb);
 		}
 	}
 }
+void Grid::reset()
+{
+	for (int i = 0; i < gridSize; i++)
+	{
+		for (int j = 0; j < gridSize; j++)
+		{
+			grid[i][j] = Cell();
+			grid[i][j].x = i;
+			grid[i][j].y = j;
+			grid[i][j].isNew = true;
+			grid[i][j].isStart = false;
+			grid[i][j].isEnd = false;
+			grid[i][j].isWall = false;
+			grid[i][j].score = 100000;
+			grid[i][j].direction = up;
+		}
+	}
+	setStart(startx, starty);
+	setEnd(endx, endy);
+	searched.push_back(&grid[int(startx)][int(starty)]);
+	isEndFound = false;
 
+	for (int i = 0; i < gridSize; i++)
+	{
+		for (int j = 0; j < gridSize; j++)
+		{
+			grid[i][j].isPath = false;
+			grid[i][j].finished = false;
+			grid[i][j].searched = false;
+			grid[i][j].isNew = true;
+			grid[i][j].score = 100000;
+		}
+	}
+	searched.clear();
+	searched.push_back(&grid[int(startx)][int(starty)]);
+	grid[int(startx)][int(starty)].isNew = false;
+	grid[int(startx)][int(starty)].score = 0;
+	isEndFound = false;
+	x = endx;
+	y = endy;
+	isFinished = false;
+	progress = 0;
+	//system("cls");
+	//std::cout << "STARTING CELL SCORE EVALUATION" << std::endl;
+	//std::cout << "CELLS EVALUATED:";
+	addWall(4, 4);
+	addWall(26, 4);
+	addWall(15, 10);
+	addWall(5, 30);
+	addWall(26, 30);
+}
+void Grid::addWall(int _x, int _y)
+{
+	for (int i = 0; i < 20; i++)
+	{
+		grid[_x + i][_y].isWall = true;
+	}
+}
+
+int Grid::heuristic(int _x1, int _y1)
+{
+	return abs(_x1 - endx) + abs(_y1 - endy);
+	//return sqrt(pow(abs(_x1 - endx), 2) + pow(abs(_y1 - endy), 2));
+	//return abs(_x1 - endx) + abs(_y1 - endy)+ sqrt(pow(abs(_x1 - endx), 2) + pow(abs(_y1 - endy), 2));
+}
+bool cmd(const Cell* c1, const Cell* c2)
+{
+	return c1->priority < c2->priority;
+}
 void Grid::runAI()
 {
 	//set up
 	int cellsEvaluated = 0;
 
 	//setting directions
-
-	if (searched.size() > 0 && !isEndFound)
+	int steps = 0;
+	while (searched.size() > 0 && !isEndFound && steps < 10)
 	{
-		for (int i = 0; i < searched.size(); i++)
+		steps++;
+		int i = 0;
+		while (searched.size() > 0)
 		{
+			
+			std::sort(searched.begin(), searched.end(), cmd);
 			if (!searched[i]->finished && !searched[i]->isNew) {
-				searched[i]->finished = true;
-				if (searched[i]->x > 0 && !grid[int(searched[i]->x - 1)][int(searched[i]->y)].searched && !grid[int(searched[i]->x - 1)][int(searched[i]->y)].finished)
-				{
-					searched.push_back(&grid[int(searched[i]->x - 1)][int(searched[i]->y)]);
-					grid[int(searched[i]->x - 1)][int(searched[i]->y)].searched = true;
-					grid[int(searched[i]->x - 1)][int(searched[i]->y)].direction = right;
-					i++;
-					cellsEvaluated++;
-				}
-				if (searched[i]->x < gridSize - 1 && !grid[int(searched[i]->x + 1)][int(searched[i]->y)].searched && !grid[int(searched[i]->x + 1)][int(searched[i]->y)].finished)
-				{
-					searched.push_back(&grid[int(searched[i]->x + 1)][int(searched[i]->y)]);
-					grid[int(searched[i]->x + 1)][int(searched[i]->y)].searched = true;
-					grid[int(searched[i]->x + 1)][int(searched[i]->y)].direction = left;
-					i++;
-					cellsEvaluated++;
-				}
-				if (searched[i]->y > 0 && !grid[int(searched[i]->x)][int(searched[i]->y - 1)].searched && !grid[int(searched[i]->x)][int(searched[i]->y - 1)].finished)
-				{
-					searched.push_back(&grid[int(searched[i]->x)][int(searched[i]->y - 1)]);
-					grid[int(searched[i]->x)][int(searched[i]->y - 1)].searched = true;
-					grid[int(searched[i]->x)][int(searched[i]->y - 1)].direction = up;
-					i++;
-					cellsEvaluated++;
-				}
-				if (searched[i]->y < gridSize - 1 && !grid[int(searched[i]->x)][int(searched[i]->y + 1)].searched && !grid[int(searched[i]->x)][int(searched[i]->y + 1)].finished)
-				{
-					searched.push_back(&grid[int(searched[i]->x)][int(searched[i]->y + 1)]);
-					grid[int(searched[i]->x)][int(searched[i]->y + 1)].searched = true;
-					grid[int(searched[i]->x)][int(searched[i]->y + 1)].direction = down;
-					i++;
-					cellsEvaluated++;
-				}
 				if (searched[i]->isEnd)
 				{
 					isEndFound = true;
 					break;
 				}
-			}
-		}
-		if (!isEndFound) {
-			for (int i = 0; i < searched.size(); i++)
-			{
-				searched[i]->isNew = false;
-				if (searched[i]->finished == true)
+				searched[i]->finished = true;
+				///////////////
+				///////////////
+				///////////////
+				///////////////
+				if (searched[i]->x > 0 && !grid[int(searched[i]->x - 1)][int(searched[i]->y)].isWall)
 				{
-					searched[i]->searched = false;
-					searched.erase(searched.begin() + i);
-					i--;
+					if (grid[int(searched[i]->x - 1)][int(searched[i]->y)].score > searched[i]->score + 1) {
+						if (!grid[int(searched[i]->x - 1)][int(searched[i]->y)].searched)
+						{
+							searched.push_back(&grid[int(searched[i]->x - 1)][int(searched[i]->y)]);
+						}
+						searched.push_back(&grid[int(searched[i]->x - 1)][int(searched[i]->y)]);
+						grid[int(searched[i]->x - 1)][int(searched[i]->y)].searched = true;
+						grid[int(searched[i]->x - 1)][int(searched[i]->y)].direction = right;
+						grid[int(searched[i]->x - 1)][int(searched[i]->y)].score = searched[i]->score + 1;
+						grid[int(searched[i]->x - 1)][int(searched[i]->y)].priority = heuristic(searched[i]->x - 1, searched[i]->y) + grid[int(searched[i]->x - 1)][int(searched[i]->y)].score/2;
+						cellsEvaluated++;
+					}
+					else if (grid[int(searched[i]->x - 1)][int(searched[i]->y)].score < searched[i]->score)
+					{
+						searched[i]->direction = left;
+					}
+				}
+				if (searched[i]->x < gridSize - 1 && !grid[int(searched[i]->x + 1)][int(searched[i]->y)].isWall)
+				{
+					if (grid[int(searched[i]->x + 1)][int(searched[i]->y)].score > searched[i]->score + 1){
+						if (!grid[int(searched[i]->x + 1)][int(searched[i]->y)].searched)
+						{
+							searched.push_back(&grid[int(searched[i]->x + 1)][int(searched[i]->y)]);
+						}
+						grid[int(searched[i]->x + 1)][int(searched[i]->y)].searched = true;
+						grid[int(searched[i]->x + 1)][int(searched[i]->y)].direction = left;
+						grid[int(searched[i]->x + 1)][int(searched[i]->y)].score = searched[i]->score + 1;
+						grid[int(searched[i]->x + 1)][int(searched[i]->y)].priority = heuristic(searched[i]->x + 1, searched[i]->y) + grid[int(searched[i]->x + 1)][int(searched[i]->y)].score/2;
+						cellsEvaluated++;
+					}
+					else if (grid[int(searched[i]->x + 1)][int(searched[i]->y)].score < searched[i]->score)
+					{
+						searched[i]->direction = right;
+					}
+				}
+				if (searched[i]->y > 0  &&  !grid[int(searched[i]->x)][int(searched[i]->y-1)].isWall)
+				{
+					if (grid[int(searched[i]->x)][int(searched[i]->y - 1)].score > searched[i]->score + 1) {
+						if (!grid[int(searched[i]->x)][int(searched[i]->y + 1)].searched)
+						{
+							searched.push_back(&grid[int(searched[i]->x)][int(searched[i]->y + 1)]);
+						}
+						searched.push_back(&grid[int(searched[i]->x)][int(searched[i]->y - 1)]);
+						grid[int(searched[i]->x)][int(searched[i]->y - 1)].searched = true;
+						grid[int(searched[i]->x)][int(searched[i]->y - 1)].direction = up;
+						grid[int(searched[i]->x)][int(searched[i]->y - 1)].score = searched[i]->score + 1;
+						grid[int(searched[i]->x)][int(searched[i]->y - 1)].priority = heuristic(searched[i]->x, searched[i]->y - 1) + grid[int(searched[i]->x)][int(searched[i]->y - 1)].score/2;
+						cellsEvaluated++;
+					}
+					else if (grid[int(searched[i]->x)][int(searched[i]->y - 1)].score < searched[i]->score)
+					{
+						searched[i]->direction = down;
+					}
+				}
+				if (searched[i]->y < gridSize - 1  && !grid[int(searched[i]->x)][int(searched[i]->y+1)].isWall)
+				{
+					if (grid[int(searched[i]->x)][int(searched[i]->y + 1)].score > searched[i]->score + 1) {
+						if (!grid[int(searched[i]->x)][int(searched[i]->y - 1)].searched)
+						{
+							searched.push_back(&grid[int(searched[i]->x)][int(searched[i]->y - 1)]);
+						}
+						searched.push_back(&grid[int(searched[i]->x)][int(searched[i]->y + 1)]);
+						grid[int(searched[i]->x)][int(searched[i]->y + 1)].searched = true;
+						grid[int(searched[i]->x)][int(searched[i]->y + 1)].direction = down;
+						grid[int(searched[i]->x)][int(searched[i]->y + 1)].score = searched[i]->score + 1;
+						grid[int(searched[i]->x)][int(searched[i]->y + 1)].priority = heuristic(searched[i]->x, searched[i]->y + 1) + grid[int(searched[i]->x)][int(searched[i]->y + 1)].score/2;
+						cellsEvaluated++;
+					}
+					else if (grid[int(searched[i]->x)][int(searched[i]->y + 1)].score < searched[i]->score)
+					{
+						searched[i]->direction = up;
+					}
+				}
+				if (isEndFound)
+				{
+					break;
+				}
+				//searched[i]->searched = false;
+				searched.erase(searched.begin() + i);
+				//i--;
+			}
+			if (!isEndFound) {
+				//std::cout <<  int(100*progress/pow(gridSize,2)) << "%  ";
+				progress += cellsEvaluated;
+				for (int j = 0; j < searched.size(); j++)
+				{
+					searched[j]->isNew = false;
+					if (searched[j]->finished == true)
+					{
+						searched.erase(searched.begin() + j);
+						j--;
+					}
 				}
 			}
 		}
+
 	}
-	std::cout << "CELLS EVALUATED" << cellsEvaluated << std::endl;
+
 	//getting path
 	if (isEndFound)
 	{
-		int x = end.x;
-		int y = end.y;
-		while (x != start.x && y != start.y)
+		while (!isFinished&& steps < 30)
 		{
-			grid[x][y].isPath = true;
-			if (grid[x][y].direction == up)
+			steps++;
+			if (x == startx && y == starty)
 			{
-				y++;
+				isFinished = true;
 			}
-			else if (grid[x][y].direction == right)
-			{
-				x++;
+			else{
+				grid[x][y].isPath = true;
+				if (grid[x][y].direction == up)
+				{
+					y++;
+				}
+				else if (grid[x][y].direction == right)
+				{
+					x++;
+				}
+				else if (grid[x][y].direction == down)
+				{
+					y--;
+				}
+				else if (grid[x][y].direction == left)
+				{
+					x--;
+				}
 			}
-			else if (grid[x][y].direction == down)
+		}
+		for (int i = 0; i < gridSize; i++)
+		{
+			for (int j = 0; j < gridSize; j++)
 			{
-				y--;
-			}
-			else if (grid[x][y].direction == left)
-			{
-				x--;
+				grid[i][j].finished = false;
+				grid[i][j].searched = false;
 			}
 		}
 	}
-
-
+	if (isEndFound && !isFinished && !oldIsEndFound)
+	{
+		//std::cout << std::endl << "SCORE AND DIRECTION EVALUATION COMPLETE" << std::endl;
+		//std::cout << "BEGINNING PATH FINDING..." << std::endl;
+	}
+	if (isFinished && !oldIsFinished)
+	{
+		//std::cout << "PATH-FINDING COMPLETE" << std::endl;
+	}
+	oldIsFinished = isFinished;
+	oldIsEndFound = isEndFound;
 }
 
 void Grid::setAsWall(int _x, int _y, bool isWall)
@@ -187,15 +350,16 @@ void Grid::setAsWall(int _x, int _y, bool isWall)
 
 void Grid::setStart(int _x, int _y)
 {
-	start.x = _x;
-	start.y = _y;
+	startx = _x;
+	starty = _y;
 	grid[_x][_y].isStart = true;
+	grid[_x][_y].score = 0;
 }
 
 bool Grid::setEnd(int _x, int _y)
 {
-	end.x = _x;
-	end.y = _y;
+	endx = _x;
+	endy = _y;
 	grid[_x][_y].isEnd = true;
 	return true;
 }

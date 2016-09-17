@@ -2,6 +2,7 @@
 #include <math.h>
 #include <iostream>
 #include <string>
+#include <thread>
 
 #include <GameEngine/Errors.h>
 #include <GameEngine/ResourceManager.h>
@@ -10,13 +11,13 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(400),
-	_screenHeight(400),
+	_screenWidth(800),
+	_screenHeight(800),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
-	_maxFPS(5.0f)
+	_maxFPS(60.0f)
 {
-    _camera.init(_screenWidth, _screenHeight, -50, 3200);
+    _camera.init(_screenWidth, _screenHeight, 0, 0);
 }
 
 //Destructor
@@ -32,7 +33,10 @@ void MainGame::run() {
     //This only returns when the game ends
     gameLoop();
 }
-
+void runAI(Grid* _grid)
+{
+	_grid->runAI();
+}
 //Initialize SDL and Opengl and whatever else we need
 void MainGame::initSystems() {
 
@@ -44,7 +48,7 @@ void MainGame::initSystems() {
 
     _spriteBatch.init();
     _fpsLimiter.init(_maxFPS);
-	drawText.init(&_spriteBatch);
+	//drawText.init(&_spriteBatch);
 	_camera.setScreenShakeIntensity(10);
 	grid = new Grid(&_spriteBatch);
 	grid->runAI();
@@ -74,7 +78,7 @@ void MainGame::gameLoop() {
 		grid->runAI();
 
         _camera.update();
-
+		std::cout << _fps << std::endl;
 		updateGame();
 
         drawGame();
@@ -126,6 +130,22 @@ void MainGame::processInput() {
 				break;
         }
     }
+	if (_inputManager.isKeyPressed(SDLK_SPACE)) {
+		grid->reset();
+		grid->runAI();
+	}
+	if (_inputManager.isKeyPressed(SDLK_UP)) {
+		grid->endy++;
+	}
+	if (_inputManager.isKeyPressed(SDLK_DOWN)) {
+		grid->endy--;
+	}
+	if (_inputManager.isKeyPressed(SDLK_LEFT)) {
+		grid->endx--;
+	}
+	if (_inputManager.isKeyPressed(SDLK_RIGHT)) {
+		grid->endx++;
+	}
 }
 
 //Draws the game using the almighty OpenGL
@@ -161,19 +181,7 @@ void MainGame::drawGame() {
 
     glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
     _spriteBatch.begin();
-    glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
-	static GameEngine::GLTexture texture = GameEngine::ResourceManager::getTexture("Textures/jimmyJump_pack/PNG/CharacterRight_Standing.png");
-	
-	static GameEngine::GLTexture db = GameEngine::ResourceManager::getTexture("Textures/decentBackground.png");
-    GameEngine::Color color;
-    color.r = 255;
-    color.g = 0;
-    color.b = 255;
-    color.a = 255;
-	
-	//_spriteBatch.draw(glm::vec4(-6500 / 2, -6500 / 2, 6500, 6500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.8, 0.8, 0, 0), uv, db.id, 0.0f, color, 0);
-	grid->draw(0, 0);
-	//GameEngine::drawRect(300, 0, 600, 600, 1, color, &_spriteBatch);
+    grid->draw(0, 0);
 
 	_spriteBatch.end();
 	
