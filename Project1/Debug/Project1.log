@@ -1,0 +1,11 @@
+﻿  Grid.cpp
+c:\users\jack\documents\github\sdlgame\project1\grid.cpp(96): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\project1\grid.cpp(140): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\project1\grid.cpp(156): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\jack\documents\github\sdlgame\project1\grid.cpp(157): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\jack\documents\github\sdlgame\project1\grid.cpp(190): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\project1\grid.cpp(191): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\project1\grid.cpp(197): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\project1\grid.cpp(198): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  Project1.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\Project1.exe
+  Project1.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\Project1.pdb (Partial PDB)

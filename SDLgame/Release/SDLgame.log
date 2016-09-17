@@ -1,8 +1,16 @@
-﻿GameEngine.lib(SpriteSheet.obj) : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:ICF' specification
+﻿  MainGame.cpp
+MainGame.cpp(50): warning C4305: 'argument': truncation from 'double' to 'float'
+MainGame.cpp(109): warning C4305: '+=': truncation from 'double' to 'float'
+MainGame.cpp(214): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
+MainGame.cpp(297): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+MainGame.cpp(335): warning C4305: 'argument': truncation from 'double' to 'float'
+MainGame.cpp(336): warning C4305: 'argument': truncation from 'double' to 'float'
+MainGame.cpp(368): warning C4018: '<': signed/unsigned mismatch
+GameEngine.lib(SpriteSheet.obj) : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:ICF' specification
   Generating code
-  0 of 1000 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  1 of 1000 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    10 functions had inline decision re-evaluated but remain unchanged
+    11 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   SDLgame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Release\SDLgame.exe
   SDLgame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Release\SDLgame.pdb (Full PDB)
