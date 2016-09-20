@@ -78,7 +78,7 @@ void MainGame::gameLoop() {
 		grid->runAI();
 
         _camera.update();
-		std::cout << _fps << std::endl;
+		//std::cout << _fps << std::endl;
 		updateGame();
 
         drawGame();
@@ -145,6 +145,18 @@ void MainGame::processInput() {
 	}
 	if (_inputManager.isKeyPressed(SDLK_RIGHT)) {
 		grid->endx++;
+	}
+	if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
+		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
+		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
+		grid->addWall(floor(((10*50 + 50)/2 + mouseCoords.x)/11), floor(((10 * 50 + 50)/2 + -mouseCoords.y) / 11));
+		std::cout << "mouse " << floor(((10 * 50 + 50) + mouseCoords.x) / 11) << ", " << floor(((10 * 50 + 50) / + -mouseCoords.y) / 11) << std::endl;
+	}
+	if (_inputManager.isKeyPressed(SDL_BUTTON_RIGHT)) {
+		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
+		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
+		grid->removeWall(floor(((10 * 50 + 50) / 2 + mouseCoords.x) / 11), floor(((10 * 50 + 50) / 2 + -mouseCoords.y) / 11));
+		std::cout << "mouse " << floor(((10 * 50 + 50) + mouseCoords.x) / 11) << ", " << floor(((10 * 50 + 50) / +-mouseCoords.y) / 11) << std::endl;
 	}
 }
 

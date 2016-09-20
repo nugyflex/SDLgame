@@ -11,7 +11,8 @@ struct Cell
 	bool isStart;
 	bool isPath;
 	int score;
-	int priority;
+	float priority;
 	int x;
 	int y;
+	int noise;
 };

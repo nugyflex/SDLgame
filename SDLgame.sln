@@ -10,7 +10,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDLgame", "SDLgame\SDLgame.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameEngine", "GameEngine\GameEngine.vcxproj", "{83C47B5A-5447-45C4-A865-F6E0D35A2FC3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Project1", "Project1\Project1.vcxproj", "{A181C464-1A53-4F21-92C7-01358C751EA4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PathFinding", "Project1\Project1.vcxproj", "{A181C464-1A53-4F21-92C7-01358C751EA4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "water and gas", "water and gas\water and gas.vcxproj", "{975B86BC-C08E-4108-87E1-E7026B94B752}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ProceduralGeneration", "ProceduralGeneration\ProceduralGeneration.vcxproj", "{1559BCE4-487E-4EB2-8A5A-587977CA3C05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +48,22 @@ Global
 		{A181C464-1A53-4F21-92C7-01358C751EA4}.Release|x64.Build.0 = Release|x64
 		{A181C464-1A53-4F21-92C7-01358C751EA4}.Release|x86.ActiveCfg = Release|Win32
 		{A181C464-1A53-4F21-92C7-01358C751EA4}.Release|x86.Build.0 = Release|Win32
+		{975B86BC-C08E-4108-87E1-E7026B94B752}.Debug|x64.ActiveCfg = Debug|x64
+		{975B86BC-C08E-4108-87E1-E7026B94B752}.Debug|x64.Build.0 = Debug|x64
+		{975B86BC-C08E-4108-87E1-E7026B94B752}.Debug|x86.ActiveCfg = Debug|Win32
+		{975B86BC-C08E-4108-87E1-E7026B94B752}.Debug|x86.Build.0 = Debug|Win32
+		{975B86BC-C08E-4108-87E1-E7026B94B752}.Release|x64.ActiveCfg = Release|x64
+		{975B86BC-C08E-4108-87E1-E7026B94B752}.Release|x64.Build.0 = Release|x64
+		{975B86BC-C08E-4108-87E1-E7026B94B752}.Release|x86.ActiveCfg = Release|Win32
+		{975B86BC-C08E-4108-87E1-E7026B94B752}.Release|x86.Build.0 = Release|Win32
+		{1559BCE4-487E-4EB2-8A5A-587977CA3C05}.Debug|x64.ActiveCfg = Debug|x64
+		{1559BCE4-487E-4EB2-8A5A-587977CA3C05}.Debug|x64.Build.0 = Debug|x64
+		{1559BCE4-487E-4EB2-8A5A-587977CA3C05}.Debug|x86.ActiveCfg = Debug|Win32
+		{1559BCE4-487E-4EB2-8A5A-587977CA3C05}.Debug|x86.Build.0 = Debug|Win32
+		{1559BCE4-487E-4EB2-8A5A-587977CA3C05}.Release|x64.ActiveCfg = Release|x64
+		{1559BCE4-487E-4EB2-8A5A-587977CA3C05}.Release|x64.Build.0 = Release|x64
+		{1559BCE4-487E-4EB2-8A5A-587977CA3C05}.Release|x86.ActiveCfg = Release|Win32
+		{1559BCE4-487E-4EB2-8A5A-587977CA3C05}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
