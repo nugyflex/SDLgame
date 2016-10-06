@@ -4,6 +4,7 @@
 #include <functional>
 #include <algorithm>
 struct nextResult { bool left; bool right; bool up; bool down; };
+struct nextResultValues { float left; float right; float up; float down; };
 Grid::Grid(GameEngine::SpriteBatch* _sb)
 {
 	sb = _sb;
@@ -91,52 +92,59 @@ void Grid::runGasSimulation()
 		for (int y = 0; y < gridSize; y++)
 		{
 			nextResult result = {false, false, false, false};
-			int resultInt = 0;;
+			nextResultValues resultValues = { 0,0,0,0 };
+			int resultInt = 0;
+			float highestDifference = 0;
 			//left
 			if (x > 0 && !grid[x - 1][y].isWall && grid[x - 1][y].pressure < grid[x][y].pressure)
 			{
 				resultInt++;
 				result.left = true;
+				resultValues.left = grid[x][y].pressure - grid[x - 1][y].pressure;
 			}
 			//right
 			if (x < gridSize - 1 && !grid[x + 1][y].isWall && grid[x + 1][y].pressure < grid[x][y].pressure)
 			{
 				resultInt++;
 				result.right = true;
+				resultValues.right = grid[x][y].pressure - grid[x + 1][y].pressure;
 			}
 			//up
 			if (y < gridSize - 1 && !grid[x][y+1].isWall && grid[x][y + 1].pressure < grid[x][y].pressure)
 			{
 				resultInt++;
 				result.up = true;
+				resultValues.up = grid[x][y].pressure - grid[x][y+1].pressure;
 			}
 			//down
 			if (x > 0 && !grid[x][y - 1].isWall && grid[x][y - 1].pressure < grid[x][y].pressure)
 			{
 				resultInt++;
 				result.down = true;
+				resultValues.down = grid[x][y].pressure - grid[x][y-1].pressure;
 			}
-			float amount = grid[x][y].pressure/2 / float(resultInt);
-			if (result.left)
-			{
-				grid[x][y].pressure-=amount;
-				grid[x - 1][y].pressure+= amount;
-			}
-			if (result.right)
-			{
-				grid[x][y].pressure-= amount;
-				grid[x + 1][y].pressure+= amount;
-			}
-			if (result.up)
-			{
-				grid[x][y].pressure-= amount;
-				grid[x][y + 1].pressure+= amount;
-			}
-			if (result.down)
-			{
-				grid[x][y].pressure-= amount;
-				grid[x][y - 1].pressure+= amount;
-			}
+			float amount = resultValues.up + resultValues.down + resultValues.left + resultValues.right;
+			float amount2 = grid[x][y].pressure / 2;
+				if (result.left)
+				{
+					grid[x][y].pressure -= amount2*resultValues.left/amount;
+					grid[x - 1][y].pressure += amount2*resultValues.left / amount;
+				}
+				if (result.right)
+				{
+					grid[x][y].pressure -= amount2*resultValues.right / amount;
+					grid[x + 1][y].pressure += amount2*resultValues.right / amount;
+				}
+				if (result.up)
+				{
+					grid[x][y].pressure -= amount2*resultValues.up / amount;
+					grid[x][y + 1].pressure += amount2*resultValues.up / amount;
+				}
+				if (result.down)
+				{
+					grid[x][y].pressure -= amount2*resultValues.down / amount;
+					grid[x][y - 1].pressure += amount2*resultValues.down / amount;
+				}
 		}
 	}
 

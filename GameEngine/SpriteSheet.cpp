@@ -21,7 +21,7 @@ namespace GameEngine {
 		offSetX = _offSetX;
 		offSetY = _offSetY;
 	}
-
+	
 	void SpriteSheet::loadTexture(std::string _path)
 	{
 		texture = GameEngine::ResourceManager::getTexture(_path);
@@ -97,5 +97,9 @@ namespace GameEngine {
 	{
 		frame = 0;
 		frameChangeCounter = 0;
+	}
+
+	void SpriteSheet::setFrame(int _frame) {
+		frame = _frame;
 	}
 }

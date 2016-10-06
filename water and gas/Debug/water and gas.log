@@ -1,9 +1,6 @@
-﻿  MainGame.cpp
-c:\users\jack\documents\github\sdlgame\water and gas\maingame.cpp(71): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\water and gas\maingame.cpp(112): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
-c:\users\jack\documents\github\sdlgame\water and gas\maingame.cpp(132): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\jack\documents\github\sdlgame\water and gas\maingame.cpp(137): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\jack\documents\github\sdlgame\water and gas\maingame.cpp(144): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\jack\documents\github\sdlgame\water and gas\maingame.cpp(150): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+﻿  Grid.cpp
+c:\users\jack\documents\github\sdlgame\water and gas\grid.cpp(40): warning C4244: '+=': conversion from 'float' to 'GLubyte', possible loss of data
+c:\users\jack\documents\github\sdlgame\water and gas\grid.cpp(41): warning C4244: '+=': conversion from 'float' to 'GLubyte', possible loss of data
+c:\users\jack\documents\github\sdlgame\water and gas\grid.cpp(199): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   water and gas.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\water and gas.exe
   water and gas.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\water and gas.pdb (Partial PDB)

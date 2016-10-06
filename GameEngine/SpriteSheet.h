@@ -15,12 +15,13 @@ namespace GameEngine {
 		void draw(float _x, float _y, float _angle);
 		void draw(float _x, float _y, float _angle, float _lightAlpha);
 		void draw(float _x, float _y, float _angle, bool _flip);
+		void setFrame(int _frame);
 		void reset();
 	private:
-		int frame;
+		int frame = 0;
 		int numberOfFrames;
 		int frameChangeInterval;
-		int frameChangeCounter;
+		int frameChangeCounter = 0;
 		GameEngine::GLTexture texture;
 		float width;
 		float height;

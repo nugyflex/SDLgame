@@ -34,7 +34,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A181C464-1A53-4F21-92C7-01358C751EA4}</ProjectGuid>
-    <RootNamespace>Project1</RootNamespace>
+    <RootNamespace>PathFinding</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
     <ProjectName>PathFinding</ProjectName>
   </PropertyGroup>
