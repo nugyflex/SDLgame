@@ -11,8 +11,8 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(800),
-	_screenHeight(800),
+	_screenWidth(1200),
+	_screenHeight(1200),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f)
@@ -46,6 +46,10 @@ void MainGame::initSystems() {
     _fpsLimiter.init(_maxFPS);
 	//drawText.init(&_spriteBatch);
 	_camera.setScreenShakeIntensity(10);
+
+	box = new Box(500,-500,0,150,150,150);
+	box->init();
+	renderer = new Renderer(&_spriteBatch);
 }
 
 void MainGame::initShaders() {
@@ -122,9 +126,22 @@ void MainGame::processInput() {
 				break;
         }
     }
+	if (_inputManager.isKeyPressed(SDLK_w)) {
+		renderer->FOV += 50;
+	}
+	if (_inputManager.isKeyPressed(SDLK_s)) {
+		renderer->FOV -= 50;
+	}
 	if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
 		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
 		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
+		box->x = mouseCoords.x;
+		box->y = -mouseCoords.y;
+		box->updateVertices();
+	}
+	if (_inputManager.isKeyPressed(SDL_BUTTON_MIDDLE)) {
+		box->z += 5;;
+		box->updateVertices();
 	}
 	/*if (_inputManager.isKeyPressed(SDL_BUTTON_RIGHT)) {
 		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
@@ -132,16 +149,8 @@ void MainGame::processInput() {
 		grid->reducePressure(floor(((10 * 50 + 50) / 2 + mouseCoords.x) / 11), floor(((10 * 50 + 50) / 2 + -mouseCoords.y) / 11), 30);
 	}*/
 	if (_inputManager.isKeyPressed(SDL_BUTTON_RIGHT)) {
-		if (_inputManager.isKeyPressed(SDLK_LCTRL))
-		{
-			glm::vec2 mouseCoords = _inputManager.getMouseCoords();
-			mouseCoords = _camera.convertScreenToWorld(mouseCoords);
-		}
-		else
-		{
-			glm::vec2 mouseCoords = _inputManager.getMouseCoords();
-			mouseCoords = _camera.convertScreenToWorld(mouseCoords);
-		}
+		box->z -= 5;;
+		box->updateVertices();
 	}
 }
 
@@ -178,7 +187,8 @@ void MainGame::drawGame() {
 
     glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
     _spriteBatch.begin();
-
+	renderer->drawBackGround();
+	renderer->drawBox(box);
 	_spriteBatch.end();
 	
     _spriteBatch.renderBatch();

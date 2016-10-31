@@ -12,7 +12,7 @@ Box::~Box()
 {
 }
 
-void Box::init()
+void Box::updateVertices()
 {
 	//Bottom
 	vertices[0].x = x;
@@ -40,4 +40,9 @@ void Box::init()
 	vertices[7].x = x + width;
 	vertices[7].y = y + height;
 	vertices[7].z = z;
+}
+
+void Box::init()
+{
+	updateVertices();
 }

@@ -17,6 +17,8 @@
 
 #include <GameEngine\DrawText.h>
 
+#include "Renderer.h"
+
 enum class GameState {PLAY, EXIT};
 
 //Our example game class, just for testing purposes right now
@@ -53,4 +55,6 @@ private:
 	bool lastPressedL = false;
 	bool lastPressedR = false;
 	GameEngine::DrawText drawText;
+	Box* box;
+	Renderer* renderer;
 };

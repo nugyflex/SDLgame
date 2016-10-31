@@ -38,7 +38,26 @@ void SpriteBatch::drawLine(glm::vec2 _p1, glm::vec2 _p2, float _r, float _g, flo
 	color.g = _g;
 	color.b = _b;
 	color.a = _a;
-	drawLine(_p1, _p2, color, _thickness);
+	if (_p1.x == _p2.x) {
+		if (_p1.y < _p2.y) {
+			draw(glm::vec4(_p1.x, _p1.y, _thickness, abs(_p1.y - _p2.y)), glm::vec4(1, 1, 1, 1), NULL, 0.0f, color, 1);
+		}
+		else {
+			draw(glm::vec4(_p1.x, _p2.y, _thickness, abs(_p1.y - _p2.y)), glm::vec4(1, 1, 1, 1), NULL, 0.0f, color, 1);
+		}
+	}
+	else if (_p1.y == _p2.y) {
+		if (_p1.x < _p2.x) {
+			draw(glm::vec4(_p1.x, _p1.y, abs(_p1.x - _p2.x), _thickness), glm::vec4(1, 1, 1, 1), NULL, 0.0f, color, 1);
+		}
+		else {
+			draw(glm::vec4(_p2.x, _p1.y, abs(_p1.x - _p2.x), _thickness), glm::vec4(1, 1, 1, 1), NULL, 0.0f, color, 1);
+		}
+	}
+	else {
+		drawLine(_p1, _p2, color, _thickness);
+	}
+	
 }
 void SpriteBatch::drawLine(glm::vec2 _p1, glm::vec2 _p2, const Color& color, float _thickness) {
 
