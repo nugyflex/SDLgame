@@ -28,6 +28,9 @@ void Grid::draw(int _x, int _y)
 		for (int j = 0; j < gridSize; j++)
 		{
 			GameEngine::Color color;
+			color.r = 10;
+			color.g = 220;
+			color.b = 10;/*
 			if (grid[i][j].direction == left)
 			{
 				color.r = 25;
@@ -51,11 +54,11 @@ void Grid::draw(int _x, int _y)
 				color.r = 0;
 				color.g = 25;
 				color.b = 25;
-			}
-			else if (grid[i][j].direction == finished1)
+			}*/
+			if (grid[i][j].direction == finished1)
 			{
 				color.r = 10;
-				color.g = 10;
+				color.g = 220;
 				color.b = 10;
 			}
 			if (grid[i][j].isWall) {

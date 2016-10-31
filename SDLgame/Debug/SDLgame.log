@@ -1,16 +1,10 @@
-﻿  Player.cpp
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(70): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(74): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(79): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(110): warning C4305: '*=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(187): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(189): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(210): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(213): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(217): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(222): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(225): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(229): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\sdlgame\player.cpp(298): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  SDLgame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\SDLgame.exe
-  SDLgame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\SDLgame.pdb (Partial PDB)
+﻿  MainGame.cpp
+c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(50): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(109): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(214): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(297): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(335): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(336): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\sdlgame\maingame.cpp(368): warning C4018: '<': signed/unsigned mismatch
+  SDLgame.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\SDLgame.exe
+  SDLgame.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\SDLgame.pdb (Partial PDB)

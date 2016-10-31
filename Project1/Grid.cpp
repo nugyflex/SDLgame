@@ -7,7 +7,7 @@
 Grid::Grid(GameEngine::SpriteBatch* _sb)
 {
 	sb = _sb;
-	setStart(1, 1);
+	setStart(25, 25);
 	setEnd(10, 10);
 	for (int i = 0; i < gridSize; i++)
 	{
@@ -25,7 +25,7 @@ Grid::Grid(GameEngine::SpriteBatch* _sb)
 		}
 	}
 	reset();
-	setStart(1, 1);
+	setStart(25, 25);
 	setEnd(10, 10);
 }
 
@@ -175,7 +175,7 @@ void Grid::runAI()
 		while (searched.size() > 0 && steps < 10)
 		{
 			steps++;
-			std::sort(searched.begin(), searched.end(), cmd);
+			//std::sort(searched.begin(), searched.end(), cmd);
 			if (!searched[i]->finished && !searched[i]->isNew) {
 				if (searched[i]->isEnd)
 				{

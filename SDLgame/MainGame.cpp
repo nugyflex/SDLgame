@@ -10,8 +10,8 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(2400),
-	_screenHeight(1500),
+	_screenWidth(800),
+	_screenHeight(600),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f),

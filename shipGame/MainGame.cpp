@@ -166,17 +166,22 @@ void MainGame::processInput() {
 		if (_inputManager.isKeyPressed(_inputManager.isKeyPressed(SDLK_z))) {
 			grid->addBorderWalls(floor(((grid->cellSize* grid->gridSize + grid->gridSize) / 2 + mouseCoords.x) / (grid->cellSize + 1)), floor(((grid->cellSize * grid->gridSize + grid->gridSize) / 2 + -mouseCoords.y) / (grid->cellSize + 1)), left);
 		}
-		if (_inputManager.isKeyPressed(_inputManager.isKeyPressed(SDLK_x))) {
+		else if (_inputManager.isKeyPressed(_inputManager.isKeyPressed(SDLK_x))) {
 			grid->addBorderWalls(floor(((grid->cellSize* grid->gridSize + grid->gridSize) / 2 + mouseCoords.x) / (grid->cellSize + 1)), floor(((grid->cellSize * grid->gridSize + grid->gridSize) / 2 + -mouseCoords.y) / (grid->cellSize + 1)), up);
 		}
-		if (_inputManager.isKeyPressed(_inputManager.isKeyPressed(SDLK_c))) {
+		else if (_inputManager.isKeyPressed(_inputManager.isKeyPressed(SDLK_c))) {
 			grid->addBorderWalls(floor(((grid->cellSize* grid->gridSize + grid->gridSize) / 2 + mouseCoords.x) / (grid->cellSize + 1)), floor(((grid->cellSize * grid->gridSize + grid->gridSize) / 2 + -mouseCoords.y) / (grid->cellSize + 1)), right);
 		}
-		if (_inputManager.isKeyPressed(_inputManager.isKeyPressed(SDLK_v))) {
+		else if (_inputManager.isKeyPressed(_inputManager.isKeyPressed(SDLK_v))) {
 			grid->addBorderWalls(floor(((grid->cellSize* grid->gridSize + grid->gridSize) / 2 + mouseCoords.x) / (grid->cellSize + 1)), floor(((grid->cellSize * grid->gridSize + grid->gridSize) / 2 + -mouseCoords.y) / (grid->cellSize + 1)), down);
 		}
-		if (_inputManager.isKeyPressed(_inputManager.isKeyPressed(SDLK_b))) {
+		else if (_inputManager.isKeyPressed(_inputManager.isKeyPressed(SDLK_b))) {
 			grid->setFire(floor(((grid->cellSize* grid->gridSize + grid->gridSize) / 2 + mouseCoords.x) / (grid->cellSize + 1)), floor(((grid->cellSize * grid->gridSize + grid->gridSize) / 2 + -mouseCoords.y) / (grid->cellSize + 1)));
+		}
+		else {
+			glm::vec2 mouseCoords = _inputManager.getMouseCoords();
+			mouseCoords = _camera.convertScreenToWorld(mouseCoords);
+			testGuy->addPath(mouseCoords.x, -mouseCoords.y);
 		}
 		//grid->addBorderWalls(floor(((grid->cellSize* grid->gridSize + grid->gridSize) / 2 + mouseCoords.x) / (grid->cellSize + 1)), floor(((grid->cellSize * grid->gridSize + grid->gridSize) / 2 + -mouseCoords.y) / (grid->cellSize + 1)), left);
 		//std::cout << "mouse " << floor(((10 * 50 + 50) + mouseCoords.x) / 11) << ", " << floor(((10 * 50 + 50) / + -mouseCoords.y) / 11) << std::endl;

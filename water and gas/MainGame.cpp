@@ -131,12 +131,12 @@ void MainGame::processInput() {
 		//grid->addPressure(floor(((10*50 + 50)/2 + mouseCoords.x)/11), floor(((10 * 50 + 50)/2 + -mouseCoords.y) / 11), 30);
 		grid->addPressure(floor(((10 * 50 + 50) / 2 + mouseCoords.x) / 11), floor(((10 * 50 + 50) / 2 + -mouseCoords.y) / 11), 30);
 	}
-	if (_inputManager.isKeyPressed(SDL_BUTTON_RIGHT)) {
+	/*if (_inputManager.isKeyPressed(SDL_BUTTON_RIGHT)) {
 		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
 		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
 		grid->reducePressure(floor(((10 * 50 + 50) / 2 + mouseCoords.x) / 11), floor(((10 * 50 + 50) / 2 + -mouseCoords.y) / 11), 30);
-	}
-	if (_inputManager.isKeyPressed(SDL_BUTTON_MIDDLE)) {
+	}*/
+	if (_inputManager.isKeyPressed(SDL_BUTTON_RIGHT)) {
 		if (_inputManager.isKeyPressed(SDLK_LCTRL))
 		{
 			glm::vec2 mouseCoords = _inputManager.getMouseCoords();

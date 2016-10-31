@@ -32,6 +32,7 @@
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="PlatformCollection.h" />
+    <ClInclude Include="PlayableLevel.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="ProjectileCollection.h" />
