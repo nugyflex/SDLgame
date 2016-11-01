@@ -56,5 +56,6 @@ private:
 	bool lastPressedR = false;
 	GameEngine::DrawText drawText;
 	Box* box;
+	std::vector<Box*> Boxes;
 	Renderer* renderer;
 };

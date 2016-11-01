@@ -121,6 +121,7 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="MainGame.h" />
+    <ClInclude Include="Transformations.h" />
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
@@ -128,6 +129,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Transformations.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

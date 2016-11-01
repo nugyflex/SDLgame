@@ -1,10 +1,15 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (water and gas.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  Renderer.cpp
   MainGame.cpp
+c:\users\jack\documents\github\sdlgame\3dstuff\transformations.h(8): warning C4091: 'static ': ignored on left of 'Transformations' when no variable is declared
 c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(74): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(113): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
-  Generating Code...
-  Skipping... (no relevant changes detected)
-  main.cpp
-  3DStuff.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\3DStuff.exe
-  3DStuff.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\3DStuff.pdb (Partial PDB)
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(114): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(131): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(135): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(142): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(149): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(156): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(163): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(170): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(232): warning C4018: '<': signed/unsigned mismatch
+  3DStuff.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\3DStuff.exe
+  3DStuff.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\3DStuff.pdb (Partial PDB)

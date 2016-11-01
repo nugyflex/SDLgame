@@ -8,6 +8,7 @@
 #include <GameEngine/ResourceManager.h>
 
 #include "MainGame.h"
+#include "Transformations.h"
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
@@ -46,9 +47,8 @@ void MainGame::initSystems() {
     _fpsLimiter.init(_maxFPS);
 	//drawText.init(&_spriteBatch);
 	_camera.setScreenShakeIntensity(10);
-
-	box = new Box(500,-500,0,150,150,150);
-	box->init();
+	Boxes.push_back(new Box(50, 50, 50, 50, 50, 50));
+	Boxes[0]->init();
 	renderer = new Renderer(&_spriteBatch);
 }
 
@@ -94,6 +94,7 @@ void MainGame::updateGame() {
 	_inputManager.lastMouseR = _inputManager.isKeyPressed(SDL_BUTTON_RIGHT);
 	_inputManager.lastMouseL = _inputManager.isKeyPressed(SDL_BUTTON_LEFT);
 	_inputManager.lastMouseM = _inputManager.isKeyPressed(SDL_BUTTON_MIDDLE);
+	//Transformations::rotateVertex();
 }
 //Processes input with SDL
 void MainGame::processInput() {
@@ -126,43 +127,83 @@ void MainGame::processInput() {
 				break;
         }
     }
+	if (_inputManager.isKeyPressed(SDLK_f)) {
+		Boxes.push_back(new Box(((double)rand() / (RAND_MAX)) * 1000 - 500, ((double)rand() / (RAND_MAX)) * 1000 - 500, ((double)rand() / (RAND_MAX)) * 500, 50, 50, 50));
+		Boxes[Boxes.size() - 1]->init();
+	}
+	if (_inputManager.isKeyPressed(SDLK_q)) {
+		for (int i = 0; i < Boxes.size(); i++)
+		{
+			Boxes[i]->addToPosition(0,0,-40);
+			Boxes[i]->updateVertices();
+		}
+	}
+	if (_inputManager.isKeyPressed(SDLK_e)) {
+		for (int i = 0; i < Boxes.size(); i++)
+		{
+			Boxes[i]->addToPosition(0, 0, 40);
+			Boxes[i]->updateVertices();
+		}
+	}
 	if (_inputManager.isKeyPressed(SDLK_w)) {
-		renderer->FOV += 50;
+		for (int i = 0; i < Boxes.size(); i++)
+		{
+			Boxes[i]->addToPosition(0, -20, 0);
+			Boxes[i]->updateVertices();
+		}
+	}
+	if (_inputManager.isKeyPressed(SDLK_a)) {
+		for (int i = 0; i < Boxes.size(); i++)
+		{
+			Boxes[i]->addToPosition(20, 0, 0);
+			Boxes[i]->updateVertices();
+		}
 	}
 	if (_inputManager.isKeyPressed(SDLK_s)) {
-		renderer->FOV -= 50;
+		for (int i = 0; i < Boxes.size(); i++)
+		{
+			Boxes[i]->addToPosition(0, 20, 0);
+			Boxes[i]->updateVertices();
+		}
 	}
-	if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
+	if (_inputManager.isKeyPressed(SDLK_d)) {
+		for (int i = 0; i < Boxes.size(); i++)
+		{
+			Boxes[i]->addToPosition(-20, 0, 0);
+			Boxes[i]->updateVertices();
+		}
+	}
+	/*if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
 		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
 		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
-		box->x = mouseCoords.x;
-		box->y = -mouseCoords.y;
-		box->updateVertices();
+		//box->x = mouseCoords.x;
+		//box->y = -mouseCoords.y;
+		//box->updateVertices();
 	}
 	if (_inputManager.isKeyPressed(SDL_BUTTON_MIDDLE)) {
-		box->z += 5;;
-		box->updateVertices();
+		//box->z += 5;
+		//box->updateVertices();
 	}
 	/*if (_inputManager.isKeyPressed(SDL_BUTTON_RIGHT)) {
 		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
 		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
 		grid->reducePressure(floor(((10 * 50 + 50) / 2 + mouseCoords.x) / 11), floor(((10 * 50 + 50) / 2 + -mouseCoords.y) / 11), 30);
-	}*/
-	if (_inputManager.isKeyPressed(SDL_BUTTON_RIGHT)) {
-		box->z -= 5;;
-		box->updateVertices();
 	}
+	if (_inputManager.isKeyPressed(SDL_BUTTON_RIGHT)) {
+		//box->z -= 5;;
+		//box->updateVertices();
+	}*/
 }
 
 //Draws the game using the almighty OpenGL
-void MainGame::drawGame() { 
-    //Set the base depth to 1.0
-    glClearDepth(1.0);
-    //Clear the color and depth buffer
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+void MainGame::drawGame() {
+	//Set the base depth to 1.0
+	glClearDepth(1.0);
+	//Clear the color and depth buffer
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glLineWidth(1);
-	
+
 	glm::mat4 camera = _camera.getCameraMatrix();
 
 	glColor3f(0.0, 0.0, 0.0);
@@ -172,23 +213,25 @@ void MainGame::drawGame() {
 	glVertex2f(1, 1);
 	glVertex2f(1, -1);
 	glEnd();
-    //Enable the shader
-    _colorProgram.use();
-    //We are using texture unit 0
-    glActiveTexture(GL_TEXTURE0);
-    //Get the uniform location
-    GLint textureLocation = _colorProgram.getUniformLocation("mySampler");
-    //Tell the shader that the texture is in texture unit 0
-    glUniform1i(textureLocation, 0);
+	//Enable the shader
+	_colorProgram.use();
+	//We are using texture unit 0
+	glActiveTexture(GL_TEXTURE0);
+	//Get the uniform location
+	GLint textureLocation = _colorProgram.getUniformLocation("mySampler");
+	//Tell the shader that the texture is in texture unit 0
+	glUniform1i(textureLocation, 0);
 
-    //Set the camera matrixx
-    GLint pLocation = _colorProgram.getUniformLocation("P");
-    glm::mat4 cameraMatrix = _camera.getCameraMatrix();
+	//Set the camera matrixx
+	GLint pLocation = _colorProgram.getUniformLocation("P");
+	glm::mat4 cameraMatrix = _camera.getCameraMatrix();
 
-    glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
-    _spriteBatch.begin();
+	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
+	_spriteBatch.begin();
 	renderer->drawBackGround();
-	renderer->drawBox(box);
+	for (int i = 0; i < Boxes.size(); i++) {
+		renderer->drawBox(Boxes[i]);
+	}
 	_spriteBatch.end();
 	
     _spriteBatch.renderBatch();

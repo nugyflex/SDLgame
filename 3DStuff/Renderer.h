@@ -9,12 +9,12 @@ public:
 	~Renderer();
 	void drawBackGround();
 	float getDist(float _x1, float _y1, float _x2, float _y2);
-	Vertex convertVertex(Vertex _v);
+	glm::vec3 convertVertex(glm::vec3 _v);
 	void drawLine(float _x1, float _y1, float _x2, float _y2);
-	void drawLine(Vertex _v1, Vertex _v2);
+	void drawLine(glm::vec3 _v1, glm::vec3 _v2);
 	void drawBox(Box* _box);
 	void setViewPort(float _x, float _y);
-	float FOV = 2000;
+	float FOV = 1500;
 private:
 	glm::vec2 viewPort;
 	GameEngine::SpriteBatch* sb;

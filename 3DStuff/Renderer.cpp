@@ -23,14 +23,14 @@ float Renderer::getDist(float _x1, float _y1, float _x2, float _y2)
 	return sqrt((_x1 - _x2)*(_x1 - _x2) + (_y1 - _y2)*(_y1 - _y2));
 }
 
-Vertex Renderer::convertVertex(Vertex _v)
+glm::vec3 Renderer::convertVertex(glm::vec3 _v)
 {
 	float dist = getDist(_v.x, _v.y, viewPort.x, viewPort.y);
-	float temp = dist *(-1/((_v.z/FOV+1)*(_v.z/FOV+1)) + 1);
+	float temp = dist *(-1 / ((_v.z / FOV + 1)*(_v.z / FOV + 1)) + 1);
 	/*if (log(_v.z) > 10) {
 		temp = dist;
 	}*/
-	Vertex tempv;
+	glm::vec3 tempv;
 	float theta = atan(-(viewPort.y - _v.y) / (viewPort.x - _v.x));
 	float offsety;
 	float offsetx;
@@ -55,7 +55,7 @@ void Renderer::drawLine(float _x1, float _y1, float _x2, float _y2)
 	//sb->drawLine()
 }
 
-void Renderer::drawLine(Vertex _v1, Vertex _v2)
+void Renderer::drawLine(glm::vec3 _v1, glm::vec3 _v2)
 {
 	GameEngine::Color color;
 	color.r = 255;
