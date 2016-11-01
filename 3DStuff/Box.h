@@ -9,7 +9,10 @@ public:
 	glm::vec3 vertices[8];
 	void setPosition(float _x, float _y, float _z);
 	void addToPosition(float _x, float _y, float _z);
-private:
+	float pitch = 0;
+	float yaw = 0;
+	float roll = 0;
 	glm::vec3 position;
 	glm::vec3 dimensions;
+private:
 };

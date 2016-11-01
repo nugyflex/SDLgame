@@ -47,7 +47,7 @@ void MainGame::initSystems() {
     _fpsLimiter.init(_maxFPS);
 	//drawText.init(&_spriteBatch);
 	_camera.setScreenShakeIntensity(10);
-	Boxes.push_back(new Box(50, 50, 50, 50, 50, 50));
+	Boxes.push_back(new Box(-25, -25, 0, 50, 50, 50));
 	Boxes[0]->init();
 	renderer = new Renderer(&_spriteBatch);
 }
@@ -128,49 +128,43 @@ void MainGame::processInput() {
         }
     }
 	if (_inputManager.isKeyPressed(SDLK_f)) {
-		Boxes.push_back(new Box(((double)rand() / (RAND_MAX)) * 1000 - 500, ((double)rand() / (RAND_MAX)) * 1000 - 500, ((double)rand() / (RAND_MAX)) * 500, 50, 50, 50));
-		Boxes[Boxes.size() - 1]->init();
+		//Boxes.push_back(new Box(((double)rand() / (RAND_MAX)) * 500 - 250, ((double)rand() / (RAND_MAX)) * 500 - 250, ((double)rand() / (RAND_MAX)) * 100, 50, 50, 50));
+		//Boxes[Boxes.size() - 1]->init();
 	}
 	if (_inputManager.isKeyPressed(SDLK_q)) {
 		for (int i = 0; i < Boxes.size(); i++)
 		{
-			Boxes[i]->addToPosition(0,0,-40);
-			Boxes[i]->updateVertices();
+			Transformations::translateBox(Boxes[i], 0, 0, 10);
 		}
 	}
 	if (_inputManager.isKeyPressed(SDLK_e)) {
 		for (int i = 0; i < Boxes.size(); i++)
 		{
-			Boxes[i]->addToPosition(0, 0, 40);
-			Boxes[i]->updateVertices();
+			Transformations::translateBox(Boxes[i], 0, 0, -10);
 		}
 	}
 	if (_inputManager.isKeyPressed(SDLK_w)) {
 		for (int i = 0; i < Boxes.size(); i++)
 		{
-			Boxes[i]->addToPosition(0, -20, 0);
-			Boxes[i]->updateVertices();
+			Transformations::translateBox(Boxes[i], 0, 10, 1);
 		}
 	}
 	if (_inputManager.isKeyPressed(SDLK_a)) {
 		for (int i = 0; i < Boxes.size(); i++)
 		{
-			Boxes[i]->addToPosition(20, 0, 0);
-			Boxes[i]->updateVertices();
+			Transformations::translateBox(Boxes[i], -10, 0, 0);
 		}
 	}
 	if (_inputManager.isKeyPressed(SDLK_s)) {
 		for (int i = 0; i < Boxes.size(); i++)
 		{
-			Boxes[i]->addToPosition(0, 20, 0);
-			Boxes[i]->updateVertices();
+			Transformations::translateBox(Boxes[i], 0, -10, 0);
 		}
 	}
 	if (_inputManager.isKeyPressed(SDLK_d)) {
 		for (int i = 0; i < Boxes.size(); i++)
 		{
-			Boxes[i]->addToPosition(-20, 0, 0);
-			Boxes[i]->updateVertices();
+			Transformations::translateBox(Boxes[i], 10, 0, 0);
 		}
 	}
 	/*if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
@@ -231,6 +225,13 @@ void MainGame::drawGame() {
 	renderer->drawBackGround();
 	for (int i = 0; i < Boxes.size(); i++) {
 		renderer->drawBox(Boxes[i]);
+		//Boxes[i]->yaw = 0.02;
+		//Boxes[i]->pitch = 0.02;
+		//Boxes[i]->roll = 0.02;
+		Transformations::rotateBoxYaw(Boxes[i], Boxes[i]->yaw);
+		Transformations::rotateBoxPitch(Boxes[i], Boxes[i]->yaw);
+		Transformations::rotateBoxRoll(Boxes[i], Boxes[i]->roll);
+		//Boxes[i]->updateVertices();
 	}
 	_spriteBatch.end();
 	
