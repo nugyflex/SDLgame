@@ -24,4 +24,21 @@ namespace GameEngine {
 		glVertex3f(test.x, test.y, 0);
 		glEnd();
 	}
+	void drawBasicLine(glm::vec2 _point1, glm::vec2 _point2, float _thickness, float _r, float _g, float _b) {
+		glLineWidth(_thickness);
+		glColor3f(_r, _g, _b);
+		glBegin(GL_LINES);
+		glVertex3f(_point1.x, _point1.y, 0.0);
+		glVertex3f(_point2.x, _point2.y, 0.0);
+		glEnd();
+	}
+	void fillBackGround(float _r, float _g, float _b) {
+		glColor3f(_r, _g, _b);
+		glBegin(GL_POLYGON);
+		glVertex3f(-1, -1, 0.0);
+		glVertex3f(1, -1, 0.0);
+		glVertex3f(1, 1, 0.0);
+		glVertex3f(-1, 1, 0.0);
+		glEnd();
+	}
 }

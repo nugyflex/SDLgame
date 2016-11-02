@@ -14,7 +14,7 @@ public:
 	void drawLine(glm::vec3 _v1, glm::vec3 _v2);
 	void drawBox(Box* _box);
 	void setViewPort(float _x, float _y);
-	float FOV = 1500;
+	float FOV = 1;
 private:
 	glm::vec2 viewPort;
 	GameEngine::SpriteBatch* sb;

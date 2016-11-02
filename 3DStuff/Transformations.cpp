@@ -8,7 +8,8 @@ glm::vec2 Transformations::rotateVertex(glm::vec2 _center, glm::vec2 _vertex, fl
 	m[0][1] = sin(_angle);
 	m[1][0] = -sin(_angle);
 	m[1][1] = cos(_angle);
-	return glm::vec2(multiply22x21(m, offsetFromCenter).x + _center.x, multiply22x21(m, offsetFromCenter).y + _center.y);
+	glm::vec2 result = multiply22x21(m, offsetFromCenter);
+	return glm::vec2(result.x + _center.x, result.y + _center.y);
 }
 
 glm::vec3 Transformations::translateVertex(glm::vec3 _vertex, glm::vec3 _translation)

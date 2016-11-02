@@ -12,8 +12,8 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(1200),
-	_screenHeight(1200),
+	_screenWidth(1000),
+	_screenHeight(1000),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f)
@@ -47,8 +47,11 @@ void MainGame::initSystems() {
     _fpsLimiter.init(_maxFPS);
 	//drawText.init(&_spriteBatch);
 	_camera.setScreenShakeIntensity(10);
-	Boxes.push_back(new Box(-25, -25, 0, 50, 50, 50));
-	Boxes[0]->init();
+	Boxes.push_back(new Box(0, 0, 0, 0.1, 0.1, 0.1));
+	//Boxes.push_back(new Box(0, 0, 0, 0.020, 2.000, 2.000));
+	//Boxes.push_back(new Box(0, 1.980, 0, 2.000, 0.020, 2.000));
+	//Boxes.push_back(new Box(1.980, 0, 0, 0.02, 2.000, 2.000));
+	
 	renderer = new Renderer(&_spriteBatch);
 }
 
@@ -134,37 +137,37 @@ void MainGame::processInput() {
 	if (_inputManager.isKeyPressed(SDLK_q)) {
 		for (int i = 0; i < Boxes.size(); i++)
 		{
-			Transformations::translateBox(Boxes[i], 0, 0, 10);
+			Transformations::translateBox(Boxes[i], 0, 0, 0.010);
 		}
 	}
 	if (_inputManager.isKeyPressed(SDLK_e)) {
 		for (int i = 0; i < Boxes.size(); i++)
 		{
-			Transformations::translateBox(Boxes[i], 0, 0, -10);
+			Transformations::translateBox(Boxes[i], 0, 0, -0.010);
 		}
 	}
 	if (_inputManager.isKeyPressed(SDLK_w)) {
 		for (int i = 0; i < Boxes.size(); i++)
 		{
-			Transformations::translateBox(Boxes[i], 0, 10, 1);
+			Transformations::translateBox(Boxes[i], 0, 0.010, 1);
 		}
 	}
 	if (_inputManager.isKeyPressed(SDLK_a)) {
 		for (int i = 0; i < Boxes.size(); i++)
 		{
-			Transformations::translateBox(Boxes[i], -10, 0, 0);
+			Transformations::translateBox(Boxes[i], -0.010, 0, 0);
 		}
 	}
 	if (_inputManager.isKeyPressed(SDLK_s)) {
 		for (int i = 0; i < Boxes.size(); i++)
 		{
-			Transformations::translateBox(Boxes[i], 0, -10, 0);
+			Transformations::translateBox(Boxes[i], 0, -0.010, 0);
 		}
 	}
 	if (_inputManager.isKeyPressed(SDLK_d)) {
 		for (int i = 0; i < Boxes.size(); i++)
 		{
-			Transformations::translateBox(Boxes[i], 10, 0, 0);
+			Transformations::translateBox(Boxes[i], 0.010, 0, 0);
 		}
 	}
 	/*if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
@@ -192,7 +195,7 @@ void MainGame::processInput() {
 //Draws the game using the almighty OpenGL
 void MainGame::drawGame() {
 	//Set the base depth to 1.0
-	glClearDepth(1.0);
+	/*glClearDepth(1.0);
 	//Clear the color and depth buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -221,28 +224,29 @@ void MainGame::drawGame() {
 	glm::mat4 cameraMatrix = _camera.getCameraMatrix();
 
 	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
-	_spriteBatch.begin();
+	_spriteBatch.begin();*/
 	renderer->drawBackGround();
 	for (int i = 0; i < Boxes.size(); i++) {
 		renderer->drawBox(Boxes[i]);
-		//Boxes[i]->yaw = 0.02;
-		//Boxes[i]->pitch = 0.02;
-		//Boxes[i]->roll = 0.02;
+		//Boxes[i]->yaw = 0.01;
+		//Boxes[i]->pitch = 0.01;
+		//Boxes[i]->roll = 0.01;
 		Transformations::rotateBoxYaw(Boxes[i], Boxes[i]->yaw);
 		Transformations::rotateBoxPitch(Boxes[i], Boxes[i]->yaw);
 		Transformations::rotateBoxRoll(Boxes[i], Boxes[i]->roll);
 		//Boxes[i]->updateVertices();
 	}
-	_spriteBatch.end();
+
+	//_spriteBatch.end();
 	
-    _spriteBatch.renderBatch();
+    //_spriteBatch.renderBatch();
 
     //unbind the texture
-    glBindTexture(GL_TEXTURE_2D, 0);
+    //glBindTexture(GL_TEXTURE_2D, 0);
 
 
     //disable the shader
-    _colorProgram.unuse();
+    //_colorProgram.unuse();
 
     //Swap our buffer and draw everything to the screen!
     _window.swapBuffer();
