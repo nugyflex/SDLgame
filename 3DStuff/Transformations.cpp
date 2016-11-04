@@ -80,6 +80,43 @@ void Transformations::rotateBoxRoll(Box * _box, float _angle)
 	_box->vertices[7] = rotateVertexRoll(_box->position, _box->vertices[7], _angle);
 }
 
+Box Transformations::rotateBoxAroundCamera(Box* _box, glm::vec3 _camera, float _pitch, float _yaw, float _roll)
+{
+	Box box = Box(0,0,0, _box->dimensions.x,_box->dimensions.y,_box->dimensions.z);
+	//PITCH
+	//bottom
+	box.vertices[0] = rotateVertexPitch(_camera, _box->vertices[0], _pitch);
+	box.vertices[1] = rotateVertexPitch(_camera, _box->vertices[1], _pitch);
+	box.vertices[2] = rotateVertexPitch(_camera, _box->vertices[2], _pitch);
+	box.vertices[3] = rotateVertexPitch(_camera, _box->vertices[3], _pitch);
+	//top
+	box.vertices[4] = rotateVertexPitch(_camera, _box->vertices[4], _pitch);
+	box.vertices[5] = rotateVertexPitch(_camera, _box->vertices[5], _pitch);
+	box.vertices[6] = rotateVertexPitch(_camera, _box->vertices[6], _pitch);
+	box.vertices[7] = rotateVertexPitch(_camera, _box->vertices[7], _pitch);
+	//YAW
+	box.vertices[0] = rotateVertexYaw(_camera, box.vertices[0], _yaw);
+	box.vertices[1] = rotateVertexYaw(_camera, box.vertices[1], _yaw);
+	box.vertices[2] = rotateVertexYaw(_camera, box.vertices[2], _yaw);
+	box.vertices[3] = rotateVertexYaw(_camera, box.vertices[3], _yaw);
+	//top
+	box.vertices[4] = rotateVertexYaw(_camera, box.vertices[4], _yaw);
+	box.vertices[5] = rotateVertexYaw(_camera, box.vertices[5], _yaw);
+	box.vertices[6] = rotateVertexYaw(_camera, box.vertices[6], _yaw);
+	box.vertices[7] = rotateVertexYaw(_camera, box.vertices[7], _yaw);
+	//ROLL
+	box.vertices[0] = rotateVertexRoll(_camera, box.vertices[0], _roll);
+	box.vertices[1] = rotateVertexRoll(_camera, box.vertices[1], _roll);
+	box.vertices[2] = rotateVertexRoll(_camera, box.vertices[2], _roll);
+	box.vertices[3] = rotateVertexRoll(_camera, box.vertices[3], _roll);
+	//top
+	box.vertices[4] = rotateVertexRoll(_camera, box.vertices[4], _roll);
+	box.vertices[5] = rotateVertexRoll(_camera, box.vertices[5], _roll);
+	box.vertices[6] = rotateVertexRoll(_camera, box.vertices[6], _roll);
+	box.vertices[7] = rotateVertexRoll(_camera, box.vertices[7], _roll);
+	return box;
+}
+
 glm::vec3 Transformations::rotateVertexYaw(glm::vec3 _position, glm::vec3 _vertex, float _angle)
 {
 	glm::vec2 temp = rotateVertex(glm::vec2(_position.x, _position.y), glm::vec2(_vertex.x, _vertex.y), _angle);

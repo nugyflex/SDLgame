@@ -1,5 +1,6 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (water and gas.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   Renderer.cpp
-c:\users\jack\documents\github\sdlgame\3dstuff\renderer.cpp(121): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  3DStuff.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\3DStuff.exe
-  3DStuff.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\3DStuff.pdb (Partial PDB)
+c:\users\jack\documents\github\sdlgame\3dstuff\transformations.h(18): warning C4091: 'static ': ignored on left of 'Transformations' when no variable is declared
+c:\users\jack\documents\github\sdlgame\3dstuff\renderer.cpp(122): warning C4018: '<': signed/unsigned mismatch
+  3DStuff.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\3DStuff.exe
+  3DStuff.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\3DStuff.pdb (Partial PDB)

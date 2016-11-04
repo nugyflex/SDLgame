@@ -11,6 +11,7 @@ public:
 	static void rotateBoxPitch(Box* _box, float _angle);
 	static void rotateBoxYaw(Box* _box, float _angle);
 	static void rotateBoxRoll(Box* _box, float _angle);
+	static Box rotateBoxAroundCamera(Box* _box, glm::vec3 _camera, float _pitch, float _yaw, float _roll);
 	static glm::vec3 rotateVertexPitch(glm::vec3 _position, glm::vec3 _vertex, float _angle);
 	static glm::vec3 rotateVertexYaw(glm::vec3 _position, glm::vec3 _vertex, float _angle);
 	static glm::vec3 rotateVertexRoll(glm::vec3 _position, glm::vec3 _vertex, float _angle);

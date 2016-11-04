@@ -32,6 +32,14 @@ namespace GameEngine {
 		glVertex3f(_point2.x, _point2.y, 0.0);
 		glEnd();
 	}
+	void drawBasicLine(glm::vec3 _point1, glm::vec3 _point2, float _thickness, float _r, float _g, float _b) {
+		glLineWidth(_thickness);
+		glColor3f(_r, _g, _b);
+		glBegin(GL_LINES);
+		glVertex3f(_point1.x, _point1.y, 0.0);
+		glVertex3f(_point2.x, _point2.y, 0.0);
+		glEnd();
+	}
 	void fillBackGround(float _r, float _g, float _b) {
 		glColor3f(_r, _g, _b);
 		glBegin(GL_POLYGON);
@@ -39,6 +47,24 @@ namespace GameEngine {
 		glVertex3f(1, -1, 0.0);
 		glVertex3f(1, 1, 0.0);
 		glVertex3f(-1, 1, 0.0);
+		glEnd();
+	}
+	void drawBasicQuad(glm::vec2 _p1, glm::vec2 _p2, glm::vec2 _p3, glm::vec2 _p4, float _r, float _g, float _b) {
+		glColor3f(_r, _g, _b);
+		glBegin(GL_POLYGON);
+		glVertex3f(_p1.x, _p1.y, 0.0);
+		glVertex3f(_p2.x, _p2.y, 0.0);
+		glVertex3f(_p3.x, _p3.y, 0.0);
+		glVertex3f(_p4.x, _p4.y, 0.0);
+		glEnd();
+	}
+	void drawBasicQuad(glm::vec3 _p1, glm::vec3 _p2, glm::vec3 _p3, glm::vec3 _p4, float _r, float _g, float _b) {
+		glColor3f(_r, _g, _b);
+		glBegin(GL_POLYGON);
+		glVertex3f(_p1.x, _p1.y, 0.0);
+		glVertex3f(_p2.x, _p2.y, 0.0);
+		glVertex3f(_p3.x, _p3.y, 0.0);
+		glVertex3f(_p4.x, _p4.y, 0.0);
 		glEnd();
 	}
 }

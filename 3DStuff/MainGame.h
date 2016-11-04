@@ -54,6 +54,7 @@ private:
     float _time;
 	bool lastPressedL = false;
 	bool lastPressedR = false;
+	bool lastF;
 	GameEngine::DrawText drawText;
 	Box* box;
 	std::vector<Box*> Boxes;

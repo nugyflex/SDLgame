@@ -47,7 +47,10 @@ void MainGame::initSystems() {
     _fpsLimiter.init(_maxFPS);
 	//drawText.init(&_spriteBatch);
 	_camera.setScreenShakeIntensity(10);
-	Boxes.push_back(new Box(0, 0, 0, 0.1, 0.1, 0.1));
+	Boxes.push_back(new Box(0, 0, 0, 100, 10, 100));
+	Boxes.push_back(new Box(0, 90, 0, 100, 10, 100));
+	Boxes.push_back(new Box(0, 10, 0, 10, 80, 100));
+	Boxes.push_back(new Box(90, 10, 0, 10, 80, 100));
 	//Boxes.push_back(new Box(0, 0, 0, 0.020, 2.000, 2.000));
 	//Boxes.push_back(new Box(0, 1.980, 0, 2.000, 0.020, 2.000));
 	//Boxes.push_back(new Box(1.980, 0, 0, 0.02, 2.000, 2.000));
@@ -130,44 +133,116 @@ void MainGame::processInput() {
 				break;
         }
     }
-	if (_inputManager.isKeyPressed(SDLK_f)) {
-		//Boxes.push_back(new Box(((double)rand() / (RAND_MAX)) * 500 - 250, ((double)rand() / (RAND_MAX)) * 500 - 250, ((double)rand() / (RAND_MAX)) * 100, 50, 50, 50));
-		//Boxes[Boxes.size() - 1]->init();
+	if (_inputManager.isKeyPressed(SDLK_f) && !lastF) {
+			Boxes.push_back(new Box(0, 0, 0, 20, 20, 20));
 	}
+	if (_inputManager.isKeyPressed(SDLK_f)) {
+		lastF = true;
+	}
+	else {
+		lastF = false;
+	}
+	//ROTATE:
+	if (_inputManager.isKeyPressed(SDLK_g)) {
+		for (int i = 0; i < Boxes.size(); i++)
+		{
+			Boxes[i]->pitch = 0.02;
+		}
+	}
+	else {
+		for (int i = 0; i < Boxes.size(); i++)
+		{
+			Boxes[i]->pitch = 0;
+		}
+	}
+	if (_inputManager.isKeyPressed(SDLK_h)) {
+		for (int i = 0; i < Boxes.size(); i++)
+		{
+			Boxes[i]->yaw = 0.02;
+		}
+	}
+	else {
+		for (int i = 0; i < Boxes.size(); i++)
+		{
+			Boxes[i]->yaw = 0;
+		}
+	}
+	if (_inputManager.isKeyPressed(SDLK_j)) {
+		for (int i = 0; i < Boxes.size(); i++)
+		{
+			Boxes[i]->roll = 0.02;
+		}
+	}
+	else {
+		for (int i = 0; i < Boxes.size(); i++)
+		{
+			Boxes[i]->roll = 0;
+		}
+	}
+	//TRANSLATING
 	if (_inputManager.isKeyPressed(SDLK_q)) {
 		for (int i = 0; i < Boxes.size(); i++)
 		{
-			Transformations::translateBox(Boxes[i], 0, 0, 0.010);
+			Transformations::translateBox(Boxes[i], 0, 0, 2);
 		}
 	}
 	if (_inputManager.isKeyPressed(SDLK_e)) {
 		for (int i = 0; i < Boxes.size(); i++)
 		{
-			Transformations::translateBox(Boxes[i], 0, 0, -0.010);
+			Transformations::translateBox(Boxes[i], 0, 0, -2);
 		}
 	}
-	if (_inputManager.isKeyPressed(SDLK_w)) {
-		for (int i = 0; i < Boxes.size(); i++)
-		{
-			Transformations::translateBox(Boxes[i], 0, 0.010, 1);
+	if (!_inputManager.isKeyPressed(SDLK_LCTRL)) {
+		if (_inputManager.isKeyPressed(SDLK_w)) {
+			for (int i = 0; i < Boxes.size(); i++)
+			{
+				Transformations::translateBox(Boxes[i], 0, 2, 0);
+			}
+		}
+		if (_inputManager.isKeyPressed(SDLK_a)) {
+			for (int i = 0; i < Boxes.size(); i++)
+			{
+				Transformations::translateBox(Boxes[i], -2, 0, 0);
+			}
+		}
+		if (_inputManager.isKeyPressed(SDLK_s)) {
+			for (int i = 0; i < Boxes.size(); i++)
+			{
+				Transformations::translateBox(Boxes[i], 0, -2, 0);
+			}
+		}
+		if (_inputManager.isKeyPressed(SDLK_d)) {
+			for (int i = 0; i < Boxes.size(); i++)
+			{
+				Transformations::translateBox(Boxes[i], 2, 0, 0);
+			}
 		}
 	}
-	if (_inputManager.isKeyPressed(SDLK_a)) {
-		for (int i = 0; i < Boxes.size(); i++)
-		{
-			Transformations::translateBox(Boxes[i], -0.010, 0, 0);
+	else {
+		if (_inputManager.isKeyPressed(SDLK_w)) {
+			for (int i = 0; i < Boxes.size(); i++)
+			{
+				renderer->cameraRoll += 0.003;
+				std::cout << renderer->cameraRoll;
+			}
 		}
-	}
-	if (_inputManager.isKeyPressed(SDLK_s)) {
-		for (int i = 0; i < Boxes.size(); i++)
-		{
-			Transformations::translateBox(Boxes[i], 0, -0.010, 0);
+		if (_inputManager.isKeyPressed(SDLK_a)) {
+			for (int i = 0; i < Boxes.size(); i++)
+			{
+				renderer->cameraPitch += 0.003;
+			}
 		}
-	}
-	if (_inputManager.isKeyPressed(SDLK_d)) {
-		for (int i = 0; i < Boxes.size(); i++)
-		{
-			Transformations::translateBox(Boxes[i], 0.010, 0, 0);
+		if (_inputManager.isKeyPressed(SDLK_s)) {
+			for (int i = 0; i < Boxes.size(); i++)
+			{
+				renderer->cameraRoll -= 0.003;
+			}
+		}
+		if (_inputManager.isKeyPressed(SDLK_d)) {
+			for (int i = 0; i < Boxes.size(); i++)
+			{
+				renderer->cameraPitch -= 0.003;
+			}
 		}
 	}
 	/*if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
@@ -232,22 +307,11 @@ void MainGame::drawGame() {
 		//Boxes[i]->pitch = 0.01;
 		//Boxes[i]->roll = 0.01;
 		Transformations::rotateBoxYaw(Boxes[i], Boxes[i]->yaw);
-		Transformations::rotateBoxPitch(Boxes[i], Boxes[i]->yaw);
+		Transformations::rotateBoxPitch(Boxes[i], Boxes[i]->pitch);
 		Transformations::rotateBoxRoll(Boxes[i], Boxes[i]->roll);
-		//Boxes[i]->updateVertices();
 	}
-
-	//_spriteBatch.end();
-	
-    //_spriteBatch.renderBatch();
-
-    //unbind the texture
-    //glBindTexture(GL_TEXTURE_2D, 0);
-
-
-    //disable the shader
-    //_colorProgram.unuse();
-
+	renderer->drawAllFaces();
+	renderer->resetFaces();
     //Swap our buffer and draw everything to the screen!
     _window.swapBuffer();
 }    

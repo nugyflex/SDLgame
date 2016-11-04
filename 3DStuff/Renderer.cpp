@@ -1,6 +1,8 @@
 #include "Renderer.h"
 #include <GameEngine\CollisionDetection.h>
 #include <iostream>
+#include "Transformations.h"
+#include <algorithm>
 Renderer::Renderer(GameEngine::SpriteBatch* _sb)
 {
 	sb = _sb;
@@ -33,7 +35,7 @@ glm::vec3 Renderer::convertVertex(glm::vec3 _v)
 		//temp = dist *(-1 / (((-FOV + 0.1) / (FOV + 0.1) + 1)*(-FOV / FOV + 1)) + 1);
 	}
 	//temp = dist;
-	//std::cout << "z: " << _v.z << std::endl;
+	//std::cout << "OO " << std::endl;
 	glm::vec3 tempv;
 	float theta = atan(-(viewPort.y - _v.y) / (viewPort.x - _v.x));
 	float offsety;
@@ -52,6 +54,7 @@ glm::vec3 Renderer::convertVertex(glm::vec3 _v)
 	}
 	tempv.y = _v.y + offsety;
 	tempv.x = _v.x + offsetx;
+	tempv.z = _v.z;
 	return tempv;
 }
 void Renderer::drawLine(float _x1, float _y1, float _x2, float _y2)
@@ -61,20 +64,17 @@ void Renderer::drawLine(float _x1, float _y1, float _x2, float _y2)
 
 void Renderer::drawLine(glm::vec3 _v1, glm::vec3 _v2)
 {
-	GameEngine::Color color;
-	color.r = 255;
-	color.g = 255;
-	color.b = 255;
-	glm::vec2 temp1 = glm::vec2(convertVertex(_v1).x, convertVertex(_v1).y);
-	glm::vec2 temp2 = glm::vec2(convertVertex(_v2).x, convertVertex(_v2).y);
-	GameEngine::drawBasicLine(temp1, temp2, 1, 1, 1, 1);
-	//sb->drawLine(glm::vec2(convertVertex(_v1).x, convertVertex(_v1).y), glm::vec2(convertVertex(_v2).x, convertVertex(_v2).y), 255, 255, 255, 255, 1);
+	GameEngine::drawBasicLine(_v1, _v2, 1, 1, 1, 1);
 }
 void Renderer::drawBox(Box* _box)
 {
+	Box box = Transformations::rotateBoxAroundCamera(_box, viewPort, cameraPitch, cameraYaw, cameraRoll);
 	bool array[8];
+	glm::vec3 convertedVertices[8];
+
 	for (int i = 0; i < 8; i++) {
-		if (_box->vertices[i].z < -500) {
+		convertedVertices[i] = convertVertex(box.vertices[i]);
+		if (box.vertices[i].z < 0) {
 			array[i] = false;
 		}
 		else
@@ -82,50 +82,64 @@ void Renderer::drawBox(Box* _box)
 			array[i] = true;
 		}
 	}
+	//std::cout << "NE" << std::endl;
 	//Bottom
-	if (array[0] || array[1]) drawLine(_box->vertices[0], _box->vertices[1]);
-	if (array[1] || array[2]) drawLine(_box->vertices[1], _box->vertices[2]);
-	if (array[2] || array[3]) drawLine(_box->vertices[2], _box->vertices[3]);
-	if (array[3] || array[0]) drawLine(_box->vertices[3], _box->vertices[0]);
-	//Top
-	if (array[4] || array[5]) drawLine(_box->vertices[4], _box->vertices[5]);
-	if (array[5] || array[6]) drawLine(_box->vertices[5], _box->vertices[6]);
-	if (array[6] || array[7]) drawLine(_box->vertices[6], _box->vertices[7]);
-	if (array[7] || array[4]) drawLine(_box->vertices[7], _box->vertices[4]);
-	//Joins
-	if (array[0] || array[4]) drawLine(_box->vertices[0], _box->vertices[4]);
-	if (array[1] || array[5]) drawLine(_box->vertices[1], _box->vertices[5]);
-	if (array[2] || array[6]) drawLine(_box->vertices[2], _box->vertices[6]);
-	if (array[3] || array[7]) drawLine(_box->vertices[3], _box->vertices[7]);
 	/*
-	//Bottom
-	drawLine(_box->vertices[0], _box->vertices[1]);
-	drawLine(_box->vertices[1], _box->vertices[2]);
-	drawLine(_box->vertices[2], _box->vertices[3]);
-	drawLine(_box->vertices[3], _box->vertices[0]);
+	if (array[0] || array[1]) drawLine(convertedVertices[0], convertedVertices[1]);
+	if (array[1] || array[2]) drawLine(convertedVertices[1], convertedVertices[2]);
+	if (array[2] || array[3]) drawLine(convertedVertices[2], convertedVertices[3]);
+	if (array[3] || array[0]) drawLine(convertedVertices[3], convertedVertices[0]);
 	//Top
-	drawLine(_box->vertices[4], _box->vertices[5]);
-	drawLine(_box->vertices[5], _box->vertices[6]);
-	drawLine(_box->vertices[6], _box->vertices[7]);
-	drawLine(_box->vertices[7], _box->vertices[4]);
+	if (array[4] || array[5]) drawLine(convertedVertices[4], convertedVertices[5]);
+	if (array[5] || array[6]) drawLine(convertedVertices[5], convertedVertices[6]);
+	if (array[6] || array[7]) drawLine(convertedVertices[6], convertedVertices[7]);
+	if (array[7] || array[4]) drawLine(convertedVertices[7], convertedVertices[4]);
 	//Joins
-	drawLine(_box->vertices[0], _box->vertices[4]);
-	drawLine(_box->vertices[1], _box->vertices[5]);
-	drawLine(_box->vertices[2], _box->vertices[6]);
-	drawLine(_box->vertices[3], _box->vertices[7]);
+	if (array[0] || array[4]) drawLine(convertedVertices[0], convertedVertices[4]);
+	if (array[1] || array[5]) drawLine(convertedVertices[1], convertedVertices[5]);
+	if (array[2] || array[6]) drawLine(convertedVertices[2], convertedVertices[6]);
+	if (array[3] || array[7]) drawLine(convertedVertices[3], convertedVertices[7]);
 	*/
-	GameEngine::Color color;
-	color.r = 255;
-	color.g = 0;
-	color.b = 0;
-	GameEngine::drawRect(convertVertex(_box->position).x-2, convertVertex(_box->position).y-2, 4, 4, 1, color, sb);
-	color.r = 0;
-	color.g = 255;
-	GameEngine::drawRect(-2, -2, 4, 4, 1, color, sb);
+	//FACES
+	Faces.push_back(Face(convertedVertices[0], convertedVertices[1], convertedVertices[2], convertedVertices[3], sqrt(pow((box.vertices[0].x + box.vertices[1].x + box.vertices[2].x + box.vertices[3].x) / 4, 2) + pow((box.vertices[0].y + box.vertices[1].y + box.vertices[2].y + box.vertices[3].y) / 4, 2) + pow((box.vertices[0].z + box.vertices[1].z + box.vertices[2].z + box.vertices[3].z) / 4, 2))));
+	Faces.push_back(Face(convertedVertices[4], convertedVertices[5], convertedVertices[6], convertedVertices[7], sqrt(pow((box.vertices[4].x + box.vertices[5].x + box.vertices[6].x + box.vertices[7].x) / 4, 2) + pow((box.vertices[4].y + box.vertices[5].y + box.vertices[6].y + box.vertices[7].y) / 4, 2) + pow((box.vertices[4].z + box.vertices[5].z + box.vertices[6].z + box.vertices[7].z) / 4, 2))));
+	Faces.push_back(Face(convertedVertices[0], convertedVertices[3], convertedVertices[7], convertedVertices[4], sqrt(pow((box.vertices[0].x + box.vertices[3].x + box.vertices[7].x + box.vertices[4].x) / 4, 2) + pow((box.vertices[0].y + box.vertices[3].y + box.vertices[7].y + box.vertices[4].y) / 4, 2) + pow((box.vertices[0].z + box.vertices[3].z + box.vertices[7].z + box.vertices[4].z) / 4, 2))));
+	Faces.push_back(Face(convertedVertices[0], convertedVertices[1], convertedVertices[5], convertedVertices[4], sqrt(pow((box.vertices[0].x + box.vertices[1].x + box.vertices[5].x + box.vertices[4].x) / 4, 2) + pow((box.vertices[0].y + box.vertices[1].y + box.vertices[5].y + box.vertices[4].y) / 4, 2) + pow((box.vertices[0].z + box.vertices[1].z + box.vertices[5].z + box.vertices[4].z) / 4, 2))));
+	Faces.push_back(Face(convertedVertices[1], convertedVertices[2], convertedVertices[6], convertedVertices[5], sqrt(pow((box.vertices[1].x + box.vertices[2].x + box.vertices[6].x + box.vertices[5].x) / 4, 2) + pow((box.vertices[1].y + box.vertices[2].y + box.vertices[6].y + box.vertices[5].y) / 4, 2) + pow((box.vertices[1].z + box.vertices[2].z + box.vertices[6].z + box.vertices[5].z) / 4, 2))));
+	Faces.push_back(Face(convertedVertices[0], convertedVertices[3], convertedVertices[7], convertedVertices[4], sqrt(pow((box.vertices[0].x + box.vertices[3].x + box.vertices[7].x + box.vertices[4].x) / 4, 2) + pow((box.vertices[0].y + box.vertices[3].y + box.vertices[7].y + box.vertices[4].y) / 4, 2) + pow((box.vertices[0].z + box.vertices[3].z + box.vertices[7].z + box.vertices[4].z) / 4, 2))));
+	Faces.push_back(Face(convertedVertices[2], convertedVertices[3], convertedVertices[7], convertedVertices[6], sqrt(pow((box.vertices[2].x + box.vertices[3].x + box.vertices[7].x + box.vertices[6].x) / 4, 2) + pow((box.vertices[2].y + box.vertices[3].y + box.vertices[7].y + box.vertices[6].y) / 4, 2) + pow((box.vertices[2].z + box.vertices[3].z + box.vertices[7].z + box.vertices[6].z) / 4, 2))));
 }
 
 void Renderer::setViewPort(float _x, float _y)
 {
 	viewPort.x = _x;
 	viewPort.y = _y;
+}
+
+void Renderer::drawAllFaces()
+{
+	orderFaces();
+	for (int i = 0; i < Faces.size(); i++) {
+		float averageDepth = (Faces[i].p1.z + Faces[i].p2.z + Faces[i].p3.z + Faces[i].p4.z) / 4;
+		GameEngine::drawBasicQuad(Faces[i].p1, Faces[i].p2, Faces[i].p3, Faces[i].p4, 1, averageDepth/400, averageDepth/400);
+	}
+}
+
+void Renderer::resetFaces()
+{
+	Faces.clear();
+}
+
+void Renderer::orderFaces()
+{
+	std::sort(Faces.begin(), Faces.end(), sort_face());
+}
+
+Face::Face(glm::vec3 _p1, glm::vec3 _p2, glm::vec3 _p3, glm::vec3 _p4, float _distFromCamera)
+{
+	p1 = _p1;
+	p2 = _p2;
+	p3 = _p3;
+	p4 = _p4;
+	distFromCamera = _distFromCamera;
 }
