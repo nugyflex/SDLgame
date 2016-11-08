@@ -30,6 +30,8 @@ public:
 	void drawLine(glm::vec3 _v1, glm::vec3 _v2);
 	void drawBox(Box* _box);
 	void setViewPort(float _x, float _y);
+	void setAllZToZero(Box* _box);
+	void clipEdge(glm::vec3* _p1, glm::vec3* _p2);
 	void drawAllFaces();
 	void resetFaces();
 	void orderFaces();

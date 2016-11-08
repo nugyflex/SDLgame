@@ -52,8 +52,12 @@ glm::vec3 Renderer::convertVertex(glm::vec3 _v)
 		offsety = sin(theta) * temp;
 		offsetx = cos(theta) * -temp;
 	}*/
-	tempv.y = _v.y / (_v.z*FOV);
-	tempv.x = _v.x/ (_v.z*FOV);
+	tempv.y = (_v.y*FOV) / _v.z;
+	tempv.x = (_v.x*FOV) / _v.z;
+	if (_v.z < 0) {
+		tempv.y = _v.y *-_v.z;
+		tempv.x = _v.x *-_v.z;
+	}
 	tempv.z = _v.z;
 	return tempv;
 }
@@ -101,13 +105,14 @@ void Renderer::drawBox(Box* _box)
 	if (array[3] || array[7]) drawLine(convertedVertices[3], convertedVertices[7]);
 	*/
 	//FACES
-	if (box.vertices[0].z > 0 && box.vertices[1].z > 0 && box.vertices[2].z > 0 && box.vertices[3].z > 0) Faces.push_back(Face(convertedVertices[0], convertedVertices[1], convertedVertices[2], convertedVertices[3], sqrt(pow((box.vertices[0].x + box.vertices[1].x + box.vertices[2].x + box.vertices[3].x) / 4, 2) + pow((box.vertices[0].y + box.vertices[1].y + box.vertices[2].y + box.vertices[3].y) / 4, 2) + pow((box.vertices[0].z + box.vertices[1].z + box.vertices[2].z + box.vertices[3].z) / 4, 2))));
-	if (box.vertices[4].z > 0 && box.vertices[5].z > 0 && box.vertices[6].z > 0 && box.vertices[7].z > 0) Faces.push_back(Face(convertedVertices[4], convertedVertices[5], convertedVertices[6], convertedVertices[7], sqrt(pow((box.vertices[4].x + box.vertices[5].x + box.vertices[6].x + box.vertices[7].x) / 4, 2) + pow((box.vertices[4].y + box.vertices[5].y + box.vertices[6].y + box.vertices[7].y) / 4, 2) + pow((box.vertices[4].z + box.vertices[5].z + box.vertices[6].z + box.vertices[7].z) / 4, 2))));
-	if (box.vertices[0].z > 0 && box.vertices[3].z > 0 && box.vertices[7].z > 0 && box.vertices[4].z > 0) Faces.push_back(Face(convertedVertices[0], convertedVertices[3], convertedVertices[7], convertedVertices[4], sqrt(pow((box.vertices[0].x + box.vertices[3].x + box.vertices[7].x + box.vertices[4].x) / 4, 2) + pow((box.vertices[0].y + box.vertices[3].y + box.vertices[7].y + box.vertices[4].y) / 4, 2) + pow((box.vertices[0].z + box.vertices[3].z + box.vertices[7].z + box.vertices[4].z) / 4, 2))));
-	if (box.vertices[0].z > 0 && box.vertices[1].z > 0 && box.vertices[5].z > 0 && box.vertices[4].z > 0) Faces.push_back(Face(convertedVertices[0], convertedVertices[1], convertedVertices[5], convertedVertices[4], sqrt(pow((box.vertices[0].x + box.vertices[1].x + box.vertices[5].x + box.vertices[4].x) / 4, 2) + pow((box.vertices[0].y + box.vertices[1].y + box.vertices[5].y + box.vertices[4].y) / 4, 2) + pow((box.vertices[0].z + box.vertices[1].z + box.vertices[5].z + box.vertices[4].z) / 4, 2))));
-	if (box.vertices[1].z > 0 && box.vertices[2].z > 0 && box.vertices[6].z > 0 && box.vertices[4].z > 0) Faces.push_back(Face(convertedVertices[1], convertedVertices[2], convertedVertices[6], convertedVertices[5], sqrt(pow((box.vertices[1].x + box.vertices[2].x + box.vertices[6].x + box.vertices[5].x) / 4, 2) + pow((box.vertices[1].y + box.vertices[2].y + box.vertices[6].y + box.vertices[5].y) / 4, 2) + pow((box.vertices[1].z + box.vertices[2].z + box.vertices[6].z + box.vertices[5].z) / 4, 2))));
-	if (box.vertices[0].z > 0 && box.vertices[3].z > 0 && box.vertices[7].z > 0 && box.vertices[4].z > 0) Faces.push_back(Face(convertedVertices[0], convertedVertices[3], convertedVertices[7], convertedVertices[4], sqrt(pow((box.vertices[0].x + box.vertices[3].x + box.vertices[7].x + box.vertices[4].x) / 4, 2) + pow((box.vertices[0].y + box.vertices[3].y + box.vertices[7].y + box.vertices[4].y) / 4, 2) + pow((box.vertices[0].z + box.vertices[3].z + box.vertices[7].z + box.vertices[4].z) / 4, 2))));
-	if (box.vertices[2].z > 0 && box.vertices[3].z > 0 && box.vertices[7].z > 0 && box.vertices[6].z > 0) Faces.push_back(Face(convertedVertices[2], convertedVertices[3], convertedVertices[7], convertedVertices[6], sqrt(pow((box.vertices[2].x + box.vertices[3].x + box.vertices[7].x + box.vertices[6].x) / 4, 2) + pow((box.vertices[2].y + box.vertices[3].y + box.vertices[7].y + box.vertices[6].y) / 4, 2) + pow((box.vertices[2].z + box.vertices[3].z + box.vertices[7].z + box.vertices[6].z) / 4, 2))));
+	
+	if (box.vertices[0].z > 0 || box.vertices[1].z > 0 || box.vertices[2].z > 0 || box.vertices[3].z > 0) Faces.push_back(Face(convertedVertices[0], convertedVertices[1], convertedVertices[2], convertedVertices[3], sqrt(pow((box.vertices[0].x + box.vertices[1].x + box.vertices[2].x + box.vertices[3].x) / 4, 2) + pow((box.vertices[0].y + box.vertices[1].y + box.vertices[2].y + box.vertices[3].y) / 4, 2) + pow((box.vertices[0].z + box.vertices[1].z + box.vertices[2].z + box.vertices[3].z) / 4, 2))));
+	if (box.vertices[4].z > 0 || box.vertices[5].z > 0 || box.vertices[6].z > 0 || box.vertices[7].z > 0) Faces.push_back(Face(convertedVertices[4], convertedVertices[5], convertedVertices[6], convertedVertices[7], sqrt(pow((box.vertices[4].x + box.vertices[5].x + box.vertices[6].x + box.vertices[7].x) / 4, 2) + pow((box.vertices[4].y + box.vertices[5].y + box.vertices[6].y + box.vertices[7].y) / 4, 2) + pow((box.vertices[4].z + box.vertices[5].z + box.vertices[6].z + box.vertices[7].z) / 4, 2))));
+	if (box.vertices[0].z > 0 || box.vertices[3].z > 0 || box.vertices[7].z > 0 || box.vertices[4].z > 0) Faces.push_back(Face(convertedVertices[0], convertedVertices[3], convertedVertices[7], convertedVertices[4], sqrt(pow((box.vertices[0].x + box.vertices[3].x + box.vertices[7].x + box.vertices[4].x) / 4, 2) + pow((box.vertices[0].y + box.vertices[3].y + box.vertices[7].y + box.vertices[4].y) / 4, 2) + pow((box.vertices[0].z + box.vertices[3].z + box.vertices[7].z + box.vertices[4].z) / 4, 2))));
+	if (box.vertices[0].z > 0 || box.vertices[1].z > 0 || box.vertices[5].z > 0 || box.vertices[4].z > 0) Faces.push_back(Face(convertedVertices[0], convertedVertices[1], convertedVertices[5], convertedVertices[4], sqrt(pow((box.vertices[0].x + box.vertices[1].x + box.vertices[5].x + box.vertices[4].x) / 4, 2) + pow((box.vertices[0].y + box.vertices[1].y + box.vertices[5].y + box.vertices[4].y) / 4, 2) + pow((box.vertices[0].z + box.vertices[1].z + box.vertices[5].z + box.vertices[4].z) / 4, 2))));
+	if (box.vertices[1].z > 0 || box.vertices[2].z > 0 || box.vertices[6].z > 0 || box.vertices[4].z > 0) Faces.push_back(Face(convertedVertices[1], convertedVertices[2], convertedVertices[6], convertedVertices[5], sqrt(pow((box.vertices[1].x + box.vertices[2].x + box.vertices[6].x + box.vertices[5].x) / 4, 2) + pow((box.vertices[1].y + box.vertices[2].y + box.vertices[6].y + box.vertices[5].y) / 4, 2) + pow((box.vertices[1].z + box.vertices[2].z + box.vertices[6].z + box.vertices[5].z) / 4, 2))));
+	if (box.vertices[0].z > 0 || box.vertices[3].z > 0 || box.vertices[7].z > 0 || box.vertices[4].z > 0) Faces.push_back(Face(convertedVertices[0], convertedVertices[3], convertedVertices[7], convertedVertices[4], sqrt(pow((box.vertices[0].x + box.vertices[3].x + box.vertices[7].x + box.vertices[4].x) / 4, 2) + pow((box.vertices[0].y + box.vertices[3].y + box.vertices[7].y + box.vertices[4].y) / 4, 2) + pow((box.vertices[0].z + box.vertices[3].z + box.vertices[7].z + box.vertices[4].z) / 4, 2))));
+	if (box.vertices[2].z > 0 || box.vertices[3].z > 0 || box.vertices[7].z > 0 || box.vertices[6].z > 0) Faces.push_back(Face(convertedVertices[2], convertedVertices[3], convertedVertices[7], convertedVertices[6], sqrt(pow((box.vertices[2].x + box.vertices[3].x + box.vertices[7].x + box.vertices[6].x) / 4, 2) + pow((box.vertices[2].y + box.vertices[3].y + box.vertices[7].y + box.vertices[6].y) / 4, 2) + pow((box.vertices[2].z + box.vertices[3].z + box.vertices[7].z + box.vertices[6].z) / 4, 2))));
 }
 
 void Renderer::setViewPort(float _x, float _y)
@@ -116,12 +121,36 @@ void Renderer::setViewPort(float _x, float _y)
 	viewPort.y = _y;
 }
 
+void Renderer::setAllZToZero(Box * _box)
+{
+	for (int i = 0; i < 8; i++) {
+		if (_box->vertices[i].z < 0) _box->vertices[i].z = 0.1;
+	}
+}
+
+void Renderer::clipEdge(glm::vec3* _p1, glm::vec3* _p2)
+{
+	if (_p1->z < 0 || _p2->z < 0) {
+		float temp = abs(_p1->z - _p2->z);
+		if (_p1->z < _p2->z) {
+			float temp1 = -_p1->z / temp;
+			_p1->y = _p1->y + temp1*abs(_p1->y - _p2->y);
+			_p1->x = _p1->x + temp1*abs(_p1->x - _p2->x);
+		}
+	}
+}
+
 void Renderer::drawAllFaces()
 {
 	orderFaces();
 	for (int i = 0; i < Faces.size(); i++) {
+		
 		float averageDepth = (Faces[i].p1.z + Faces[i].p2.z + Faces[i].p3.z + Faces[i].p4.z) / 4;
-		GameEngine::drawBasicQuad(Faces[i].p1, Faces[i].p2, Faces[i].p3, Faces[i].p4, 1, averageDepth/100, averageDepth/100);
+		if (Faces[i].p1.z < 0) clipEdge(&Faces[i].p1, &glm::vec3(0, 0, averageDepth));
+		if (Faces[i].p2.z < 0) clipEdge(&Faces[i].p2, &glm::vec3(0, 0, averageDepth));
+		if (Faces[i].p3.z < 0) clipEdge(&Faces[i].p3, &glm::vec3(0, 0, averageDepth));
+		if (Faces[i].p4.z < 0) clipEdge(&Faces[i].p4, &glm::vec3(0, 0, averageDepth));
+		GameEngine::drawBasicQuad(Faces[i].p1, Faces[i].p2, Faces[i].p3, Faces[i].p4, averageDepth / 200, 0, 200 / averageDepth);
 	}
 }
 

@@ -51,6 +51,8 @@ void MainGame::initSystems() {
 	Boxes.push_back(new Box(0, 90, 0, 100, 10, 100));
 	Boxes.push_back(new Box(0, 10, 0, 10, 80, 100));
 	Boxes.push_back(new Box(90, 10, 0, 10, 80, 100));*/
+	
+	
 	Boxes.push_back(new Box(0, 0, 0, 10, 10, 10));
 	Boxes.push_back(new Box(20, 0, 0, 10, 10, 10));
 	Boxes.push_back(new Box(40, 0, 0, 10, 10, 10));
@@ -67,21 +69,20 @@ void MainGame::initSystems() {
 	Boxes.push_back(new Box(100, 0, 120, 10, 10, 10));
 	Boxes.push_back(new Box(120, 0, 120, 10, 10, 10));
 
-	Boxes.push_back(new Box(0, 0, 0, 10, 10, 10));
 	Boxes.push_back(new Box(0, 0, 20, 10, 10, 10));
 	Boxes.push_back(new Box(0, 0, 40, 10, 10, 10));
 	Boxes.push_back(new Box(0, 0, 60, 10, 10, 10));
 	Boxes.push_back(new Box(0, 0, 80, 10, 10, 10));
 	Boxes.push_back(new Box(0, 0, 100, 10, 10, 10));
-	Boxes.push_back(new Box(0, 0, 200, 10, 10, 10));
+	Boxes.push_back(new Box(0, 0, 120, 10, 10, 10));
 
-	Boxes.push_back(new Box(120, 0, 0, 10, 10, 10));
 	Boxes.push_back(new Box(120, 0, 20, 10, 10, 10));
 	Boxes.push_back(new Box(120, 0, 40, 10, 10, 10));
 	Boxes.push_back(new Box(120, 0, 60, 10, 10, 10));
 	Boxes.push_back(new Box(120, 0, 80, 10, 10, 10));
 	Boxes.push_back(new Box(120, 0, 100, 10, 10, 10));
-	Boxes.push_back(new Box(120, 0, 120, 10, 10, 10));
+	
+	Boxes.push_back(new Box(-500, -100, -500, 1000, 10, 1000));
 	//Boxes.push_back(new Box(0, 0, 0, 0.020, 2.000, 2.000));
 	//Boxes.push_back(new Box(0, 1.980, 0, 2.000, 0.020, 2.000));
 	//Boxes.push_back(new Box(1.980, 0, 0, 0.02, 2.000, 2.000));
