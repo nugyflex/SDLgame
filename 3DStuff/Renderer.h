@@ -33,7 +33,7 @@ public:
 	void drawAllFaces();
 	void resetFaces();
 	void orderFaces();
-	float FOV = 20;
+	float FOV = 0.9;
 	float cameraPitch;
 	float cameraYaw;
 	float cameraRoll;

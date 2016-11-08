@@ -57,6 +57,10 @@ namespace GameEngine {
 		glVertex3f(_p3.x, _p3.y, 0.0);
 		glVertex3f(_p4.x, _p4.y, 0.0);
 		glEnd();
+		drawBasicLine(_p1, _p2, 2, 0, 0, 0);
+		drawBasicLine(_p2, _p3, 2, 0, 0, 0);
+		drawBasicLine(_p3, _p4, 2, 0, 0, 0);
+		drawBasicLine(_p4, _p1, 2, 0, 0, 0);
 	}
 	void drawBasicQuad(glm::vec3 _p1, glm::vec3 _p2, glm::vec3 _p3, glm::vec3 _p4, float _r, float _g, float _b) {
 		glColor3f(_r, _g, _b);
@@ -66,5 +70,9 @@ namespace GameEngine {
 		glVertex3f(_p3.x, _p3.y, 0.0);
 		glVertex3f(_p4.x, _p4.y, 0.0);
 		glEnd();
+		drawBasicLine(_p1, _p2, 1.5, 0, 0, 0);
+		drawBasicLine(_p2, _p3, 1.5, 0, 0, 0);
+		drawBasicLine(_p3, _p4, 1.5, 0, 0, 0);
+		drawBasicLine(_p4, _p1, 1.5, 0, 0, 0);
 	}
 }

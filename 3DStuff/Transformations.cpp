@@ -129,6 +129,24 @@ glm::vec3 Transformations::rotateVertexRoll(glm::vec3 _position, glm::vec3 _vert
 	return glm::vec3(_vertex.x, temp.x, temp.y);
 }
 
+glm::vec2 Transformations::getOffsetFromAngle(float _angle, float _amount)
+{
+	glm::vec2 offset;
+	//if (_angle > 0 && _angle < 3.14) {
+		offset.y = cos(-_angle) * -_amount;
+		offset.x = sin(-_angle) * _amount;
+	/*}
+	else if (_angle == 3.14) {
+		offset.y = sin(_angle) * -_amount;
+		offset.x = cos(_angle) * -_amount;
+	}
+	else {
+		offset.y = sin(_angle) * _amount;
+		offset.x = cos(_angle) * -_amount;
+	}*/
+	return offset;
+}
+
 glm::vec3 Transformations::rotateVertexPitch(glm::vec3 _position, glm::vec3 _vertex, float _angle)
 {
 	glm::vec2 temp = rotateVertex(glm::vec2(_position.x, _position.z), glm::vec2(_vertex.x, _vertex.z), _angle);

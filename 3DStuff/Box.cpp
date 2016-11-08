@@ -20,7 +20,6 @@ Box::~Box()
 
 void Box::updateVertices()
 {
-	std::cout << "1: " << position.x << std::endl;
 	//Bottom
 	vertices[0].x = position.x;
 	vertices[0].y = position.y;
@@ -35,7 +34,6 @@ void Box::updateVertices()
 	vertices[3].x = position.x + dimensions.x;
 	vertices[3].y = position.y;
 	vertices[3].z = position.z;
-	std::cout << "2: " << position.x << std::endl;
 	//Top
 	vertices[4].x = position.x;
 	vertices[4].y = position.y + dimensions.y;
@@ -50,7 +48,6 @@ void Box::updateVertices()
 	vertices[7].y = position.y + dimensions.y;
 	vertices[7].z = position.z;
 
-	std::cout << "3: " << position.x << std::endl;
 }
 
 void Box::init()

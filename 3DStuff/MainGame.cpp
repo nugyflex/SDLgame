@@ -46,11 +46,42 @@ void MainGame::initSystems() {
     _spriteBatch.init();
     _fpsLimiter.init(_maxFPS);
 	//drawText.init(&_spriteBatch);
-	_camera.setScreenShakeIntensity(10);
+	/*
 	Boxes.push_back(new Box(0, 0, 0, 100, 10, 100));
 	Boxes.push_back(new Box(0, 90, 0, 100, 10, 100));
 	Boxes.push_back(new Box(0, 10, 0, 10, 80, 100));
-	Boxes.push_back(new Box(90, 10, 0, 10, 80, 100));
+	Boxes.push_back(new Box(90, 10, 0, 10, 80, 100));*/
+	Boxes.push_back(new Box(0, 0, 0, 10, 10, 10));
+	Boxes.push_back(new Box(20, 0, 0, 10, 10, 10));
+	Boxes.push_back(new Box(40, 0, 0, 10, 10, 10));
+	Boxes.push_back(new Box(60, 0, 0, 10, 10, 10));
+	Boxes.push_back(new Box(80, 0, 0, 10, 10, 10));
+	Boxes.push_back(new Box(100, 0, 0, 10, 10, 10));
+	Boxes.push_back(new Box(120, 0, 0, 10, 10, 10));
+
+	Boxes.push_back(new Box(0, 0, 120, 10, 10, 10));
+	Boxes.push_back(new Box(20, 0, 120, 10, 10, 10));
+	Boxes.push_back(new Box(40, 0, 120, 10, 10, 10));
+	Boxes.push_back(new Box(60, 0, 120, 10, 10, 10));
+	Boxes.push_back(new Box(80, 0, 120, 10, 10, 10));
+	Boxes.push_back(new Box(100, 0, 120, 10, 10, 10));
+	Boxes.push_back(new Box(120, 0, 120, 10, 10, 10));
+
+	Boxes.push_back(new Box(0, 0, 0, 10, 10, 10));
+	Boxes.push_back(new Box(0, 0, 20, 10, 10, 10));
+	Boxes.push_back(new Box(0, 0, 40, 10, 10, 10));
+	Boxes.push_back(new Box(0, 0, 60, 10, 10, 10));
+	Boxes.push_back(new Box(0, 0, 80, 10, 10, 10));
+	Boxes.push_back(new Box(0, 0, 100, 10, 10, 10));
+	Boxes.push_back(new Box(0, 0, 200, 10, 10, 10));
+
+	Boxes.push_back(new Box(120, 0, 0, 10, 10, 10));
+	Boxes.push_back(new Box(120, 0, 20, 10, 10, 10));
+	Boxes.push_back(new Box(120, 0, 40, 10, 10, 10));
+	Boxes.push_back(new Box(120, 0, 60, 10, 10, 10));
+	Boxes.push_back(new Box(120, 0, 80, 10, 10, 10));
+	Boxes.push_back(new Box(120, 0, 100, 10, 10, 10));
+	Boxes.push_back(new Box(120, 0, 120, 10, 10, 10));
 	//Boxes.push_back(new Box(0, 0, 0, 0.020, 2.000, 2.000));
 	//Boxes.push_back(new Box(0, 1.980, 0, 2.000, 0.020, 2.000));
 	//Boxes.push_back(new Box(1.980, 0, 0, 0.02, 2.000, 2.000));
@@ -183,66 +214,67 @@ void MainGame::processInput() {
 	if (_inputManager.isKeyPressed(SDLK_q)) {
 		for (int i = 0; i < Boxes.size(); i++)
 		{
-			Transformations::translateBox(Boxes[i], 0, 0, 2);
+			Transformations::translateBox(Boxes[i], 0, 1, 0);
 		}
 	}
 	if (_inputManager.isKeyPressed(SDLK_e)) {
 		for (int i = 0; i < Boxes.size(); i++)
 		{
-			Transformations::translateBox(Boxes[i], 0, 0, -2);
+			Transformations::translateBox(Boxes[i], 0, -1, 0);
 		}
+	}
+	if (_inputManager.isKeyPressed(SDLK_t)) {
+		renderer->FOV += 0.01;
+	}
+	if (_inputManager.isKeyPressed(SDLK_y)) {
+		renderer->FOV -= 0.01;
 	}
 	if (!_inputManager.isKeyPressed(SDLK_LCTRL)) {
 		if (_inputManager.isKeyPressed(SDLK_w)) {
 			for (int i = 0; i < Boxes.size(); i++)
 			{
-				Transformations::translateBox(Boxes[i], 0, 2, 0);
+				
+				Transformations::translateBox(Boxes[i], Transformations::getOffsetFromAngle(renderer->cameraPitch, 2).x, 0, Transformations::getOffsetFromAngle(renderer->cameraPitch, 2).y);
 			}
 		}
 		if (_inputManager.isKeyPressed(SDLK_a)) {
 			for (int i = 0; i < Boxes.size(); i++)
 			{
-				Transformations::translateBox(Boxes[i], -2, 0, 0);
+				Transformations::translateBox(Boxes[i], Transformations::getOffsetFromAngle(renderer->cameraPitch - 3.1415 / 2, 2).x, 0, Transformations::getOffsetFromAngle(renderer->cameraPitch - 3.1415 / 2, 2).y);
 			}
 		}
 		if (_inputManager.isKeyPressed(SDLK_s)) {
 			for (int i = 0; i < Boxes.size(); i++)
 			{
-				Transformations::translateBox(Boxes[i], 0, -2, 0);
+				Transformations::translateBox(Boxes[i], -Transformations::getOffsetFromAngle(renderer->cameraPitch, 2).x, 0, -Transformations::getOffsetFromAngle(renderer->cameraPitch, 2).y);
 			}
 		}
 		if (_inputManager.isKeyPressed(SDLK_d)) {
 			for (int i = 0; i < Boxes.size(); i++)
 			{
-				Transformations::translateBox(Boxes[i], 2, 0, 0);
+				Transformations::translateBox(Boxes[i], Transformations::getOffsetFromAngle(renderer->cameraPitch + 3.1415/2, 2).x, 0, Transformations::getOffsetFromAngle(renderer->cameraPitch + 3.1415 / 2, 2).y);
 			}
 		}
 	}
 	else {
 		if (_inputManager.isKeyPressed(SDLK_w)) {
-			for (int i = 0; i < Boxes.size(); i++)
-			{
-				renderer->cameraRoll += 0.003;
-				std::cout << renderer->cameraRoll;
-			}
+			if (renderer->cameraRoll < 3.14/2)
+			renderer->cameraRoll += 0.03;
+			
 		}
 		if (_inputManager.isKeyPressed(SDLK_a)) {
-			for (int i = 0; i < Boxes.size(); i++)
-			{
-				renderer->cameraPitch += 0.003;
-			}
+				renderer->cameraPitch -= 0.05;
+			//if (renderer->cameraPitch < 3.14*2) renderer->cameraPitch += 2*3.14;
+			std::cout << renderer->cameraPitch << std::endl;
 		}
 		if (_inputManager.isKeyPressed(SDLK_s)) {
-			for (int i = 0; i < Boxes.size(); i++)
-			{
-				renderer->cameraRoll -= 0.003;
-			}
+			if (renderer->cameraRoll > -3.14 / 2)
+				renderer->cameraRoll -= 0.03;
 		}
 		if (_inputManager.isKeyPressed(SDLK_d)) {
-			for (int i = 0; i < Boxes.size(); i++)
-			{
-				renderer->cameraPitch -= 0.003;
-			}
+			
+			renderer->cameraPitch += 0.05;
+			//if (renderer->cameraPitch > 3.14*2) renderer->cameraPitch -= 2*3.14;
 		}
 	}
 	/*if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {

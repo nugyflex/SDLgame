@@ -15,4 +15,5 @@ public:
 	static glm::vec3 rotateVertexPitch(glm::vec3 _position, glm::vec3 _vertex, float _angle);
 	static glm::vec3 rotateVertexYaw(glm::vec3 _position, glm::vec3 _vertex, float _angle);
 	static glm::vec3 rotateVertexRoll(glm::vec3 _position, glm::vec3 _vertex, float _angle);
+	static glm::vec2 getOffsetFromAngle(float angle, float amount);
 };
