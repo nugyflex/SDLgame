@@ -75,4 +75,16 @@ namespace GameEngine {
 		drawBasicLine(_p3, _p4, 1.5, 0, 0, 0);
 		drawBasicLine(_p4, _p1, 1.5, 0, 0, 0);
 	}
+	void drawBasicTriangle(glm::vec3 _p1, glm::vec3 _p2, glm::vec3 _p3, float _r, float _g, float _b)
+	{
+		glColor3f(_r, _g, _b);
+		glBegin(GL_POLYGON);
+		glVertex3f(_p1.x, _p1.y, 0.0);
+		glVertex3f(_p2.x, _p2.y, 0.0);
+		glVertex3f(_p3.x, _p3.y, 0.0);
+		glEnd();
+		drawBasicLine(_p1, _p2, 1.5, 0, 0, 0);
+		drawBasicLine(_p2, _p3, 1.5, 0, 0, 0);
+		drawBasicLine(_p3, _p1, 1.5, 0, 0, 0);
+	}
 }

@@ -53,13 +53,13 @@ void MainGame::initSystems() {
 	Boxes.push_back(new Box(90, 10, 0, 10, 80, 100));*/
 	
 	
-	Boxes.push_back(new Box(0, 0, 0, 10, 10, 10));
-	Boxes.push_back(new Box(20, 0, 0, 10, 10, 10));
-	Boxes.push_back(new Box(40, 0, 0, 10, 10, 10));
-	Boxes.push_back(new Box(60, 0, 0, 10, 10, 10));
-	Boxes.push_back(new Box(80, 0, 0, 10, 10, 10));
-	Boxes.push_back(new Box(100, 0, 0, 10, 10, 10));
-	Boxes.push_back(new Box(120, 0, 0, 10, 10, 10));
+	Boxes.push_back(new Box(0, 0, 1, 10, 10, 10));
+	Boxes.push_back(new Box(20, 0, 1, 10, 10, 10));
+	Boxes.push_back(new Box(40, 0, 1, 10, 10, 10));
+	Boxes.push_back(new Box(60, 0, 1, 10, 10, 10));
+	Boxes.push_back(new Box(80, 0, 1, 10, 10, 10));
+	Boxes.push_back(new Box(100, 0, 1, 10, 10, 10));
+	Boxes.push_back(new Box(120, 0, 1, 10, 10, 10));
 
 	Boxes.push_back(new Box(0, 0, 120, 10, 10, 10));
 	Boxes.push_back(new Box(20, 0, 120, 10, 10, 10));
@@ -235,7 +235,7 @@ void MainGame::processInput() {
 			for (int i = 0; i < Boxes.size(); i++)
 			{
 				
-				Transformations::translateBox(Boxes[i], Transformations::getOffsetFromAngle(renderer->cameraPitch, 2).x, 0, Transformations::getOffsetFromAngle(renderer->cameraPitch, 2).y);
+				Transformations::translateBox(Boxes[i], Transformations::getOffsetFromAngle(renderer->cameraPitch, 0.5).x, 0, Transformations::getOffsetFromAngle(renderer->cameraPitch, 0.5).y);
 			}
 		}
 		if (_inputManager.isKeyPressed(SDLK_a)) {

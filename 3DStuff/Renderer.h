@@ -4,11 +4,10 @@
 #include <GameEngine\SpriteBatch.h>
 #include <GameEngine\GameEngine.h>
 struct Face {
-	Face(glm::vec3 _p1, glm::vec3 _p2, glm::vec3 _p3, glm::vec3 _p4, float _distFromCamera);
+	Face(glm::vec3 _p1, glm::vec3 _p2, glm::vec3 _p3, float _distFromCamera);
 	glm::vec3 p1;
 	glm::vec3 p2;
 	glm::vec3 p3;
-	glm::vec3 p4;
 	float distFromCamera;
 };
 struct sort_face
@@ -31,7 +30,12 @@ public:
 	void drawBox(Box* _box);
 	void setViewPort(float _x, float _y);
 	void setAllZToZero(Box* _box);
-	void clipEdge(glm::vec3* _p1, glm::vec3* _p2);
+	void clipEdgeNear(glm::vec3* _p1, glm::vec3* _p2);
+	glm::vec3 getClipEdgeNear(glm::vec3 _p1, glm::vec3 _p2);
+	void addNewFace(glm::vec3 _p1, glm::vec3 _p2, glm::vec3 _p3, glm::vec3 _cp1, glm::vec3 _cp2, glm::vec3 _cp3);
+	float get1DDist(float _x, float _y);
+	void clipAllFaces();
+	void clipFaceNear(Face* _face);
 	void drawAllFaces();
 	void resetFaces();
 	void orderFaces();
