@@ -52,7 +52,9 @@ void MainGame::initSystems() {
 	Boxes.push_back(new Box(0, 10, 0, 10, 80, 100));
 	Boxes.push_back(new Box(90, 10, 0, 10, 80, 100));*/
 	
-	
+	Boxes.push_back(new Box(0, 0, 0, 100, 100, 100));
+
+	/*
 	Boxes.push_back(new Box(0, 0, 1, 10, 10, 10));
 	Boxes.push_back(new Box(20, 0, 1, 10, 10, 10));
 	Boxes.push_back(new Box(40, 0, 1, 10, 10, 10));
@@ -83,6 +85,7 @@ void MainGame::initSystems() {
 	Boxes.push_back(new Box(120, 0, 100, 10, 10, 10));
 	
 	Boxes.push_back(new Box(-500, -100, -500, 1000, 10, 1000));
+	Boxes.push_back(new Box(-600, 100, -600, 50, 50, 50));*/
 	//Boxes.push_back(new Box(0, 0, 0, 0.020, 2.000, 2.000));
 	//Boxes.push_back(new Box(0, 1.980, 0, 2.000, 0.020, 2.000));
 	//Boxes.push_back(new Box(1.980, 0, 0, 0.02, 2.000, 2.000));

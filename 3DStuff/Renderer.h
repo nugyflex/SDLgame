@@ -32,7 +32,7 @@ public:
 	void setAllZToZero(Box* _box);
 	void clipEdgeNear(glm::vec3* _p1, glm::vec3* _p2);
 	glm::vec3 getClipEdgeNear(glm::vec3 _p1, glm::vec3 _p2);
-	void addNewFace(glm::vec3 _p1, glm::vec3 _p2, glm::vec3 _p3, glm::vec3 _cp1, glm::vec3 _cp2, glm::vec3 _cp3);
+	void addNewFace(glm::vec3 _p1, glm::vec3 _p2, glm::vec3 _p3);
 	float get1DDist(float _x, float _y);
 	void clipAllFaces();
 	void clipFaceNear(Face* _face);
