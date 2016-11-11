@@ -1,7 +1,7 @@
 #include <SDL.h>
 #include <GL/glew.h>
 #include "GameEngine.h"
-
+#include <iostream>
 namespace GameEngine {
 	int init() {
 		//Initialize SDL
@@ -36,8 +36,10 @@ namespace GameEngine {
 		glLineWidth(_thickness);
 		glColor3f(_r, _g, _b);
 		glBegin(GL_LINES);
-		glVertex3f(_point1.x, _point1.y, 0.0);
-		glVertex3f(_point2.x, _point2.y, 0.0);
+		float max = 1000;
+		float min = 0.9;
+		glVertex3f(_point1.x, _point1.y, -1-(1 / _point1.z - 1 / min) / (1 / max + 1 / min));
+		glVertex3f(_point2.x, _point2.y, -1-(1 / _point2.z - 1 / min) / (1 / max + 1 / min));
 		glEnd();
 	}
 	void fillBackGround(float _r, float _g, float _b) {
@@ -79,12 +81,16 @@ namespace GameEngine {
 	{
 		glColor3f(_r, _g, _b);
 		glBegin(GL_POLYGON);
-		glVertex3f(_p1.x, _p1.y, 0.0);
-		glVertex3f(_p2.x, _p2.y, 0.0);
-		glVertex3f(_p3.x, _p3.y, 0.0);
+
+		float max = 1000;
+		float min = 0.9;
+		glVertex3f(_p1.x, _p1.y, -1-(1/_p1.z - 1/min) / (1/max + 1/min));
+		glVertex3f(_p2.x, _p2.y, -1 - (1 / _p2.z - 1 / min) / (1 / max + 1 / min));
+		glVertex3f(_p3.x, _p3.y, -1-(1 / _p3.z - 1 / min) / (1 / max + 1 / min));
+		//std::cout << -(1 / _p3.z - 1 / min) / (1 / max + 1 / min) << std::endl;
 		glEnd();
-		drawBasicLine(_p1, _p2, 1.5, 0, 0, 0);
-		drawBasicLine(_p2, _p3, 1.5, 0, 0, 0);
-		drawBasicLine(_p3, _p1, 1.5, 0, 0, 0);
+		//drawBasicLine(_p1, _p2, 1.5, 0, 0, 0);
+		//drawBasicLine(_p2, _p3, 1.5, 0, 0, 0);
+		//drawBasicLine(_p3, _p1, 1.5, 0, 0, 0);
 	}
 }

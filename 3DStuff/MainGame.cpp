@@ -45,6 +45,12 @@ void MainGame::initSystems() {
 
     _spriteBatch.init();
     _fpsLimiter.init(_maxFPS);
+	//glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
+	glDepthMask(GL_TRUE);
+	glDepthFunc(GL_LEQUAL);
+	glDepthRange(0.0f, 1.0f);
+	glClearColor(1, 1, 1, 1);
 	//drawText.init(&_spriteBatch);
 	/*
 	Boxes.push_back(new Box(0, 0, 0, 100, 10, 100));
@@ -52,9 +58,9 @@ void MainGame::initSystems() {
 	Boxes.push_back(new Box(0, 10, 0, 10, 80, 100));
 	Boxes.push_back(new Box(90, 10, 0, 10, 80, 100));*/
 	
-	Boxes.push_back(new Box(0, 0, 0, 100, 100, 100));
+	//Boxes.push_back(new Box(0, 0, 0, 100, 100, 100));
 
-	/*
+	//
 	Boxes.push_back(new Box(0, 0, 1, 10, 10, 10));
 	Boxes.push_back(new Box(20, 0, 1, 10, 10, 10));
 	Boxes.push_back(new Box(40, 0, 1, 10, 10, 10));
@@ -84,8 +90,9 @@ void MainGame::initSystems() {
 	Boxes.push_back(new Box(120, 0, 80, 10, 10, 10));
 	Boxes.push_back(new Box(120, 0, 100, 10, 10, 10));
 	
-	Boxes.push_back(new Box(-500, -100, -500, 1000, 10, 1000));
-	Boxes.push_back(new Box(-600, 100, -600, 50, 50, 50));*/
+	Boxes.push_back(new Box(-250, -100, -250, 500, 10, 500));
+
+	for (int i = 0; i < 500; i++)
 	//Boxes.push_back(new Box(0, 0, 0, 0.020, 2.000, 2.000));
 	//Boxes.push_back(new Box(0, 1.980, 0, 2.000, 0.020, 2.000));
 	//Boxes.push_back(new Box(1.980, 0, 0, 0.02, 2.000, 2.000));
@@ -214,17 +221,18 @@ void MainGame::processInput() {
 			Boxes[i]->roll = 0;
 		}
 	}
+	float vel = 2;
 	//TRANSLATING
 	if (_inputManager.isKeyPressed(SDLK_q)) {
 		for (int i = 0; i < Boxes.size(); i++)
 		{
-			Transformations::translateBox(Boxes[i], 0, 1, 0);
+			Transformations::translateBox(Boxes[i], 0, vel, 0);
 		}
 	}
 	if (_inputManager.isKeyPressed(SDLK_e)) {
 		for (int i = 0; i < Boxes.size(); i++)
 		{
-			Transformations::translateBox(Boxes[i], 0, -1, 0);
+			Transformations::translateBox(Boxes[i], 0, -vel, 0);
 		}
 	}
 	if (_inputManager.isKeyPressed(SDLK_t)) {
@@ -234,29 +242,30 @@ void MainGame::processInput() {
 		renderer->FOV -= 0.01;
 	}
 	if (!_inputManager.isKeyPressed(SDLK_LCTRL)) {
+		
 		if (_inputManager.isKeyPressed(SDLK_w)) {
 			for (int i = 0; i < Boxes.size(); i++)
 			{
 				
-				Transformations::translateBox(Boxes[i], Transformations::getOffsetFromAngle(renderer->cameraPitch, 0.5).x, 0, Transformations::getOffsetFromAngle(renderer->cameraPitch, 0.5).y);
+				Transformations::translateBox(Boxes[i], Transformations::getOffsetFromAngle(renderer->cameraPitch, vel).x, 0, Transformations::getOffsetFromAngle(renderer->cameraPitch, vel).y);
 			}
 		}
 		if (_inputManager.isKeyPressed(SDLK_a)) {
 			for (int i = 0; i < Boxes.size(); i++)
 			{
-				Transformations::translateBox(Boxes[i], Transformations::getOffsetFromAngle(renderer->cameraPitch - 3.1415 / 2, 2).x, 0, Transformations::getOffsetFromAngle(renderer->cameraPitch - 3.1415 / 2, 2).y);
+				Transformations::translateBox(Boxes[i], Transformations::getOffsetFromAngle(renderer->cameraPitch - 3.1415 / 2, vel).x, 0, Transformations::getOffsetFromAngle(renderer->cameraPitch - 3.1415 / 2, vel).y);
 			}
 		}
 		if (_inputManager.isKeyPressed(SDLK_s)) {
 			for (int i = 0; i < Boxes.size(); i++)
 			{
-				Transformations::translateBox(Boxes[i], -Transformations::getOffsetFromAngle(renderer->cameraPitch, 2).x, 0, -Transformations::getOffsetFromAngle(renderer->cameraPitch, 2).y);
+				Transformations::translateBox(Boxes[i], -Transformations::getOffsetFromAngle(renderer->cameraPitch, vel).x, 0, -Transformations::getOffsetFromAngle(renderer->cameraPitch, vel).y);
 			}
 		}
 		if (_inputManager.isKeyPressed(SDLK_d)) {
 			for (int i = 0; i < Boxes.size(); i++)
 			{
-				Transformations::translateBox(Boxes[i], Transformations::getOffsetFromAngle(renderer->cameraPitch + 3.1415/2, 2).x, 0, Transformations::getOffsetFromAngle(renderer->cameraPitch + 3.1415 / 2, 2).y);
+				Transformations::translateBox(Boxes[i], Transformations::getOffsetFromAngle(renderer->cameraPitch + 3.1415/2, vel).x, 0, Transformations::getOffsetFromAngle(renderer->cameraPitch + 3.1415 / 2, vel).y);
 			}
 		}
 	}
@@ -336,7 +345,7 @@ void MainGame::drawGame() {
 
 	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 	_spriteBatch.begin();*/
-	renderer->drawBackGround();
+	//renderer->drawBackGround();
 	for (int i = 0; i < Boxes.size(); i++) {
 		renderer->drawBox(Boxes[i]);
 		//Boxes[i]->yaw = 0.01;
@@ -350,4 +359,6 @@ void MainGame::drawGame() {
 	renderer->resetFaces();
     //Swap our buffer and draw everything to the screen!
     _window.swapBuffer();
+	glClearDepth(1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }    

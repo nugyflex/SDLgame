@@ -43,6 +43,7 @@ public:
 	float cameraPitch;
 	float cameraYaw;
 	float cameraRoll;
+	float clippingPlaneZ = 0.9;
 private:
 	std::vector<Face> Faces;
 	glm::vec3 viewPort = glm::vec3(0,0,0);

@@ -58,7 +58,7 @@ glm::vec3 Renderer::convertVertex(glm::vec3 _v)
 		tempv.y = _v.y *-_v.z;
 		tempv.x = _v.x *-_v.z;
 	}
-	tempv.z = _v.z;
+	tempv.z = _v.z;// sqrt(pow(_v.x, 2) + pow(_v.y, 2) + pow(_v.z, 2));
 	return tempv;
 }
 void Renderer::drawLine(float _x1, float _y1, float _x2, float _y2)
@@ -107,29 +107,41 @@ void Renderer::drawBox(Box* _box)
 	//FACES
 	
 	//0 1 2
-	if (box.vertices[0].z > 0 || box.vertices[1].z > 0 || box.vertices[2].z > 0) addNewFace(box.vertices[0], box.vertices[1], box.vertices[2]);
+	if (box.vertices[0].z > clippingPlaneZ || box.vertices[1].z > clippingPlaneZ || box.vertices[2].z > clippingPlaneZ) addNewFace(box.vertices[0], box.vertices[1], box.vertices[2]);
 	//2 0 3
-	if (box.vertices[2].z > 0 || box.vertices[0].z > 0 || box.vertices[3].z > 0) addNewFace(box.vertices[2], box.vertices[0], box.vertices[3]);
+	if (box.vertices[2].z > clippingPlaneZ || box.vertices[0].z > clippingPlaneZ || box.vertices[3].z > clippingPlaneZ) addNewFace(box.vertices[2], box.vertices[0], box.vertices[3]);
 	//4 5 6
-	if (box.vertices[4].z > 0 || box.vertices[5].z > 0 || box.vertices[6].z > 0) addNewFace(box.vertices[4], box.vertices[5], box.vertices[6]);
+	if (box.vertices[4].z > clippingPlaneZ || box.vertices[5].z > clippingPlaneZ || box.vertices[6].z > clippingPlaneZ) addNewFace(box.vertices[4], box.vertices[5], box.vertices[6]);
 	//6 4 7
-	if (box.vertices[6].z > 0 || box.vertices[4].z > 0 || box.vertices[7].z > 0) addNewFace(box.vertices[6], box.vertices[4], box.vertices[7]);
+	if (box.vertices[6].z > clippingPlaneZ || box.vertices[4].z > clippingPlaneZ || box.vertices[7].z > clippingPlaneZ) addNewFace(box.vertices[6], box.vertices[4], box.vertices[7]);
 	//0 3 7
-	if (box.vertices[0].z > 0 || box.vertices[3].z > 0 || box.vertices[7].z > 0) addNewFace(box.vertices[0], box.vertices[3], box.vertices[7]);
+	if (box.vertices[0].z > clippingPlaneZ || box.vertices[3].z > clippingPlaneZ || box.vertices[7].z > clippingPlaneZ) addNewFace(box.vertices[0], box.vertices[3], box.vertices[7]);
 	//7 0 4
-	if (box.vertices[7].z > 0 || box.vertices[0].z > 0 || box.vertices[4].z > 0) addNewFace(box.vertices[7], box.vertices[0], box.vertices[4]);
+	if (box.vertices[7].z > clippingPlaneZ || box.vertices[0].z > clippingPlaneZ || box.vertices[4].z > clippingPlaneZ) addNewFace(box.vertices[7], box.vertices[0], box.vertices[4]);
 	//0 1 5
-	if (box.vertices[0].z > 0 || box.vertices[1].z > 0 || box.vertices[5].z > 0) addNewFace(box.vertices[0], box.vertices[1], box.vertices[5]);
+	if (box.vertices[0].z > clippingPlaneZ || box.vertices[1].z > clippingPlaneZ || box.vertices[5].z > clippingPlaneZ) addNewFace(box.vertices[0], box.vertices[1], box.vertices[5]);
 	//5 0 4
-	if (box.vertices[5].z > 0 || box.vertices[0].z > 0 || box.vertices[4].z > 0) addNewFace(box.vertices[5], box.vertices[0], box.vertices[4]);
+	if (box.vertices[5].z > clippingPlaneZ || box.vertices[0].z > clippingPlaneZ || box.vertices[4].z > clippingPlaneZ) addNewFace(box.vertices[5], box.vertices[0], box.vertices[4]);
 	//1 2 6
-	if (box.vertices[1].z > 0 || box.vertices[2].z > 0 || box.vertices[6].z > 0) addNewFace(box.vertices[1], box.vertices[2], box.vertices[6]);
-	//6 1 4
-	if (box.vertices[6].z > 0 || box.vertices[1].z > 0 || box.vertices[4].z > 0) addNewFace(box.vertices[6], box.vertices[1], box.vertices[4]);
+	if (box.vertices[1].z > clippingPlaneZ || box.vertices[2].z > clippingPlaneZ || box.vertices[6].z > clippingPlaneZ) addNewFace(box.vertices[1], box.vertices[2], box.vertices[6]);
+	//6 1 4 - > 6 1 5
+	if (box.vertices[6].z > clippingPlaneZ || box.vertices[1].z > clippingPlaneZ || box.vertices[5].z > clippingPlaneZ) addNewFace(box.vertices[6], box.vertices[1], box.vertices[5]);
 	//2 3 7
-	if (box.vertices[2].z > 0 || box.vertices[3].z > 0 || box.vertices[7].z > 0) addNewFace(box.vertices[2], box.vertices[3], box.vertices[7]);
+	if (box.vertices[2].z > clippingPlaneZ || box.vertices[3].z > clippingPlaneZ || box.vertices[7].z > clippingPlaneZ) addNewFace(box.vertices[2], box.vertices[3], box.vertices[7]);
 	//7 2 6
-	if (box.vertices[7].z > 0 || box.vertices[2].z > 0 || box.vertices[6].z > 0) addNewFace(box.vertices[7], box.vertices[2], box.vertices[6]);
+	if (box.vertices[7].z > clippingPlaneZ || box.vertices[2].z > clippingPlaneZ || box.vertices[6].z > clippingPlaneZ) addNewFace(box.vertices[7], box.vertices[2], box.vertices[6]);
+	GameEngine::drawBasicLine(convertVertex(box.vertices[0]), convertVertex(box.vertices[1]), 2, 0, 0, 0);
+	GameEngine::drawBasicLine(convertVertex(box.vertices[1]), convertVertex(box.vertices[2]), 2, 0, 0, 0);
+	GameEngine::drawBasicLine(convertVertex(box.vertices[2]), convertVertex(box.vertices[3]), 2, 0, 0, 0);
+	GameEngine::drawBasicLine(convertVertex(box.vertices[3]), convertVertex(box.vertices[0]), 2, 0, 0, 0);
+	GameEngine::drawBasicLine(convertVertex(box.vertices[4]), convertVertex(box.vertices[5]), 2, 0, 0, 0);
+	GameEngine::drawBasicLine(convertVertex(box.vertices[5]), convertVertex(box.vertices[6]), 2, 0, 0, 0);
+	GameEngine::drawBasicLine(convertVertex(box.vertices[6]), convertVertex(box.vertices[7]), 2, 0, 0, 0);
+	GameEngine::drawBasicLine(convertVertex(box.vertices[7]), convertVertex(box.vertices[4]), 2, 0, 0, 0);
+	GameEngine::drawBasicLine(convertVertex(box.vertices[0]), convertVertex(box.vertices[4]), 2, 0, 0, 0);
+	GameEngine::drawBasicLine(convertVertex(box.vertices[1]), convertVertex(box.vertices[5]), 2, 0, 0, 0);
+	GameEngine::drawBasicLine(convertVertex(box.vertices[2]), convertVertex(box.vertices[6]), 2, 0, 0, 0);
+	GameEngine::drawBasicLine(convertVertex(box.vertices[3]), convertVertex(box.vertices[7]), 2, 0, 0, 0);
 }
 
 void Renderer::setViewPort(float _x, float _y)
@@ -150,12 +162,12 @@ void Renderer::clipEdgeNear(glm::vec3* _p1, glm::vec3* _p2)//NOPE
 	if (_p1->z < 0 || _p2->z < 0) {
 		float temp = abs(_p1->z - _p2->z);
 		if (_p1->z < _p2->z) {
-			float temp1 = (-_p1->z + FOV) / temp;
+			float temp1 = (-_p1->z + clippingPlaneZ) / temp;
 			_p1->y = _p1->y + temp1*abs(_p1->y - _p2->y);
 			_p1->x = _p1->x + temp1*abs(_p1->x - _p2->x);
 		}
 		else {
-			float temp1 = (-_p2->z + FOV) / temp;
+			float temp1 = (-_p2->z + clippingPlaneZ) / temp;
 			_p2->y = _p2->y + temp1*abs(_p2->y - _p1->y);
 			_p2->x = _p2->x + temp1*abs(_p2->x - _p1->x);
 		}
@@ -164,20 +176,20 @@ void Renderer::clipEdgeNear(glm::vec3* _p1, glm::vec3* _p2)//NOPE
 
 glm::vec3 Renderer::getClipEdgeNear(glm::vec3 _p1, glm::vec3 _p2)//YA
 {
-	if (_p1.z < 10 || _p2.z < 10) {
+	if (_p1.z < clippingPlaneZ || _p2.z < clippingPlaneZ) {
 		float temp = get1DDist(_p1.z, _p2.z);
 		if (_p1.z < _p2.z) {
-			float temp1 = (-_p1.z+10) / (temp);
-			_p1.y = _p1.y + temp1*get1DDist(_p1.y, _p2.y);
-			_p1.x = _p1.x + temp1*get1DDist(_p1.x, _p2.x);
-			_p1.z = 10;
+			float temp1 = (-_p1.z+clippingPlaneZ) / (temp);
+			_p1.y = _p1.y + temp1*(_p2.y - _p1.y);
+			_p1.x = _p1.x + temp1*(_p2.x - _p1.x);
+			_p1.z = clippingPlaneZ;
 			return _p1;
 		}
 		else {
-			float temp1 = (-_p2.z+10) / (temp);
-			_p2.y = _p2.y + temp1*get1DDist(_p2.y, _p1.y);
-			_p2.x = _p2.x + temp1*get1DDist(_p2.x, _p1.x);
-			_p2.z = 10;
+			float temp1 = (-_p2.z+clippingPlaneZ) / (temp);
+			_p2.y = _p2.y + temp1*(_p1.y - _p2.y);
+			_p2.x = _p2.x + temp1*(_p1.x - _p2.x);
+			_p2.z = clippingPlaneZ;
 			return _p2;
 		}
 	}
@@ -213,34 +225,34 @@ void Renderer::clipFaceNear(Face * _face)
 	glm::vec3 temp;
 	Face tempFace(_face->p1, _face->p2, _face->p3, _face->distFromCamera);
 	Face newFace();
-	if (_face->p1.z < 10 || _face->p2.z < 10 || _face->p3.z < 10) {
-		if (_face->p1.z < 10 && _face->p2.z > 10 && _face->p3.z > 10) {
+	if (_face->p1.z < clippingPlaneZ || _face->p2.z < clippingPlaneZ || _face->p3.z < clippingPlaneZ) {
+		if (_face->p1.z < clippingPlaneZ && _face->p2.z > clippingPlaneZ && _face->p3.z > clippingPlaneZ) {
 			_face->p1 = getClipEdgeNear(_face->p1, _face->p3);
 			temp = getClipEdgeNear(tempFace.p1, _face->p2);
-			//addNewFace(temp, _face->p1, _face->p2);
+			addNewFace(temp, _face->p1, _face->p2);
 		}
-		else if (_face->p2.z < 10 && _face->p1.z > 10 && _face->p3.z > 10) {
+		else if (_face->p2.z < clippingPlaneZ && _face->p1.z > clippingPlaneZ && _face->p3.z > clippingPlaneZ) {
 			_face->p2 = getClipEdgeNear(_face->p2, _face->p3);
 			temp = getClipEdgeNear(tempFace.p2, _face->p1);
-			//addNewFace(temp, _face->p2, _face->p1);
+			addNewFace(temp, _face->p2, _face->p1);
 		}
-		else if (_face->p3.z < 10 && _face->p1.z > 10 && _face->p2.z > 10) {
+		else if (_face->p3.z < clippingPlaneZ && _face->p1.z > clippingPlaneZ && _face->p2.z > clippingPlaneZ) {
 			_face->p3 = getClipEdgeNear(_face->p3, _face->p2);
 			temp = getClipEdgeNear(tempFace.p3, _face->p1);
-			//addNewFace(temp, _face->p3, _face->p1);
-		}/*
-		else if (_face->p3.z < 10 && _face->p2.z < 10 && _face->p1.z > 10) {
+			addNewFace(temp, _face->p3, _face->p1);
+		}
+		else if (_face->p3.z < clippingPlaneZ && _face->p2.z < clippingPlaneZ && _face->p1.z > clippingPlaneZ) {
 			_face->p3 = getClipEdgeNear(_face->p3, _face->p1);
 			_face->p2 = getClipEdgeNear(_face->p2, _face->p1);
 		}
-		else if (_face->p1.z < 10 && _face->p2.z < 10 && _face->p3.z > 10) {
+		else if (_face->p1.z < clippingPlaneZ && _face->p2.z < clippingPlaneZ && _face->p3.z > clippingPlaneZ) {
 			_face->p1 = getClipEdgeNear(_face->p1, _face->p3);
 			_face->p2 = getClipEdgeNear(_face->p2, _face->p3);
 		}
-		else if (_face->p3.z < 10 && _face->p1.z < 10 && _face->p2.z > 10) {
+		else if (_face->p3.z < clippingPlaneZ && _face->p1.z < clippingPlaneZ && _face->p2.z > clippingPlaneZ) {
 			_face->p1 = getClipEdgeNear(_face->p1, _face->p2);
 			_face->p3 = getClipEdgeNear(_face->p3, _face->p2);
-		}*/
+		}
 	}
 }
 
@@ -249,8 +261,8 @@ void Renderer::drawAllFaces()
 	orderFaces();
 	for (int i = 0; i < Faces.size(); i++) {
 		clipFaceNear(&Faces[i]);
-		float averageDepth = 100;// (Faces[i].p1.z + Faces[i].p2.z + Faces[i].p3.z) / 3;
-		GameEngine::drawBasicTriangle(convertVertex(Faces[i].p1), convertVertex(Faces[i].p2), convertVertex(Faces[i].p3), averageDepth / 200, 0, 200 / averageDepth);
+		float averageDepth = (Faces[i].p1.z + Faces[i].p2.z + Faces[i].p3.z) / 3;
+		GameEngine::drawBasicTriangle(convertVertex(Faces[i].p1), convertVertex(Faces[i].p2), convertVertex(Faces[i].p3), 0, 1, 0);//averageDepth / 200, 0, 200 / averageDepth);
 	}
 }
 
@@ -261,7 +273,7 @@ void Renderer::resetFaces()
 
 void Renderer::orderFaces()
 {
-	std::sort(Faces.begin(), Faces.end(), sort_face());
+	//std::sort(Faces.begin(), Faces.end(), sort_face());
 }
 
 Face::Face(glm::vec3 _p1, glm::vec3 _p2, glm::vec3 _p3, float _distFromCamera)
