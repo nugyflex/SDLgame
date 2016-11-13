@@ -79,7 +79,7 @@ namespace GameEngine {
 	}
 	void drawBasicTriangle(glm::vec3 _p1, glm::vec3 _p2, glm::vec3 _p3, float _r, float _g, float _b)
 	{
-		glColor3f(_r, _g, _b);
+		glColor4f(_r, _g, _b, 1);
 		glBegin(GL_POLYGON);
 
 		float max = 1000;

@@ -12,8 +12,8 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(1000),
-	_screenHeight(1000),
+	_screenWidth(2500),
+	_screenHeight(1500),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f)
@@ -51,6 +51,9 @@ void MainGame::initSystems() {
 	glDepthFunc(GL_LEQUAL);
 	glDepthRange(0.0f, 1.0f);
 	glClearColor(1, 1, 1, 1);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	//drawText.init(&_spriteBatch);
 	/*
 	Boxes.push_back(new Box(0, 0, 0, 100, 10, 100));
@@ -92,12 +95,12 @@ void MainGame::initSystems() {
 	
 	Boxes.push_back(new Box(-250, -100, -250, 500, 10, 500));
 
-	for (int i = 0; i < 500; i++)
 	//Boxes.push_back(new Box(0, 0, 0, 0.020, 2.000, 2.000));
 	//Boxes.push_back(new Box(0, 1.980, 0, 2.000, 0.020, 2.000));
 	//Boxes.push_back(new Box(1.980, 0, 0, 0.02, 2.000, 2.000));
 	
 	renderer = new Renderer(&_spriteBatch);
+	renderer->setScreenSize(2500, 1500);
 }
 
 void MainGame::initShaders() {
@@ -132,7 +135,7 @@ void MainGame::gameLoop() {
         //print only once every 10 frames
         static int frameCounter = 0;
         frameCounter++;
-        if (frameCounter == 1000) {
+        if (frameCounter == 200) {
             std::cout << _fps << std::endl;
             frameCounter = 0;
         }
@@ -176,7 +179,7 @@ void MainGame::processInput() {
         }
     }
 	if (_inputManager.isKeyPressed(SDLK_f) && !lastF) {
-			Boxes.push_back(new Box(0, 0, 0, 20, 20, 20));
+			Boxes.push_back(new Box(renderer->cameraPosition.x-10, renderer->cameraPosition.y-10, renderer->cameraPosition.z - 10, 20, 20, 20));
 	}
 	if (_inputManager.isKeyPressed(SDLK_f)) {
 		lastF = true;
@@ -184,7 +187,7 @@ void MainGame::processInput() {
 	else {
 		lastF = false;
 	}
-	//ROTATE:
+	//ROTATE BOXES:
 	if (_inputManager.isKeyPressed(SDLK_g)) {
 		for (int i = 0; i < Boxes.size(); i++)
 		{
@@ -221,19 +224,13 @@ void MainGame::processInput() {
 			Boxes[i]->roll = 0;
 		}
 	}
-	float vel = 2;
-	//TRANSLATING
+	float vel = 1.5;
+	//MOVING CAMERA
 	if (_inputManager.isKeyPressed(SDLK_q)) {
-		for (int i = 0; i < Boxes.size(); i++)
-		{
-			Transformations::translateBox(Boxes[i], 0, vel, 0);
-		}
+		renderer->addToCameraPosition( 0, vel, 0);
 	}
 	if (_inputManager.isKeyPressed(SDLK_e)) {
-		for (int i = 0; i < Boxes.size(); i++)
-		{
-			Transformations::translateBox(Boxes[i], 0, -vel, 0);
-		}
+		renderer->addToCameraPosition(0, -vel, 0);
 	}
 	if (_inputManager.isKeyPressed(SDLK_t)) {
 		renderer->FOV += 0.01;
@@ -244,32 +241,20 @@ void MainGame::processInput() {
 	if (!_inputManager.isKeyPressed(SDLK_LCTRL)) {
 		
 		if (_inputManager.isKeyPressed(SDLK_w)) {
-			for (int i = 0; i < Boxes.size(); i++)
-			{
-				
-				Transformations::translateBox(Boxes[i], Transformations::getOffsetFromAngle(renderer->cameraPitch, vel).x, 0, Transformations::getOffsetFromAngle(renderer->cameraPitch, vel).y);
-			}
+			renderer->addToCameraPosition(-Transformations::getOffsetFromAngle(renderer->cameraPitch, vel).x, 0, -Transformations::getOffsetFromAngle(renderer->cameraPitch, vel).y);
 		}
 		if (_inputManager.isKeyPressed(SDLK_a)) {
-			for (int i = 0; i < Boxes.size(); i++)
-			{
-				Transformations::translateBox(Boxes[i], Transformations::getOffsetFromAngle(renderer->cameraPitch - 3.1415 / 2, vel).x, 0, Transformations::getOffsetFromAngle(renderer->cameraPitch - 3.1415 / 2, vel).y);
-			}
+			renderer->addToCameraPosition(-Transformations::getOffsetFromAngle(renderer->cameraPitch - 3.1415 / 2, vel).x, 0, -Transformations::getOffsetFromAngle(renderer->cameraPitch - 3.1415 / 2, vel).y);
 		}
 		if (_inputManager.isKeyPressed(SDLK_s)) {
-			for (int i = 0; i < Boxes.size(); i++)
-			{
-				Transformations::translateBox(Boxes[i], -Transformations::getOffsetFromAngle(renderer->cameraPitch, vel).x, 0, -Transformations::getOffsetFromAngle(renderer->cameraPitch, vel).y);
-			}
+			renderer->addToCameraPosition(Transformations::getOffsetFromAngle(renderer->cameraPitch, vel).x, 0, Transformations::getOffsetFromAngle(renderer->cameraPitch, vel).y);
 		}
 		if (_inputManager.isKeyPressed(SDLK_d)) {
-			for (int i = 0; i < Boxes.size(); i++)
-			{
-				Transformations::translateBox(Boxes[i], Transformations::getOffsetFromAngle(renderer->cameraPitch + 3.1415/2, vel).x, 0, Transformations::getOffsetFromAngle(renderer->cameraPitch + 3.1415 / 2, vel).y);
-			}
+			renderer->addToCameraPosition(-Transformations::getOffsetFromAngle(renderer->cameraPitch + 3.1415 / 2, vel).x, 0, -Transformations::getOffsetFromAngle(renderer->cameraPitch + 3.1415 / 2, vel).y);
 		}
 	}
 	else {
+		//ROTATING CAMERA
 		if (_inputManager.isKeyPressed(SDLK_w)) {
 			if (renderer->cameraRoll < 3.14/2)
 			renderer->cameraRoll += 0.03;
@@ -277,8 +262,6 @@ void MainGame::processInput() {
 		}
 		if (_inputManager.isKeyPressed(SDLK_a)) {
 				renderer->cameraPitch -= 0.05;
-			//if (renderer->cameraPitch < 3.14*2) renderer->cameraPitch += 2*3.14;
-			std::cout << renderer->cameraPitch << std::endl;
 		}
 		if (_inputManager.isKeyPressed(SDLK_s)) {
 			if (renderer->cameraRoll > -3.14 / 2)
@@ -287,70 +270,14 @@ void MainGame::processInput() {
 		if (_inputManager.isKeyPressed(SDLK_d)) {
 			
 			renderer->cameraPitch += 0.05;
-			//if (renderer->cameraPitch > 3.14*2) renderer->cameraPitch -= 2*3.14;
 		}
 	}
-	/*if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
-		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
-		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
-		//box->x = mouseCoords.x;
-		//box->y = -mouseCoords.y;
-		//box->updateVertices();
-	}
-	if (_inputManager.isKeyPressed(SDL_BUTTON_MIDDLE)) {
-		//box->z += 5;
-		//box->updateVertices();
-	}
-	/*if (_inputManager.isKeyPressed(SDL_BUTTON_RIGHT)) {
-		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
-		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
-		grid->reducePressure(floor(((10 * 50 + 50) / 2 + mouseCoords.x) / 11), floor(((10 * 50 + 50) / 2 + -mouseCoords.y) / 11), 30);
-	}
-	if (_inputManager.isKeyPressed(SDL_BUTTON_RIGHT)) {
-		//box->z -= 5;;
-		//box->updateVertices();
-	}*/
 }
 
 //Draws the game using the almighty OpenGL
 void MainGame::drawGame() {
-	//Set the base depth to 1.0
-	/*glClearDepth(1.0);
-	//Clear the color and depth buffer
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	glLineWidth(1);
-
-	glm::mat4 camera = _camera.getCameraMatrix();
-
-	glColor3f(0.0, 0.0, 0.0);
-	glBegin(GL_POLYGON);
-	glVertex2f(-1, -1);
-	glVertex2f(-1, 1);
-	glVertex2f(1, 1);
-	glVertex2f(1, -1);
-	glEnd();
-	//Enable the shader
-	_colorProgram.use();
-	//We are using texture unit 0
-	glActiveTexture(GL_TEXTURE0);
-	//Get the uniform location
-	GLint textureLocation = _colorProgram.getUniformLocation("mySampler");
-	//Tell the shader that the texture is in texture unit 0
-	glUniform1i(textureLocation, 0);
-
-	//Set the camera matrixx
-	GLint pLocation = _colorProgram.getUniformLocation("P");
-	glm::mat4 cameraMatrix = _camera.getCameraMatrix();
-
-	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
-	_spriteBatch.begin();*/
-	//renderer->drawBackGround();
 	for (int i = 0; i < Boxes.size(); i++) {
 		renderer->drawBox(Boxes[i]);
-		//Boxes[i]->yaw = 0.01;
-		//Boxes[i]->pitch = 0.01;
-		//Boxes[i]->roll = 0.01;
 		Transformations::rotateBoxYaw(Boxes[i], Boxes[i]->yaw);
 		Transformations::rotateBoxPitch(Boxes[i], Boxes[i]->pitch);
 		Transformations::rotateBoxRoll(Boxes[i], Boxes[i]->roll);

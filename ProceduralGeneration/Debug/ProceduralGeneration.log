@@ -1,6 +1,5 @@
 ﻿  main.cpp
 c:\users\jack\documents\github\sdlgame\proceduralgeneration\grid.h(14): warning C4305: 'initializing': truncation from 'double' to 'float'
-  SimplexNoise.cpp
   MainGame.cpp
 c:\users\jack\documents\github\sdlgame\proceduralgeneration\grid.h(14): warning C4305: 'initializing': truncation from 'double' to 'float'
 c:\users\jack\documents\github\sdlgame\proceduralgeneration\maingame.cpp(71): warning C4305: '+=': truncation from 'double' to 'float'
@@ -24,6 +23,5 @@ c:\users\jack\documents\github\sdlgame\proceduralgeneration\grid.cpp(63): warnin
 c:\users\jack\documents\github\sdlgame\proceduralgeneration\grid.cpp(73): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 c:\users\jack\documents\github\sdlgame\proceduralgeneration\grid.cpp(103): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   Generating Code...
-  LINK : C:\Users\Jack\Documents\GitHub\SDLgame\Debug\ProceduralGeneration.exe not found or not built by the last incremental link; performing full link
-  ProceduralGeneration.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\ProceduralGeneration.exe
-  ProceduralGeneration.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\ProceduralGeneration.pdb (Partial PDB)
+  ProceduralGeneration.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\ProceduralGeneration.exe
+  ProceduralGeneration.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\ProceduralGeneration.pdb (Partial PDB)

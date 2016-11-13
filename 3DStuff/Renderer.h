@@ -1,5 +1,5 @@
 #pragma once
-#include "Box.h"
+#include "box.h"
 #include <glm.hpp>
 #include <GameEngine\SpriteBatch.h>
 #include <GameEngine\GameEngine.h>
@@ -25,27 +25,28 @@ public:
 	void drawBackGround();
 	float getDist(float _x1, float _y1, float _x2, float _y2);
 	glm::vec3 convertVertex(glm::vec3 _v);
-	void drawLine(float _x1, float _y1, float _x2, float _y2);
 	void drawLine(glm::vec3 _v1, glm::vec3 _v2);
 	void drawBox(Box* _box);
-	void setViewPort(float _x, float _y);
+	void setCameraPosition(float _x, float _y);
+	void addToCameraPosition(float _x, float _y, float _z);
 	void setAllZToZero(Box* _box);
 	void clipEdgeNear(glm::vec3* _p1, glm::vec3* _p2);
 	glm::vec3 getClipEdgeNear(glm::vec3 _p1, glm::vec3 _p2);
 	void addNewFace(glm::vec3 _p1, glm::vec3 _p2, glm::vec3 _p3);
 	float get1DDist(float _x, float _y);
-	void clipAllFaces();
 	void clipFaceNear(Face* _face);
 	void drawAllFaces();
 	void resetFaces();
 	void orderFaces();
-	float FOV = 0.9;
+	float FOV = 1;
 	float cameraPitch;
 	float cameraYaw;
 	float cameraRoll;
-	float clippingPlaneZ = 0.9;
+	float clippingPlaneZ = 1;
+	glm::vec2 screenSize;
+	void setScreenSize(float _x, float _y);
+	glm::vec3 cameraPosition = glm::vec3(0, 0, 0);
 private:
 	std::vector<Face> Faces;
-	glm::vec3 viewPort = glm::vec3(0,0,0);
 	GameEngine::SpriteBatch* sb;
 };

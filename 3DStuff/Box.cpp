@@ -1,6 +1,9 @@
 #include "Box.h"
 #include <iostream>
 #include "Transformations.h"
+Box::Box()
+{
+}
 Box::Box(float _x, float _y, float _z, float _width, float _height, float _depth) {
 	position.x = _x;
 	position.y = _y;
@@ -16,6 +19,13 @@ Box::Box(float _x, float _y, float _z, float _width, float _height, float _depth
 
 Box::~Box()
 {
+}
+
+void Box::setVertices(glm::vec3 _vertices[8])
+{
+	for (int i = 0; i < 8; i++){
+		vertices[i] = _vertices[i];
+	}
 }
 
 void Box::updateVertices()
