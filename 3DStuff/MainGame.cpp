@@ -12,8 +12,8 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(2500),
-	_screenHeight(1500),
+	_screenWidth(800),
+	_screenHeight(800),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f)
@@ -64,43 +64,16 @@ void MainGame::initSystems() {
 	//Boxes.push_back(new Box(0, 0, 0, 100, 100, 100));
 
 	//
-	Boxes.push_back(new Box(0, 0, 1, 10, 10, 10));
-	Boxes.push_back(new Box(20, 0, 1, 10, 10, 10));
-	Boxes.push_back(new Box(40, 0, 1, 10, 10, 10));
-	Boxes.push_back(new Box(60, 0, 1, 10, 10, 10));
-	Boxes.push_back(new Box(80, 0, 1, 10, 10, 10));
-	Boxes.push_back(new Box(100, 0, 1, 10, 10, 10));
-	Boxes.push_back(new Box(120, 0, 1, 10, 10, 10));
 
-	Boxes.push_back(new Box(0, 0, 120, 10, 10, 10));
-	Boxes.push_back(new Box(20, 0, 120, 10, 10, 10));
-	Boxes.push_back(new Box(40, 0, 120, 10, 10, 10));
-	Boxes.push_back(new Box(60, 0, 120, 10, 10, 10));
-	Boxes.push_back(new Box(80, 0, 120, 10, 10, 10));
-	Boxes.push_back(new Box(100, 0, 120, 10, 10, 10));
-	Boxes.push_back(new Box(120, 0, 120, 10, 10, 10));
-
-	Boxes.push_back(new Box(0, 0, 20, 10, 10, 10));
-	Boxes.push_back(new Box(0, 0, 40, 10, 10, 10));
-	Boxes.push_back(new Box(0, 0, 60, 10, 10, 10));
-	Boxes.push_back(new Box(0, 0, 80, 10, 10, 10));
-	Boxes.push_back(new Box(0, 0, 100, 10, 10, 10));
-	Boxes.push_back(new Box(0, 0, 120, 10, 10, 10));
-
-	Boxes.push_back(new Box(120, 0, 20, 10, 10, 10));
-	Boxes.push_back(new Box(120, 0, 40, 10, 10, 10));
-	Boxes.push_back(new Box(120, 0, 60, 10, 10, 10));
-	Boxes.push_back(new Box(120, 0, 80, 10, 10, 10));
-	Boxes.push_back(new Box(120, 0, 100, 10, 10, 10));
-	
-	Boxes.push_back(new Box(-250, -100, -250, 500, 10, 500));
-
+	Boxes.push_back(new Box(-500, 100, -500, 500, 10, 500));
+	Boxes.push_back(new Box(1, 50, 1, 10, 10, 10));
+	Boxes[1]->velocity.y = 0.2;
 	//Boxes.push_back(new Box(0, 0, 0, 0.020, 2.000, 2.000));
 	//Boxes.push_back(new Box(0, 1.980, 0, 2.000, 0.020, 2.000));
 	//Boxes.push_back(new Box(1.980, 0, 0, 0.02, 2.000, 2.000));
 	
 	renderer = new Renderer(&_spriteBatch);
-	renderer->setScreenSize(2500, 1500);
+	renderer->setScreenSize(800, 800);
 }
 
 void MainGame::initShaders() {
@@ -281,7 +254,10 @@ void MainGame::drawGame() {
 		Transformations::rotateBoxYaw(Boxes[i], Boxes[i]->yaw);
 		Transformations::rotateBoxPitch(Boxes[i], Boxes[i]->pitch);
 		Transformations::rotateBoxRoll(Boxes[i], Boxes[i]->roll);
+		Boxes[i]->updatePosition();
+		Boxes[i]->updateVertices();
 	}
+	renderer->collisionDetection3D(Boxes[1], Boxes[0]);
 	renderer->drawAllFaces();
 	renderer->resetFaces();
     //Swap our buffer and draw everything to the screen!

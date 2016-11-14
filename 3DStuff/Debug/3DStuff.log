@@ -1,25 +1,10 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (water and gas.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  MainGame.cpp
+  Renderer.cpp
 c:\users\jack\documents\github\sdlgame\3dstuff\transformations.h(19): warning C4091: 'static ': ignored on left of 'Transformations' when no variable is declared
-c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(125): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(165): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
-c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(192): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(194): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(198): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(204): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(206): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(210): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(216): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(218): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(222): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(236): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(239): warning C4305: '-=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(247): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(253): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(260): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(264): warning C4305: '-=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(268): warning C4305: '-=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(272): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(279): warning C4018: '<': signed/unsigned mismatch
-  3DStuff.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\3DStuff.exe
-  3DStuff.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\3DStuff.pdb (Partial PDB)
+c:\users\jack\documents\github\sdlgame\3dstuff\renderer.cpp(123): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\3dstuff\renderer.cpp(189): warning C4930: 'Face newFace(void)': prototyped function not called (was a variable definition intended?)
+c:\users\jack\documents\github\sdlgame\3dstuff\renderer.cpp(224): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\3dstuff\renderer.cpp(227): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\3dstuff\renderer.cpp(165): warning C4715: 'Renderer::getClipEdgeNear': not all control paths return a value
+  3DStuff.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\3DStuff.exe
+  3DStuff.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\3DStuff.pdb (Partial PDB)

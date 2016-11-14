@@ -5,6 +5,7 @@ public:
 	Box();
 	Box(float _x, float _y, float _z, float _width, float _height, float _depth);
 	~Box();
+	void updatePosition();
 	void setVertices(glm::vec3 _vertices[8]);
 	void updateVertices();
 	void init();
@@ -16,5 +17,6 @@ public:
 	float roll = 0;
 	glm::vec3 position;
 	glm::vec3 dimensions;
+	glm::vec3 velocity = glm::vec3(0,0,0);
 private:
 };

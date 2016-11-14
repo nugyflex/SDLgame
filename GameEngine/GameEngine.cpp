@@ -38,8 +38,8 @@ namespace GameEngine {
 		glBegin(GL_LINES);
 		float max = 1000;
 		float min = 0.9;
-		glVertex3f(_point1.x, _point1.y, -1-(1 / _point1.z - 1 / min) / (1 / max + 1 / min));
-		glVertex3f(_point2.x, _point2.y, -1-(1 / _point2.z - 1 / min) / (1 / max + 1 / min));
+		glVertex3f(_point1.x, _point1.y, -1-(1 / (_point1.z - 0.1) - 1 / min) / (1 / max + 1 / min));
+		glVertex3f(_point2.x, _point2.y, -1-(1 / (_point2.z - 0.1) - 1 / min) / (1 / max + 1 / min));
 		glEnd();
 	}
 	void fillBackGround(float _r, float _g, float _b) {

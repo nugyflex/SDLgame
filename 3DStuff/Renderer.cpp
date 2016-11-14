@@ -44,7 +44,7 @@ glm::vec3 Renderer::convertVertex(glm::vec3 _v)
 void Renderer::drawLine(glm::vec3 _v1, glm::vec3 _v2)
 {
 	clipEdgeNear(&_v1, &_v2);
-	GameEngine::drawBasicLine(convertVertex(_v1), convertVertex(_v2), 2, 0, 0, 0);
+	GameEngine::drawBasicLine(convertVertex(_v1), convertVertex(_v2), 1.5, 0, 0, 0);
 }
 void Renderer::drawBox(Box* _box)
 {
@@ -231,6 +231,40 @@ void Renderer::drawAllFaces()
 void Renderer::resetFaces()
 {
 	Faces.clear();
+}
+
+void Renderer::collisionDetection3D(Box* _box1, Box * _box2)
+{
+	//xy
+	/*
+	if (_box1->position.x < _box2->position.x + _box2->dimensions.x && _box1->position.x + _box1->dimensions.x > _box2->position.x && _box1->position.y < _box2->position.y + _box2->dimensions.y && _box1->position.y + _box1->dimensions.y > _box2->position.y) {
+		if (_box1->velocity.z > _box2->position.z - _box1->position.z - _box1->dimensions.z) {
+			_box1->position.z = _box2->position.z - _box1->dimensions.z;
+		}
+		if (-_box1->velocity.z > _box1->position.z - _box2->position.z - _box2->dimensions.z) {
+			_box1->position.z = _box2->position.z + _box2->dimensions.z;
+		}
+	}*/
+	//xz
+	if (_box1->position.x < _box2->position.x + _box2->dimensions.x && _box1->position.x + _box1->dimensions.x > _box2->position.x && _box1->position.z < _box2->position.z + _box2->dimensions.z && _box1->position.z + _box1->dimensions.z > _box2->position.z) {
+		if (_box1->position.y + _box1->dimensions.y <= _box2->position.y && _box1->velocity.y + _box1->dimensions.y + _box1->position.y >= _box2->position.y) {
+			_box1->position.y = _box2->position.y - _box1->dimensions.y;
+			_box1->velocity.y = 0;
+		}
+		if (-_box1->velocity.y > _box1->position.y - _box2->position.y - _box2->dimensions.y) {
+			_box1->position.y = _box2->position.y + _box2->dimensions.y;
+		}
+	}
+	//yz
+	/*
+	if (_box1->position.z < _box2->position.z + _box2->dimensions.z && _box1->position.z + _box1->dimensions.z > _box2->position.z && _box1->position.y < _box2->position.y + _box2->dimensions.y && _box1->position.y + _box1->dimensions.y > _box2->position.y) {
+		if (_box1->velocity.x > _box2->position.x - _box1->position.x - _box1->dimensions.x) {
+			_box1->position.x = _box2->position.x - _box1->dimensions.x;
+		}
+		if (-_box1->velocity.x > _box1->position.x - _box2->position.x - _box2->dimensions.x) {
+			_box1->position.x = _box2->position.x + _box2->dimensions.x;
+		}
+	}*/
 }
 
 void Renderer::orderFaces()

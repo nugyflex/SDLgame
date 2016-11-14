@@ -37,6 +37,7 @@ public:
 	void clipFaceNear(Face* _face);
 	void drawAllFaces();
 	void resetFaces();
+	void collisionDetection3D(Box* _box1, Box* _box2);
 	void orderFaces();
 	float FOV = 1;
 	float cameraPitch;
