@@ -13,6 +13,15 @@ screenHeight = 900
 gameDisplay = pygame.display.set_mode((screenWidth,screenHeight))
 def drawRect(x, y, width, height, color):
     pygame.draw.rect(gameDisplay, color, [x, y,width ,height])
+class TextBox:
+    text = ""
+    x = 0
+    y = 0
+    def __init__(self, _x, _y):
+        x = _x
+        y = _y
+    def draw(self):
+        game.drawText(text, x, y)
 class Button:
     mainImage = 0
     altImage = 0
@@ -112,6 +121,17 @@ class MenuScreen(Screen):
     def draw(self):
         game.buttonCollection.drawButtons()
         drawRect(0,0,game.screenWidth, game.screenHeight, BackGroundColour)
+        drawRect(0,0,game.screenWidth, game.headerHeight, LineColour)
+        drawRect(0,game.screenHeight - game.footerHeight,game.screenWidth,game.footerHeight, LineColour)
+
+class SetupScreen(Screen):
+    def init(self):
+        game.buttonCollection.addButton("menu", 100, 100)
+    def update(self):
+        game.buttonCollection.updateButtons()
+    def draw(self):
+        game.buttonCollection.drawButtons()
+        drawRect(0,0,game.screenWidth, game.screenHeight, BackGroundColour)
         drawRect(0,0,game.screenWidth,game.headerHeight, LineColour)
         drawRect(0,game.screenHeight - game.footerHeight,game.screenWidth,game.footerHeight, LineColour)
 class GameOverScreen(Screen):
@@ -183,6 +203,7 @@ class Game:
 
     #Screens
     menuScreen = MenuScreen()
+    setupScreen = SetupScreen()
     gameScreen = GameScreen()
     gameOverScreen = GameOverScreen()
 
@@ -191,18 +212,29 @@ class Game:
     mouseY = 0
     mouseLeft = False
     lastMouseLeft = False
-    
+    isKeyDown = False
+    keyDownString = "test"
+    lastKeyDownString = "test"
+
     #GAMESTATE:
     #0: start menu
-    #1: game
-    #2: game over
+    #1: setup
+    #2: game
+    #3: game over
     gameState = 0
     lastGameState = 0
 
     #Game images
     imageX = pygame.image.load('x.png')
     imageO = pygame.image.load('o.png')
-
+    def text_objects(self, _text, _font):
+        textSurface = _font.render(_text, True, LineColour)
+        return textSurface, textSurface.get_rect()
+    def drawText(self, _string, _x, _y):
+        largeText = pygame.font.Font('Roboto-thin.ttf',55)
+        TextSurf, TextRect = self.text_objects(_string, largeText)
+        TextRect.center = ((_x),(_y))
+        gameDisplay.blit(TextSurf, TextRect)
     def testForResult(self):
         result = 0
         for i in range(0,self.boardSize):
@@ -237,12 +269,18 @@ class Game:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 self.mouseLeft = True
                 (self.mouseX, self.mouseY) = pygame.mouse.get_pos()
-                print self.mouseX, self.mouseY
+                #print self.mouseX, self.mouseY
             else:
                 (self.mouseX, self.mouseY) = pygame.mouse.get_pos()
                 self.mouseLeft = False
             if event.type == pygame.QUIT:
                 self.running = False
+            if event.type == pygame.KEYDOWN:
+                self.isKeyDown = True
+                self.lastKeyDownString = self.keyDownString
+                self.keyDownString = (event.key)
+            else:
+                self.isKeyDown = True
     def mainLoop(self):
         self.lastGameState = self.gameState
         self.pollForInputs()
@@ -251,8 +289,10 @@ class Game:
         if self.gameState == 0:
             self.menuScreen.run()
         elif self.gameState == 1:
-            self.gameScreen.run()
+            self.setupScreen.run()
         elif self.gameState == 2:
+            self.gameScreen.run()
+        elif self.gameState == 3:
             self.gameOverScreen.run()
         self.buttonCollection.drawButtons()
         self.testForResult()
@@ -262,9 +302,12 @@ class Game:
             if self.gameState == 0:
                 self.menuScreen.init()
             elif self.gameState == 1:
-                self.gameScreen.init()
+                self.setupScreen.init()
             elif self.gameState == 2:
+                self.gameScreen.init()
+            elif self.gameState == 3:
                 self.gameOverScreen.init()
+        self.drawText("testing", 200, 200)
         pygame.display.update()
     def start(self):
         while self.running:
