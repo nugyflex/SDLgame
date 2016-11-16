@@ -1,27 +1,72 @@
 import pygame
 import math
 import sys
+import ctypes
 
 pygame.init()
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
+DarkerLineColour = (20, 70, 130)
 LineColour = (50, 110, 180)
 BackGroundColour = (100, 150, 210)
+DarkerBackGroundColour = (90, 140, 200)
 screenWidth = 900
 screenHeight = 900
 gameDisplay = pygame.display.set_mode((screenWidth,screenHeight))
+def getTextLength(text, size, font):
+    class SIZE(ctypes.Structure):
+        _fields_ = [("cx", ctypes.c_long), ("cy", ctypes.c_long)]
+    hdc = ctypes.windll.user32.GetDC(0)
+    hfont = ctypes.windll.gdi32.CreateFontA(-size, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, font)
+    hfont_old = ctypes.windll.gdi32.SelectObject(hdc, hfont)
+    size = SIZE(0, 0)
+    ctypes.windll.gdi32.GetTextExtentPoint32A(hdc, text, len(text), ctypes.byref(size))
+    ctypes.windll.gdi32.SelectObject(hdc, hfont_old)
+    ctypes.windll.gdi32.DeleteObject(hfont)
+    return (size.cx, size.cy)
 def drawRect(x, y, width, height, color):
     pygame.draw.rect(gameDisplay, color, [x, y,width ,height])
 class TextBox:
     text = ""
     x = 0
     y = 0
-    def __init__(self, _x, _y):
-        x = _x
-        y = _y
+    width = 610
+    height = 80
+    inFocus = False
+    name = "DefaultName"
+    def __init__(self, _x, _y, _name):
+        self.x = _x
+        self.y = _y
+        self.name = _name
     def draw(self):
-        game.drawText(text, x, y)
+
+        drawRect(self.x, self.y, self.width, self.height, LineColour)
+        if self.inFocus:
+            drawRect(self.x+4, self.y+4, self.width-8, self.height-8, DarkerBackGroundColour)
+        else:
+            drawRect(self.x+4, self.y+4, self.width-8, self.height-8, BackGroundColour)
+        if self.text == "" and self.inFocus == False:
+            game.drawText(self.name, self.x + self.width/2, self.y + self.height/2, LineColour)
+        else:
+            game.drawText(self.text, self.x + self.width/2, self.y + self.height/2, DarkerLineColour)
+    def checkForMouse(self):
+        if game.mouseLeft and game.lastMouseLeft == False:
+            if game.mouseX > self.x and game.mouseX < self.x + self.width and game.mouseY > self.y and game.mouseY < self.y + self.height:
+                self.inFocus = True
+            else:
+                self.inFocus = False
+        elif game.mouseX > self.x and game.mouseX < self.x + self.width and game.mouseY > self.y and game.mouseY < self.y + self.height:
+            self.hoveredOver = False
+        if self.inFocus:
+            if game.keyDownString != game.lastKeyDownString:
+                fontTest = pygame.font.Font('Roboto-thin.ttf',55)
+                textWidth, textHeight = fontTest.size(self.text)
+                if game.keyDownString == "BACKSPACE":
+                    self.text = self.text[:(len(self.text)-1)]
+                elif textWidth < 570:
+                    self.text += game.keyDownString
+
 class Button:
     mainImage = 0
     altImage = 0
@@ -82,6 +127,13 @@ class menuButton(Button):
         game.gameState = 0
         #to prevent clicking into next screen
         game.lastMouseLeft = True
+class playButton(Button):
+    def __init__(self, _x, _y):
+        Button.__init__(self, _x, _y, 400, 100, "exitButtonMain.png", "exitButtonAlt.png")
+    def run(self):
+        game.gameState = 2
+        #to prevent clicking into next screen
+        game.lastMouseLeft = True
 class buttonWrapper:
     buttons = []
     def addButton(self, _type, _x, _y):
@@ -93,6 +145,10 @@ class buttonWrapper:
             self.buttons.append(exitButton(_x, _y))
         elif _type == "menu":
             self.buttons.append(menuButton(_x, _y))
+        elif _type == "play":
+            self.buttons.append(playButton(_x, _y))
+    def addTextBox(self, _x, _y, _name):
+        self.buttons.append(TextBox(_x, _y, _name))
     def drawButtons(self):
         for i in range(0, len(self.buttons)):
             self.buttons[i].draw()
@@ -107,6 +163,8 @@ class Screen:
         self.draw()
     def init(self):
         print "THIS IS THE BASE CLASS"
+    def deInit(self):
+        print "THIS IS THE BASE CLASS"
     def update(self):
         print "THIS IS THE BASE CLASS"
     def draw(self):
@@ -116,10 +174,7 @@ class MenuScreen(Screen):
         game.buttonCollection.addButton("pvp", 100, 100)
         game.buttonCollection.addButton("pvc", 100, 300)
         game.buttonCollection.addButton("exit", 100, 500)
-    def update(self):
-        game.buttonCollection.updateButtons()
     def draw(self):
-        game.buttonCollection.drawButtons()
         drawRect(0,0,game.screenWidth, game.screenHeight, BackGroundColour)
         drawRect(0,0,game.screenWidth, game.headerHeight, LineColour)
         drawRect(0,game.screenHeight - game.footerHeight,game.screenWidth,game.footerHeight, LineColour)
@@ -127,37 +182,37 @@ class MenuScreen(Screen):
 class SetupScreen(Screen):
     def init(self):
         game.buttonCollection.addButton("menu", 100, 100)
-    def update(self):
-        game.buttonCollection.updateButtons()
+        game.buttonCollection.addButton("play", 100, 500)
+        game.buttonCollection.addTextBox(100, 300, "Enter Player1's Name")
+        game.buttonCollection.addTextBox(100, 400, "Enter Player2's Name")
+    def deInit(self):
+        game.player1Name = game.buttonCollection.buttons[2].text
+        game.player2Name = game.buttonCollection.buttons[3].text
     def draw(self):
-        game.buttonCollection.drawButtons()
         drawRect(0,0,game.screenWidth, game.screenHeight, BackGroundColour)
         drawRect(0,0,game.screenWidth,game.headerHeight, LineColour)
         drawRect(0,game.screenHeight - game.footerHeight,game.screenWidth,game.footerHeight, LineColour)
 class GameOverScreen(Screen):
     def init(self):
         game.buttonCollection.addButton("menu", 100, 100)
-    def update(self):
-        game.buttonCollection.updateButtons()
     def draw(self):
-        game.buttonCollection.drawButtons()
         drawRect(0,0,game.screenWidth, game.screenHeight, BackGroundColour)
         drawRect(0,0,game.screenWidth,game.headerHeight, LineColour)
         drawRect(0,game.screenHeight - game.footerHeight,game.screenWidth,game.footerHeight, LineColour)
 class GameScreen(Screen):
     def update(self):
-        game.buttonCollection.updateButtons()
+        #game.buttonCollection.updateButtons()
         if game.mouseLeft == True and game.lastMouseLeft == False:
             roundedX = int(math.floor((game.mouseX-game.paddingX)/(game.lineWidth+game.spacingX)))
             roundedY = int(math.floor((game.mouseY-game.paddingY)/(game.lineHeight+game.spacingY)))
             if roundedX > -1 and roundedX < 3 and roundedY > -1 and roundedY < 3:
                 if game.grid[roundedX][roundedY] == 0:
-                    if game.turn == 0:
+                    if game.turn == 1:
                         game.grid[roundedX][roundedY] = 1
-                        game.turn = 1
-                    elif game.turn == 1:
+                        game.turn = 2
+                    elif game.turn == 2:
                         game.grid[roundedX][roundedY] = 2
-                        game.turn = 0
+                        game.turn = 1
     def draw(self):
         drawRect(0,0,screenWidth,screenHeight, BackGroundColour)
 
@@ -174,13 +229,17 @@ class GameScreen(Screen):
                     gameDisplay.blit(game.imageX, (game.paddingX + 40 + i*(game.lineWidth+game.spacingX),game.paddingY + 40 + j*(game.lineHeight+game.spacingY)))
                 elif game.grid[i][j] == 2:
                     gameDisplay.blit(game.imageO, (game.paddingX + 40 + i*(game.lineWidth+game.spacingX),game.paddingY + 40 + j*(game.lineHeight+game.spacingY)))
+        if game.turn == 1:
+            game.drawText(game.player1Name + "'s turn", 450, 800, DarkerLineColour)
+        else:
+            game.drawText(game.player2Name + "'s turn", 450, 800, DarkerLineColour)
 class Game:
     screenWidth = 900
     screenHeight = 900
     running = True
 
     #Game variables
-    turn = 0
+    turn = 1
     boardSize = 3
     grid = []
     buttonCollection = buttonWrapper()
@@ -188,6 +247,8 @@ class Game:
         grid.append([])
         for j in range(0, boardSize):
             grid[i].append(0)
+    player1Name = "Player 1"
+    player2Name = "Player 2"
 
     #Drawing variables
     paddingX = 200
@@ -227,12 +288,12 @@ class Game:
     #Game images
     imageX = pygame.image.load('x.png')
     imageO = pygame.image.load('o.png')
-    def text_objects(self, _text, _font):
-        textSurface = _font.render(_text, True, LineColour)
+    def text_objects(self, _text, _font, _color):
+        textSurface = _font.render(_text, True, _color)
         return textSurface, textSurface.get_rect()
-    def drawText(self, _string, _x, _y):
+    def drawText(self, _string, _x, _y, _color):
         largeText = pygame.font.Font('Roboto-thin.ttf',55)
-        TextSurf, TextRect = self.text_objects(_string, largeText)
+        TextSurf, TextRect = self.text_objects(_string, largeText, _color)
         TextRect.center = ((_x),(_y))
         gameDisplay.blit(TextSurf, TextRect)
     def testForResult(self):
@@ -263,6 +324,8 @@ class Game:
         for j in range(0, 3):
             self.grid[i][j] = 0
     def pollForInputs(self):
+        self.keyDownString = "xx"
+        self.lastKeyDownString = self.keyDownString
         self.lastMouseLeft = self.mouseLeft
         for event in pygame.event.get():
             (self.mouseX, self.mouseY) = pygame.mouse.get_pos()
@@ -277,8 +340,12 @@ class Game:
                 self.running = False
             if event.type == pygame.KEYDOWN:
                 self.isKeyDown = True
-                self.lastKeyDownString = self.keyDownString
-                self.keyDownString = (event.key)
+                self.keyDownString = unichr(event.key)
+                #print event.key
+                if event.key == 8:
+                    self.keyDownString = "BACKSPACE"
+                elif int(event.key) < 32 or int(event.key) > 126:
+                    self.keyDownString = ""
             else:
                 self.isKeyDown = True
     def mainLoop(self):
@@ -287,9 +354,9 @@ class Game:
         self.buttonCollection.updateButtons()
 
         if self.gameState == 0:
-            self.menuScreen.run()
+            self.menuScreen.draw()
         elif self.gameState == 1:
-            self.setupScreen.run()
+            self.setupScreen.draw()
         elif self.gameState == 2:
             self.gameScreen.run()
         elif self.gameState == 3:
@@ -298,6 +365,14 @@ class Game:
         self.testForResult()
 
         if self.gameState != self.lastGameState:
+            if self.lastGameState == 0:
+                self.menuScreen.deInit()
+            elif self.lastGameState == 1:
+                self.setupScreen.deInit()
+            elif self.lastGameState == 2:
+                self.gameScreen.deInit()
+            elif self.lastGameState == 3:
+                self.gameOverScreen.deInit()
             self.buttonCollection.clear()
             if self.gameState == 0:
                 self.menuScreen.init()
@@ -307,7 +382,6 @@ class Game:
                 self.gameScreen.init()
             elif self.gameState == 3:
                 self.gameOverScreen.init()
-        self.drawText("testing", 200, 200)
         pygame.display.update()
     def start(self):
         while self.running:
