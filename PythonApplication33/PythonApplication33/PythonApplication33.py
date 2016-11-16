@@ -27,6 +27,40 @@ def getTextLength(text, size, font):
     return (size.cx, size.cy)
 def drawRect(x, y, width, height, color):
     pygame.draw.rect(gameDisplay, color, [x, y,width ,height])
+class IncrementalClicker:
+    x = 0
+    y = 0
+    value = 0
+    maxValue = 0
+    minValue = 0
+    increment = 0
+    buttonWidth = 40
+    buttonHeight = 50
+    def __init__(self, _x, _y, _minValue, _maxValue, _increment):
+        if _x == "centered":
+            self.x  = screenWidth/2 - 68
+        else:
+            self.x = _x
+        if _y == "centered":
+            self.y  = screenHeight/2 - 62
+        else:
+            self.y = _y
+        self.value = _minValue
+        self.minValue = _minValue
+        self.maxValue = _maxValue
+        self.increment = _increment
+    def draw(self):
+        drawRect(self.x, self.y, self.buttonWidth, self.buttonHeight, DarkerLineColour)
+        drawRect(self.x, self.y+self.buttonHeight + 2, self.buttonWidth, self.buttonHeight, DarkerLineColour)
+        drawRect(self.x + self.buttonWidth + 2,self.y, self.buttonWidth*2, self.buttonHeight*2 + 2, DarkerLineColour)
+        drawRect(self.x + self.buttonWidth + 6,self.y+4, self.buttonWidth*2 - 8, self.buttonHeight*2 + 2 - 8, DarkerBackGroundColour)
+        game.drawText(str(self.value), self.x + self.buttonWidth*2 + 2, self.y + self.buttonHeight, DarkerLineColour)
+    def checkForMouse(self):
+        if game.mouseLeft and game.lastMouseLeft == False:
+            if game.mouseX > self.x and game.mouseX < self.x + self.buttonWidth and game.mouseY > self.y and game.mouseY < self.y + self.buttonHeight and self.value + self.increment <= self.maxValue:
+                self.value += self.increment
+            elif game.mouseX > self.x and game.mouseX < self.x + self.buttonWidth and game.mouseY > self.y+self.buttonHeight + 2 and game.mouseY < self.y + self.buttonHeight*2 + 2 and self.value - self.increment >= self.minValue:
+                self.value -= self.increment
 class TextBox:
     text = ""
     x = 0
@@ -36,8 +70,14 @@ class TextBox:
     inFocus = False
     name = "DefaultName"
     def __init__(self, _x, _y, _name):
-        self.x = _x
-        self.y = _y
+        if _x == "centered":
+            self.x  = screenWidth/2 - _width/2
+        else:
+            self.x = _x
+        if _y == "centered":
+            self.y  = screenHeight/2 - _height/2
+        else:
+            self.y = _y
         self.name = _name
     def draw(self):
 
@@ -66,7 +106,34 @@ class TextBox:
                     self.text = self.text[:(len(self.text)-1)]
                 elif textWidth < 570:
                     self.text += game.keyDownString
-
+class Toggle:
+    value = False
+    x = 0
+    y = 0
+    width = 80
+    height = 30
+    def __init__(self, _x, _y):
+        if _x == "centered":
+            self.x  = screenWidth/2 - self.width/2
+        else:
+            self.x = _x
+        if _y == "centered":
+            self.y  = screenHeight/2 - self.height/2
+        else:
+            self.y = _y
+    def draw(self):
+        drawRect(self.x, self.y, self.width, self.height, DarkerLineColour)
+        if self.value:
+            drawRect(self.x+4, self.y+4, self.width - 8, self.height - 8, DarkerBackGroundColour)
+        else:
+            drawRect(self.x+4, self.y+4, self.width - 8, self.height - 8, BackGroundColour)
+    def checkForMouse(self):
+        if game.mouseLeft and game.lastMouseLeft == False:
+            if game.mouseX > self.x and game.mouseX < self.x + self.width and game.mouseY > self.y and game.mouseY < self.y + self.height:
+                if self.value:
+                    self.value = False
+                else:
+                    self.value = True
 class Button:
     mainImage = 0
     altImage = 0
@@ -75,9 +142,16 @@ class Button:
     y = 0
     width = 0
     height = 0
+    value = False
     def __init__(self, _x, _y, _width, _height, _mainPath, _altPath):
-        self.x = _x
-        self.y = _y
+        if _x == "centered":
+            self.x  = screenWidth/2 - _width/2
+        else:
+            self.x = _x
+        if _y == "centered":
+            self.y  = screenHeight/2 - _height/2
+        else:
+            self.y = _y
         self.width = _width
         self.height = _height
         self.loadImages(_mainPath, _altPath)
@@ -122,16 +196,24 @@ class exitButton(Button):
         game.lastMouseLeft = True
 class menuButton(Button):
     def __init__(self, _x, _y):
-        Button.__init__(self, _x, _y, 400, 100, "exitButtonMain.png", "exitButtonAlt.png")
+        Button.__init__(self, _x, _y, 400, 100, "menuButtonMain.png", "menuButtonAlt.png")
     def run(self):
         game.gameState = 0
         #to prevent clicking into next screen
         game.lastMouseLeft = True
 class playButton(Button):
     def __init__(self, _x, _y):
-        Button.__init__(self, _x, _y, 400, 100, "exitButtonMain.png", "exitButtonAlt.png")
+        Button.__init__(self, _x, _y, 400, 100, "playButtonMain.png", "playButtonAlt.png")
     def run(self):
         game.gameState = 2
+        #to prevent clicking into next screen
+        game.lastMouseLeft = True
+class nextButton(Button):
+    def __init__(self, _x, _y):
+        Button.__init__(self, _x, _y, 400, 100, "nextButtonMain.png", "nextButtonAlt.png")
+    def run(self):
+        game.wipeGrid()
+        game.bestOfRound += 1
         #to prevent clicking into next screen
         game.lastMouseLeft = True
 class buttonWrapper:
@@ -149,6 +231,10 @@ class buttonWrapper:
             self.buttons.append(playButton(_x, _y))
     def addTextBox(self, _x, _y, _name):
         self.buttons.append(TextBox(_x, _y, _name))
+    def addToggle(self, _x, _y):
+        self.buttons.append(Toggle(_x, _y))
+    def addIncrimentalClicker(self, _x, _y, _minValue, _maxValue, _increment):
+        self.buttons.append(IncrementalClicker(_x, _y, _minValue, _maxValue, _increment))
     def drawButtons(self):
         for i in range(0, len(self.buttons)):
             self.buttons[i].draw()
@@ -170,36 +256,38 @@ class Screen:
     def draw(self):
         print "THIS IS THE BASE CLASS"
 class MenuScreen(Screen):
+    tileImage = 0
     def init(self):
-        game.buttonCollection.addButton("pvp", 100, 100)
-        game.buttonCollection.addButton("pvc", 100, 300)
-        game.buttonCollection.addButton("exit", 100, 500)
+        game.buttonCollection.addButton("pvp", "centered", 320)
+        game.buttonCollection.addButton("pvc", "centered", 440)
+        game.buttonCollection.addButton("exit", "centered", 560)
+        self.titleImage = pygame.image.load("title.png")
     def draw(self):
         drawRect(0,0,game.screenWidth, game.screenHeight, BackGroundColour)
         drawRect(0,0,game.screenWidth, game.headerHeight, LineColour)
-        drawRect(0,game.screenHeight - game.footerHeight,game.screenWidth,game.footerHeight, LineColour)
+        drawRect(0,game.screenHeight - game.footerHeight, game.screenWidth, game.footerHeight, LineColour)
+        gameDisplay.blit(self.titleImage, (150, 100))
 
 class SetupScreen(Screen):
     def init(self):
-        game.buttonCollection.addButton("menu", 100, 100)
-        game.buttonCollection.addButton("play", 100, 500)
+        game.buttonCollection.addButton("menu", "centered", 100)
+        game.buttonCollection.addButton("play", "centered", 500)
         game.buttonCollection.addTextBox(100, 300, "Enter Player1's Name")
         game.buttonCollection.addTextBox(100, 400, "Enter Player2's Name")
+        game.buttonCollection.addToggle("centered", 700)
+        game.buttonCollection.addIncrimentalClicker("centered", 750, 3, 13, 2)
     def deInit(self):
         game.player1Name = game.buttonCollection.buttons[2].text
         game.player2Name = game.buttonCollection.buttons[3].text
-    def draw(self):
-        drawRect(0,0,game.screenWidth, game.screenHeight, BackGroundColour)
-        drawRect(0,0,game.screenWidth,game.headerHeight, LineColour)
-        drawRect(0,game.screenHeight - game.footerHeight,game.screenWidth,game.footerHeight, LineColour)
-class GameOverScreen(Screen):
-    def init(self):
-        game.buttonCollection.addButton("menu", 100, 100)
+        game.bestOfMode = game.buttonCollection.buttons[4].value
+        game.bestOfTotalRounds = game.buttonCollection.buttons[5].value
     def draw(self):
         drawRect(0,0,game.screenWidth, game.screenHeight, BackGroundColour)
         drawRect(0,0,game.screenWidth,game.headerHeight, LineColour)
         drawRect(0,game.screenHeight - game.footerHeight,game.screenWidth,game.footerHeight, LineColour)
 class GameScreen(Screen):
+    def init(self):
+        game.wipeGrid()
     def update(self):
         #game.buttonCollection.updateButtons()
         if game.mouseLeft == True and game.lastMouseLeft == False:
@@ -230,9 +318,27 @@ class GameScreen(Screen):
                 elif game.grid[i][j] == 2:
                     gameDisplay.blit(game.imageO, (game.paddingX + 40 + i*(game.lineWidth+game.spacingX),game.paddingY + 40 + j*(game.lineHeight+game.spacingY)))
         if game.turn == 1:
-            game.drawText(game.player1Name + "'s turn", 450, 800, DarkerLineColour)
+            game.drawText(game.player1Name + "'s turn", screenWidth/2, 800, DarkerLineColour)
         else:
-            game.drawText(game.player2Name + "'s turn", 450, 800, DarkerLineColour)
+            game.drawText(game.player2Name + "'s turn", screenWidth/2, 800, DarkerLineColour)
+        if game.bestOfMode:
+            game.drawText("Round: " + str(game.bestOfRound), screenWidth/2, 140, DarkerLineColour)
+class GameOverScreen(Screen):
+    def init(self):
+        game.buttonCollection.addButton("menu", "centered", screenHeight/2 + 100)
+    def draw(self):
+        drawRect(0,0,game.screenWidth, game.screenHeight, BackGroundColour)
+        drawRect(0,0,game.screenWidth,game.headerHeight, LineColour)
+        drawRect(0,game.screenHeight - game.footerHeight,game.screenWidth,game.footerHeight, LineColour)
+        if game.winner == 1:
+            game.drawText(game.player1Name + " wins", screenWidth/2, screenHeight/2 - 100, DarkerLineColour)
+        else:
+            game.drawText(game.player2Name + " wins", screenWidth/2, screenHeight/2 - 100, DarkerLineColour)
+        if game.bestOfMode:
+            if game.winner == 1:
+                game.drawText(str(game.bestOfScorePlayer1) + " : " + str(game.bestOfScorePlayer2), screenWidth/2, screenHeight/2, DarkerLineColour)
+            else:
+                game.drawText(str(game.bestOfScorePlayer2) + " : " + str(game.bestOfScorePlayer1), screenWidth/2, screenHeight/2, DarkerLineColour)
 class Game:
     screenWidth = 900
     screenHeight = 900
@@ -249,6 +355,12 @@ class Game:
             grid[i].append(0)
     player1Name = "Player 1"
     player2Name = "Player 2"
+    winner = 0
+    bestOfMode = True
+    bestOfTotalRounds = 3
+    bestOfRound = 0
+    bestOfScorePlayer1 = 0
+    bestOfScorePlayer2 = 0
 
     #Drawing variables
     paddingX = 200
@@ -302,29 +414,40 @@ class Game:
             for j in range(0,self.boardSize):
                 if i < self.boardSize - 2:
                     if self.grid[i][j] == self.grid[i+1][j] == self.grid[i+2][j] != 0:
-                        print "WINNER"
                         result = self.grid[i][j]
                     elif j < self.boardSize - 2:
                         if self.grid[i][j] == self.grid[i+1][j+1] == self.grid[i+2][j+2] != 0:
-                            print "WINNER"
                             result = self.grid[i][j]
                 if j < self.boardSize - 2:
                     if self.grid[i][j] == self.grid[i][j+1] == self.grid[i][j+2] != 0:
-                        print "WINNER"
                         result = self.grid[i][j]
                 if j < self.boardSize - 2 and i > 1:
                     if self.grid[i][j] == self.grid[i-1][j+1] == self.grid[i-2][j+2] != 0:
-                        print "WINNER"
                         result = self.grid[i][j]
         if result != 0:
-            game.gameState = 2
-            self.wipeGrid()
+            if self.bestOfMode:
+                self.wipeGrid()
+                game.bestOfRound += 1
+                if result == 1:
+                    game.bestOfScorePlayer1 += 1
+                if result == 2:
+                    game.bestOfScorePlayer2 += 1
+                if self.bestOfScorePlayer1 > self.bestOfTotalRounds/2:
+                    self.gameState = 3
+                    self.winner = result
+                elif self.bestOfScorePlayer2 > self.bestOfTotalRounds/2:
+                    self.gameState = 3
+                    self.winner = result
+
+            else:
+                game.gameState = 3
+                self.winner = result
     def wipeGrid(self):
      for i in range(0, 3):
         for j in range(0, 3):
             self.grid[i][j] = 0
     def pollForInputs(self):
-        self.keyDownString = "xx"
+        self.keyDownString = "temp"
         self.lastKeyDownString = self.keyDownString
         self.lastMouseLeft = self.mouseLeft
         for event in pygame.event.get():
