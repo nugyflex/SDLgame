@@ -126,13 +126,13 @@ class Toggle:
             self.y = _y
     def draw(self):
         drawRect(self.x, self.y, self.width, self.height, DarkerLineColour)
-        drawRect(self.x+4, self.y+4, self.width - 8, self.height - 8, DarkerBackGroundColour)
         if self.value == False:
-            drawRect(self.x+4, self.y+4, self.width - 8, self.height - 8, DarkerBackGroundColour)
+            drawRect(self.x+4, self.y+4, self.width - 8, self.height - 8, BackGroundColour)
             drawRect(self.x+4 + (self.width - 8)/2, self.y+4, (self.width - 8)/2, self.height - 8, LineColour)
             game.drawText("Off", self.x + self.width*2, self.y + self.height/2, DarkerLineColour)
         else:
             drawRect(self.x+4, self.y+4, self.width - 8, self.height - 8, BackGroundColour)
+            drawRect(self.x+4, self.y+4, (self.width - 8)/2, self.height - 8, DarkerBackGroundColour)
             game.drawText("On", self.x + self.width*2, self.y + self.height/2, DarkerLineColour)
     def checkForMouse(self):
         if game.mouseLeft and game.lastMouseLeft == False:
@@ -215,12 +215,21 @@ class playButton(Button):
         game.gameState = 2
         #to prevent clicking into next screen
         game.lastMouseLeft = True
-class nextButton(Button):
+class loadSaveButton(Button):
     def __init__(self, _x, _y):
         Button.__init__(self, _x, _y, 400, 100, "nextButtonMain.png", "nextButtonAlt.png")
     def run(self):
         game.wipeGrid()
-        game.bestOfRound += 1
+        game.readFromSave()
+        game.gameState = 2
+        #to prevent clicking into next screen
+        game.lastMouseLeft = True
+class saveAndExitButton(Button):
+    def __init__(self, _x, _y):
+        Button.__init__(self, _x, _y, 400, 100, "nextButtonMain.png", "nextButtonAlt.png")
+    def run(self):
+        game.writeToSave()
+        game.gameState = 0
         #to prevent clicking into next screen
         game.lastMouseLeft = True
 class buttonWrapper:
@@ -236,6 +245,10 @@ class buttonWrapper:
             self.buttons.append(menuButton(_x, _y))
         elif _type == "play":
             self.buttons.append(playButton(_x, _y))
+        elif _type == "load":
+            self.buttons.append(loadSaveButton(_x, _y))
+        elif _type == "save":
+            self.buttons.append(saveAndExitButton(_x, _y))
     def addTextBox(self, _x, _y, _name):
         self.buttons.append(TextBox(_x, _y, _name))
     def addToggle(self, _x, _y):
@@ -267,7 +280,8 @@ class MenuScreen(Screen):
     def init(self):
         game.buttonCollection.addButton("pvp", "centered", 320)
         game.buttonCollection.addButton("pvc", "centered", 440)
-        game.buttonCollection.addButton("exit", "centered", 560)
+        game.buttonCollection.addButton("load", "centered", 560)
+        game.buttonCollection.addButton("exit", "centered", 680)
         self.titleImage = pygame.image.load("title.png")
     def draw(self):
         drawRect(0,0,game.screenWidth, game.screenHeight, BackGroundColour)
@@ -283,6 +297,8 @@ class SetupScreen(Screen):
         game.buttonCollection.addIncrimentalClicker("centered", 360, 3, 13, 2)
         game.buttonCollection.addButton("menu", "centered", 500)
         game.buttonCollection.addButton("play", "centered", 620)
+        game.resetBestOf()
+        game.wipeGrid()
     def deInit(self):
         game.player1Name = game.buttonCollection.buttons[0].text
         game.player2Name = game.buttonCollection.buttons[1].text
@@ -297,9 +313,10 @@ class SetupScreen(Screen):
         game.drawText("BestOf:", 240, 380, LineColour)
 class GameScreen(Screen):
     def init(self):
-        game.wipeGrid()
-        game.resetBestOf()
+        game.buttonCollection.addButton("save", "centered" ,750)
+        #game.resetBestOf()
     def update(self):
+        game.testForResult()
         #game.buttonCollection.updateButtons()
         if game.mouseLeft == True and game.lastMouseLeft == False:
             roundedX = int(math.floor((game.mouseX-game.paddingX)/(game.lineWidth+game.spacingX)))
@@ -329,9 +346,9 @@ class GameScreen(Screen):
                 elif game.grid[i][j] == 2:
                     gameDisplay.blit(game.imageO, (game.paddingX + 40 + i*(game.lineWidth+game.spacingX),game.paddingY + 40 + j*(game.lineHeight+game.spacingY)))
         if game.turn == 1:
-            game.drawText(game.player1Name + "'s turn", screenWidth/2, 800, DarkerLineColour)
+            game.drawText(game.player1Name + "'s turn", screenWidth/2, 710, DarkerLineColour)
         else:
-            game.drawText(game.player2Name + "'s turn", screenWidth/2, 800, DarkerLineColour)
+            game.drawText(game.player2Name + "'s turn", screenWidth/2, 710, DarkerLineColour)
         if game.bestOfMode:
             game.drawText("Round: " + str(game.bestOfRound + 1) + " (Best of " + str(game.bestOfTotalRounds) + ")", screenWidth/2, 140, DarkerLineColour)
 class GameOverScreen(Screen):
@@ -375,7 +392,7 @@ class Game:
 
     #Drawing variables
     paddingX = 200
-    paddingY = 200
+    paddingY = 180
     totalWidth = 500
     totalHeight = 500
     lineWidth = 20
@@ -411,8 +428,62 @@ class Game:
     #Game images
     imageX = pygame.image.load('x.png')
     imageO = pygame.image.load('o.png')
+
+    
+    #save file
+    saveFile = open("save.txt", "r+")
+    def wipeSave(self):
+        self.saveFile = open("save.txt", "r+")
+        self.saveFile.truncate()
+    def writeToSave(self):
+        self.wipeSave()
+        for i in range(0, 3):
+            for j in range(0, 3):
+                self.saveFile.write(str(self.grid[i][j]) + '|')
+        if game.bestOfMode:
+            self.saveFile.write("y")
+        else:
+            self.saveFile.write("n")
+        self.saveFile.write(str(self.bestOfScorePlayer1))
+        self.saveFile.write(str(self.bestOfScorePlayer2))
+        self.saveFile.write(str(self.bestOfRound))
+        self.saveFile.close()
+    def isInt(self, _string):
+        try: 
+            int(_string)
+            return True
+        except ValueError:
+            return False
+    def readFromSave(self):
+        self.saveFile = open("save.txt", "r+")
+        string = self.saveFile.read(22)
+        if self.isInt(string[0]):
+            self.grid[0][0] = int(string[0])
+        if self.isInt(string[2]):
+            self.grid[0][1] = int(string[2])
+        if self.isInt(string[4]):
+            self.grid[0][2] = int(string[4])
+        if self.isInt(string[6]):
+            self.grid[1][0] = int(string[6])
+        if self.isInt(string[8]):
+            self.grid[1][1] = int(string[8])
+        if self.isInt(string[10]):
+            self.grid[1][2] = int(string[10])
+        if self.isInt(string[12]):
+            self.grid[2][0] = int(string[12])
+        if self.isInt(string[14]):
+            self.grid[2][1] = int(string[14])
+        if self.isInt(string[16]):
+            self.grid[2][2] = int(string[16])
+        if string[18] == "y":
+            self.bestOfMode = True
+            self.bestOfScorePlayer1 = int(string[19])
+            self.bestOfScorePlayer2 = int(string[20])
+            self.bestOfRound = int(string[21])
+        else:
+            self.bestOfMode = False
+
     def resetBestOf(self):
-        self.bestOfTotalRounds = 3
         self.bestOfRound = 0
         self.bestOfScorePlayer1 = 0
         self.bestOfScorePlayer2 = 0
@@ -462,6 +533,7 @@ class Game:
                     self.gameState = 3
                     self.winner = result
             else:
+                self.writeToSave()
                 self.wipeGrid()
                 game.gameState = 3
                 self.winner = result
@@ -494,8 +566,7 @@ class Game:
                     self.keyDownString = ""
             else:
                 self.isKeyDown = True
-    def mainLoop(self):
-        self.lastGameState = self.gameState
+    def mainLoop(self):      
         self.pollForInputs()
         self.buttonCollection.updateButtons()
 
@@ -518,6 +589,8 @@ class Game:
             elif self.gameState == 3:
                 self.gameOverScreen.init()
 
+        self.lastGameState = self.gameState  
+
         if self.gameState == 0:
             self.menuScreen.run()
         elif self.gameState == 1:
@@ -527,17 +600,15 @@ class Game:
         elif self.gameState == 3:
             self.gameOverScreen.run()
         self.buttonCollection.drawButtons()
-        self.testForResult()
-
 
         pygame.display.update()
     def start(self):
         while self.running:
             self.mainLoop()
 game = Game()
-
 game.menuScreen.init()
 game.start()
+game.saveFile.close()
 pygame.display.quit()
 pygame.quit()
 sys.exit()
