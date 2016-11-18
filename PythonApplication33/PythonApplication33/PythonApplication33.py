@@ -217,7 +217,7 @@ class playButton(Button):
         game.lastMouseLeft = True
 class loadSaveButton(Button):
     def __init__(self, _x, _y):
-        Button.__init__(self, _x, _y, 400, 100, "nextButtonMain.png", "nextButtonAlt.png")
+        Button.__init__(self, _x, _y, 400, 100, "loadButtonMain.png", "loadButtonAlt.png")
     def run(self):
         game.wipeGrid()
         game.readFromSave()
@@ -226,7 +226,7 @@ class loadSaveButton(Button):
         game.lastMouseLeft = True
 class saveAndExitButton(Button):
     def __init__(self, _x, _y):
-        Button.__init__(self, _x, _y, 400, 100, "nextButtonMain.png", "nextButtonAlt.png")
+        Button.__init__(self, _x, _y, 400, 100, "s&qButtonMain.png", "s&qButtonAlt.png")
     def run(self):
         game.writeToSave()
         game.gameState = 0
@@ -268,13 +268,13 @@ class Screen:
         self.update()
         self.draw()
     def init(self):
-        print "THIS IS THE BASE CLASS"
+        x = 0
     def deInit(self):
-        print "THIS IS THE BASE CLASS"
+        x = 0
     def update(self):
-        print "THIS IS THE BASE CLASS"
+        x = 0
     def draw(self):
-        print "THIS IS THE BASE CLASS"
+        x = 0
 class MenuScreen(Screen):
     tileImage = 0
     def init(self):
@@ -447,6 +447,7 @@ class Game:
         self.saveFile.write(str(self.bestOfScorePlayer1))
         self.saveFile.write(str(self.bestOfScorePlayer2))
         self.saveFile.write(str(self.bestOfRound))
+        self.saveFile.write(str(self.turn))
         self.saveFile.close()
     def isInt(self, _string):
         try: 
@@ -456,7 +457,7 @@ class Game:
             return False
     def readFromSave(self):
         self.saveFile = open("save.txt", "r+")
-        string = self.saveFile.read(22)
+        string = self.saveFile.read(23)
         if self.isInt(string[0]):
             self.grid[0][0] = int(string[0])
         if self.isInt(string[2]):
@@ -482,6 +483,7 @@ class Game:
             self.bestOfRound = int(string[21])
         else:
             self.bestOfMode = False
+        self.turn = int(string[22])
 
     def resetBestOf(self):
         self.bestOfRound = 0
