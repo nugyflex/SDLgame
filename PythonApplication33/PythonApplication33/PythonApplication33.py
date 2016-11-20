@@ -187,11 +187,11 @@ class pvpButton(Button):
         game.gameState = 1
         #to prevent clicking into next screen
         game.lastMouseLeft = True
-class pvcButton(Button):
+class pvaiButton(Button):
     def __init__(self, _x, _y):
         Button.__init__(self, _x, _y, 400, 100, "pvcButtonMain.png", "pvcButtonAlt.png")
     def run(self):
-        game.gameState = 1
+        game.gameState = 4
         #to prevent clicking into next screen
         game.lastMouseLeft = True
 class exitButton(Button):
@@ -232,13 +232,13 @@ class saveAndExitButton(Button):
         game.gameState = 0
         #to prevent clicking into next screen
         game.lastMouseLeft = True
-class buttonWrapper:
+class GUIElementWrapper:
     buttons = []
     def addButton(self, _type, _x, _y):
         if _type == "pvp":
             self.buttons.append(pvpButton(_x, _y))
         elif _type == "pvc":
-            self.buttons.append(pvcButton(_x, _y))
+            self.buttons.append(pvaiButton(_x, _y))
         elif _type == "exit":
             self.buttons.append(exitButton(_x, _y))
         elif _type == "menu":
@@ -255,18 +255,15 @@ class buttonWrapper:
         self.buttons.append(Toggle(_x, _y))
     def addIncrimentalClicker(self, _x, _y, _minValue, _maxValue, _increment):
         self.buttons.append(IncrementalClicker(_x, _y, _minValue, _maxValue, _increment))
-    def drawButtons(self):
+    def drawElements(self):
         for i in range(0, len(self.buttons)):
             self.buttons[i].draw()
-    def updateButtons(self):
+    def updateElements(self):
         for i in range(0, len(self.buttons)):
             self.buttons[i].checkForMouse()
     def clear(self):
         self.buttons = []
 class Screen:
-    def run(self):
-        self.update()
-        self.draw()
     def init(self):
         x = 0
     def deInit(self):
@@ -278,10 +275,10 @@ class Screen:
 class MenuScreen(Screen):
     tileImage = 0
     def init(self):
-        game.buttonCollection.addButton("pvp", "centered", 320)
-        game.buttonCollection.addButton("pvc", "centered", 440)
-        game.buttonCollection.addButton("load", "centered", 560)
-        game.buttonCollection.addButton("exit", "centered", 680)
+        game.GUIElements.addButton("pvp", "centered", 320)
+        game.GUIElements.addButton("pvc", "centered", 440)
+        game.GUIElements.addButton("load", "centered", 560)
+        game.GUIElements.addButton("exit", "centered", 680)
         self.titleImage = pygame.image.load("title.png")
     def draw(self):
         drawRect(0,0,game.screenWidth, game.screenHeight, BackGroundColour)
@@ -289,23 +286,46 @@ class MenuScreen(Screen):
         drawRect(0,game.screenHeight - game.footerHeight, game.screenWidth, game.footerHeight, LineColour)
         gameDisplay.blit(self.titleImage, (150, 100))
 
-class SetupScreen(Screen):
+class SetupScreenPvP(Screen):
     def init(self):
-        game.buttonCollection.addTextBox("centered", 100, "Enter Player1's Name")
-        game.buttonCollection.addTextBox("centered", 200, "Enter Player2's Name")
-        game.buttonCollection.addToggle("centered", 300)
-        game.buttonCollection.addIncrimentalClicker("centered", 360, 3, 13, 2)
-        game.buttonCollection.addButton("menu", "centered", 500)
-        game.buttonCollection.addButton("play", "centered", 620)
+        game.GUIElements.addTextBox("centered", 100, "Enter Player1's Name")
+        game.GUIElements.addTextBox("centered", 200, "Enter Player2's Name")
+        game.GUIElements.addToggle("centered", 300)
+        game.GUIElements.addIncrimentalClicker("centered", 360, 3, 13, 2)
+        game.GUIElements.addButton("menu", "centered", 500)
+        game.GUIElements.addButton("play", "centered", 620)
         game.resetBestOf()
         game.wipeGrid()
     def deInit(self):
-        game.player1Name = game.buttonCollection.buttons[0].text
-        game.player2Name = game.buttonCollection.buttons[1].text
-        game.bestOfMode = game.buttonCollection.buttons[2].value
-        game.bestOfTotalRounds = game.buttonCollection.buttons[3].value
+        game.player1Name = game.GUIElements.buttons[0].text
+        game.player2Name = game.GUIElements.buttons[1].text
+        game.bestOfMode = game.GUIElements.buttons[2].value
+        game.bestOfTotalRounds = game.GUIElements.buttons[3].value
     def update(self):
-        game.buttonCollection.buttons[3].visible = game.buttonCollection.buttons[2].value
+        game.GUIElements.buttons[3].visible = game.GUIElements.buttons[2].value
+    def draw(self):
+        drawRect(0,0,game.screenWidth, game.screenHeight, BackGroundColour)
+        drawRect(0,0,game.screenWidth,game.headerHeight, LineColour)
+        drawRect(0,game.screenHeight - game.footerHeight,game.screenWidth,game.footerHeight, LineColour)
+        game.drawText("BestOf:", 240, 380, LineColour)
+class SetupScreenPvAi(Screen):
+    def init(self):
+        game.GUIElements.addTextBox("centered", 100, "Enter Player Name")
+        game.GUIElements.addToggle("centered", 200)
+        game.GUIElements.addToggle("centered", 300)
+        game.GUIElements.addIncrimentalClicker("centered", 360, 3, 13, 2)
+        game.GUIElements.addButton("menu", "centered", 500)
+        game.GUIElements.addButton("play", "centered", 620)
+        game.resetBestOf()
+        game.wipeGrid()
+    def deInit(self):
+        game.player1Name = game.GUIElements.buttons[0].text
+        game.player1Name = "Computer"
+        #game.player2Name = game.buttonCollection.buttons[1].text
+        game.bestOfMode = game.GUIElements.buttons[2].value
+        game.bestOfTotalRounds = game.GUIElements.buttons[3].value
+    def update(self):
+        game.GUIElements.buttons[3].visible = game.GUIElements.buttons[2].value
     def draw(self):
         drawRect(0,0,game.screenWidth, game.screenHeight, BackGroundColour)
         drawRect(0,0,game.screenWidth,game.headerHeight, LineColour)
@@ -313,7 +333,7 @@ class SetupScreen(Screen):
         game.drawText("BestOf:", 240, 380, LineColour)
 class GameScreen(Screen):
     def init(self):
-        game.buttonCollection.addButton("save", "centered" ,750)
+        game.GUIElements.addButton("save", "centered" ,750)
         #game.resetBestOf()
     def update(self):
         game.testForResult()
@@ -353,7 +373,7 @@ class GameScreen(Screen):
             game.drawText("Round: " + str(game.bestOfRound + 1) + " (Best of " + str(game.bestOfTotalRounds) + ")", screenWidth/2, 140, DarkerLineColour)
 class GameOverScreen(Screen):
     def init(self):
-        game.buttonCollection.addButton("menu", "centered", screenHeight/2 + 100)
+        game.GUIElements.addButton("menu", "centered", screenHeight/2 + 100)
     def draw(self):
         drawRect(0,0,game.screenWidth, game.screenHeight, BackGroundColour)
         drawRect(0,0,game.screenWidth,game.headerHeight, LineColour)
@@ -376,7 +396,7 @@ class Game:
     turn = 1
     boardSize = 3
     grid = []
-    buttonCollection = buttonWrapper()
+    GUIElements = GUIElementWrapper()
     for i in range(0, boardSize):
         grid.append([])
         for j in range(0, boardSize):
@@ -404,7 +424,8 @@ class Game:
 
     #Screens
     menuScreen = MenuScreen()
-    setupScreen = SetupScreen()
+    setupScreenPvP = SetupScreenPvP()
+    setupScreenPvAi = SetupScreenPvAi()
     gameScreen = GameScreen()
     gameOverScreen = GameOverScreen()
 
@@ -520,7 +541,7 @@ class Game:
                     cellsFilled += 1
         if cellsFilled == 9:
             self.wipeGrid()
-        if result != 0:
+        elif result != 0:
             if self.bestOfMode:
                 self.wipeGrid()
                 game.bestOfRound += 1
@@ -535,7 +556,6 @@ class Game:
                     self.gameState = 3
                     self.winner = result
             else:
-                self.writeToSave()
                 self.wipeGrid()
                 game.gameState = 3
                 self.winner = result
@@ -568,40 +588,58 @@ class Game:
                     self.keyDownString = ""
             else:
                 self.isKeyDown = True
-    def mainLoop(self):      
-        self.pollForInputs()
-        self.buttonCollection.updateButtons()
-
+    def manageScreens(self):
         if self.gameState != self.lastGameState:
             if self.lastGameState == 0:
                 self.menuScreen.deInit()
             elif self.lastGameState == 1:
-                self.setupScreen.deInit()
+                self.setupScreenPvP.deInit()
             elif self.lastGameState == 2:
                 self.gameScreen.deInit()
             elif self.lastGameState == 3:
                 self.gameOverScreen.deInit()
-            self.buttonCollection.clear()
+            self.GUIElements.clear()
             if self.gameState == 0:
                 self.menuScreen.init()
             elif self.gameState == 1:
-                self.setupScreen.init()
+                self.setupScreenPvP.init()
             elif self.gameState == 2:
                 self.gameScreen.init()
             elif self.gameState == 3:
                 self.gameOverScreen.init()
-
+            elif self.gameState == 4:
+                self.setupScreenPvAi.init()
+    
         self.lastGameState = self.gameState  
-
+    def update(self):
+        self.GUIElements.updateElements()
         if self.gameState == 0:
-            self.menuScreen.run()
+            self.menuScreen.update()
         elif self.gameState == 1:
-            self.setupScreen.run()
+            self.setupScreenPvP.update()
         elif self.gameState == 2:
-            self.gameScreen.run()
+            self.gameScreen.update()
         elif self.gameState == 3:
-            self.gameOverScreen.run()
-        self.buttonCollection.drawButtons()
+            self.gameOverScreen.update()
+        elif self.gameState == 4:
+            self.setupScreenPvAi.update()
+    def draw(self):
+        if self.gameState == 0:
+            self.menuScreen.draw()
+        elif self.gameState == 1:
+            self.setupScreenPvP.draw()
+        elif self.gameState == 2:
+            self.gameScreen.draw()
+        elif self.gameState == 3:
+            self.gameOverScreen.draw()
+        elif self.gameState == 4:
+            self.setupScreenPvAi.draw()
+        self.GUIElements.drawElements()
+    def mainLoop(self):      
+        self.pollForInputs()
+        self.manageScreens()
+        self.update()
+        self.draw()
 
         pygame.display.update()
     def start(self):
