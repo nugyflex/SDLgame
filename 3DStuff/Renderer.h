@@ -39,6 +39,7 @@ public:
 	void resetFaces();
 	void collisionDetection3D(Box* _box1, Box* _box2);
 	void orderFaces();
+	void drawGrid();
 	float FOV = 1;
 	float cameraPitch;
 	float cameraYaw;

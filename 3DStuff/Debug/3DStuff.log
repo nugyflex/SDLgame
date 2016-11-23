@@ -3,8 +3,8 @@
 c:\users\jack\documents\github\sdlgame\3dstuff\transformations.h(19): warning C4091: 'static ': ignored on left of 'Transformations' when no variable is declared
 c:\users\jack\documents\github\sdlgame\3dstuff\renderer.cpp(123): warning C4305: '=': truncation from 'double' to 'float'
 c:\users\jack\documents\github\sdlgame\3dstuff\renderer.cpp(189): warning C4930: 'Face newFace(void)': prototyped function not called (was a variable definition intended?)
-c:\users\jack\documents\github\sdlgame\3dstuff\renderer.cpp(224): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdlgame\3dstuff\renderer.cpp(227): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\3dstuff\renderer.cpp(225): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\3dstuff\renderer.cpp(228): warning C4305: 'argument': truncation from 'double' to 'float'
 c:\users\jack\documents\github\sdlgame\3dstuff\renderer.cpp(165): warning C4715: 'Renderer::getClipEdgeNear': not all control paths return a value
   3DStuff.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\3DStuff.exe
   3DStuff.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\3DStuff.pdb (Partial PDB)

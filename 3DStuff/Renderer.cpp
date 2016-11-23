@@ -220,6 +220,7 @@ void Renderer::clipFaceNear(Face * _face)
 
 void Renderer::drawAllFaces()
 {
+	drawGrid();
 	orderFaces();
 	for (int i = 0; i < Faces.size(); i++) {
 		clipFaceNear(&Faces[i]);
@@ -270,6 +271,18 @@ void Renderer::collisionDetection3D(Box* _box1, Box * _box2)
 void Renderer::orderFaces()
 {
 	std::sort(Faces.begin(), Faces.end(), sort_face());
+}
+
+void Renderer::drawGrid()
+{
+	int w = 10;
+	int am = 50;
+	for (int i = 0; i < am; i++) {
+		//GameEngine::drawBasicLine(convertVertex(glm::vec3(-am * w / 2, 0, -am * w / 2)), convertVertex(glm::vec3(-am * w / 2 + am * w, 0, -am * w / 2 + i*w)), 1, 0.2, 0.3, 1);
+	}
+	GameEngine::drawBasicLine(convertVertex(glm::vec3(1, 1, 1)), convertVertex(glm::vec3(6, 6, 6)), 1, 1, 0, 1);
+	//drawLine(glm::vec3(6, 6, 6), glm::vec3(200, 200, 200));
+	drawLine(glm::vec3(10, 10, 10), glm::vec3(-10, -10, 1));
 }
 
 void Renderer::setScreenSize(float _x, float _y)

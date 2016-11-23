@@ -1,7 +1,8 @@
 import pygame
 import math
 import sys
-import ctypes
+
+import random
 
 pygame.init()
 RED = (255, 0, 0)
@@ -185,13 +186,15 @@ class pvpButton(Button):
         Button.__init__(self, _x, _y, 400, 100, "pvpButtonMain.png", "pvpButtonAlt.png")
     def run(self):
         game.gameState = 1
+        game.AIMode = 0
         #to prevent clicking into next screen
         game.lastMouseLeft = True
 class pvaiButton(Button):
     def __init__(self, _x, _y):
         Button.__init__(self, _x, _y, 400, 100, "pvcButtonMain.png", "pvcButtonAlt.png")
     def run(self):
-        game.gameState = 4
+        game.gameState = 1
+        game.AIMode = 1
         #to prevent clicking into next screen
         game.lastMouseLeft = True
 class exitButton(Button):
@@ -286,10 +289,13 @@ class MenuScreen(Screen):
         drawRect(0,game.screenHeight - game.footerHeight, game.screenWidth, game.footerHeight, LineColour)
         gameDisplay.blit(self.titleImage, (150, 100))
 
-class SetupScreenPvP(Screen):
+class SetupScreen(Screen):
     def init(self):
-        game.GUIElements.addTextBox("centered", 100, "Enter Player1's Name")
-        game.GUIElements.addTextBox("centered", 200, "Enter Player2's Name")
+        if game.AIMode != 0:
+            game.GUIElements.addTextBox("centered", 100, "Enter Player Name")
+        else:
+            game.GUIElements.addTextBox("centered", 100, "Enter Player1's Name")
+            game.GUIElements.addTextBox("centered", 200, "Enter Player2's Name")
         game.GUIElements.addToggle("centered", 300)
         game.GUIElements.addIncrimentalClicker("centered", 360, 3, 13, 2)
         game.GUIElements.addButton("menu", "centered", 500)
@@ -298,32 +304,18 @@ class SetupScreenPvP(Screen):
         game.wipeGrid()
     def deInit(self):
         game.player1Name = game.GUIElements.buttons[0].text
-        game.player2Name = game.GUIElements.buttons[1].text
-        game.bestOfMode = game.GUIElements.buttons[2].value
-        game.bestOfTotalRounds = game.GUIElements.buttons[3].value
-    def update(self):
-        game.GUIElements.buttons[3].visible = game.GUIElements.buttons[2].value
-    def draw(self):
-        drawRect(0,0,game.screenWidth, game.screenHeight, BackGroundColour)
-        drawRect(0,0,game.screenWidth,game.headerHeight, LineColour)
-        drawRect(0,game.screenHeight - game.footerHeight,game.screenWidth,game.footerHeight, LineColour)
-        game.drawText("BestOf:", 240, 380, LineColour)
-class SetupScreenPvAi(Screen):
-    def init(self):
-        game.GUIElements.addTextBox("centered", 100, "Enter Player Name")
-        game.GUIElements.addToggle("centered", 200)
-        game.GUIElements.addToggle("centered", 300)
-        game.GUIElements.addIncrimentalClicker("centered", 360, 3, 13, 2)
-        game.GUIElements.addButton("menu", "centered", 500)
-        game.GUIElements.addButton("play", "centered", 620)
-        game.resetBestOf()
-        game.wipeGrid()
-    def deInit(self):
-        game.player1Name = game.GUIElements.buttons[0].text
-        game.player1Name = "Computer"
-        #game.player2Name = game.buttonCollection.buttons[1].text
-        game.bestOfMode = game.GUIElements.buttons[2].value
-        game.bestOfTotalRounds = game.GUIElements.buttons[3].value
+        if game.AIMode != 0:
+            game.player2Name = "AI"
+            game.bestOfMode = game.GUIElements.buttons[1].value
+            game.bestOfTotalRounds = game.GUIElements.buttons[2].value
+        else:
+            game.player2Name = game.GUIElements.buttons[1].text
+            game.bestOfMode = game.GUIElements.buttons[2].value
+            game.bestOfTotalRounds = game.GUIElements.buttons[3].value
+        if game.player1Name == "":
+            game.player1Name = "Player 1"
+        if game.player2Name == "":
+            game.player2Name = "Player 2"
     def update(self):
         game.GUIElements.buttons[3].visible = game.GUIElements.buttons[2].value
     def draw(self):
@@ -338,7 +330,20 @@ class GameScreen(Screen):
     def update(self):
         game.testForResult()
         #game.buttonCollection.updateButtons()
-        if game.mouseLeft == True and game.lastMouseLeft == False:
+        if game.AIMode == 1:
+            if game.turn == 1:
+                roundedX = int(math.floor((game.mouseX-game.paddingX)/(game.lineWidth+game.spacingX)))
+                roundedY = int(math.floor((game.mouseY-game.paddingY)/(game.lineHeight+game.spacingY)))
+                if roundedX > -1 and roundedX < 3 and roundedY > -1 and roundedY < 3 and game.mouseLeft == True and game.lastMouseLeft == False:
+                    if game.grid[roundedX][roundedY] == 0:
+                        if game.turn == 1:
+                            game.grid[roundedX][roundedY] = 1
+                            game.turn = 2
+                            game.lastTime = pygame.time.get_ticks()
+            else:
+                game.runRandomAI()
+
+        elif game.mouseLeft == True and game.lastMouseLeft == False:
             roundedX = int(math.floor((game.mouseX-game.paddingX)/(game.lineWidth+game.spacingX)))
             roundedY = int(math.floor((game.mouseY-game.paddingY)/(game.lineHeight+game.spacingY)))
             if roundedX > -1 and roundedX < 3 and roundedY > -1 and roundedY < 3:
@@ -409,6 +414,9 @@ class Game:
     bestOfRound = 0
     bestOfScorePlayer1 = 0
     bestOfScorePlayer2 = 0
+    AIMode = 1
+    lastTime = 0
+    AIDelay = 300
 
     #Drawing variables
     paddingX = 200
@@ -424,8 +432,7 @@ class Game:
 
     #Screens
     menuScreen = MenuScreen()
-    setupScreenPvP = SetupScreenPvP()
-    setupScreenPvAi = SetupScreenPvAi()
+    setupScreen = SetupScreen()
     gameScreen = GameScreen()
     gameOverScreen = GameOverScreen()
 
@@ -435,8 +442,8 @@ class Game:
     mouseLeft = False
     lastMouseLeft = False
     isKeyDown = False
-    keyDownString = "test"
-    lastKeyDownString = "test"
+    keyDownString = "default"
+    lastKeyDownString = "default"
 
     #GAMESTATE:
     #0: start menu
@@ -469,6 +476,7 @@ class Game:
         self.saveFile.write(str(self.bestOfScorePlayer2))
         self.saveFile.write(str(self.bestOfRound))
         self.saveFile.write(str(self.turn))
+        self.saveFile.write(str(self.AIMode))
         self.saveFile.close()
     def isInt(self, _string):
         try: 
@@ -478,7 +486,7 @@ class Game:
             return False
     def readFromSave(self):
         self.saveFile = open("save.txt", "r+")
-        string = self.saveFile.read(23)
+        string = self.saveFile.read(24)
         if self.isInt(string[0]):
             self.grid[0][0] = int(string[0])
         if self.isInt(string[2]):
@@ -505,6 +513,9 @@ class Game:
         else:
             self.bestOfMode = False
         self.turn = int(string[22])
+        self.AIMode = int(string[23])
+        if self.AIMode != 0:
+            self.player2Name = "AI"
 
     def resetBestOf(self):
         self.bestOfRound = 0
@@ -518,6 +529,15 @@ class Game:
         TextSurf, TextRect = self.text_objects(_string, largeText, _color)
         TextRect.center = ((_x),(_y))
         gameDisplay.blit(TextSurf, TextRect)
+    def runRandomAI(self):
+        if pygame.time.get_ticks() > self.lastTime+self.AIDelay:
+            while True: 
+                x = random.randint(0, 2)
+                y = random.randint(0, 2)
+                if self.grid[x][y] == 0:
+                    self.grid[x][y] = 2
+                    break
+            self.turn = 1
     def testForResult(self):
         result = 0
         for i in range(0,self.boardSize):
@@ -593,7 +613,7 @@ class Game:
             if self.lastGameState == 0:
                 self.menuScreen.deInit()
             elif self.lastGameState == 1:
-                self.setupScreenPvP.deInit()
+                self.setupScreen.deInit()
             elif self.lastGameState == 2:
                 self.gameScreen.deInit()
             elif self.lastGameState == 3:
@@ -602,7 +622,7 @@ class Game:
             if self.gameState == 0:
                 self.menuScreen.init()
             elif self.gameState == 1:
-                self.setupScreenPvP.init()
+                self.setupScreen.init()
             elif self.gameState == 2:
                 self.gameScreen.init()
             elif self.gameState == 3:
@@ -616,7 +636,7 @@ class Game:
         if self.gameState == 0:
             self.menuScreen.update()
         elif self.gameState == 1:
-            self.setupScreenPvP.update()
+            self.setupScreen.update()
         elif self.gameState == 2:
             self.gameScreen.update()
         elif self.gameState == 3:
@@ -627,7 +647,7 @@ class Game:
         if self.gameState == 0:
             self.menuScreen.draw()
         elif self.gameState == 1:
-            self.setupScreenPvP.draw()
+            self.setupScreen.draw()
         elif self.gameState == 2:
             self.gameScreen.draw()
         elif self.gameState == 3:
