@@ -1,7 +1,7 @@
 import pygame
 import math
 import sys
-
+import copy
 import random
 
 pygame.init()
@@ -57,7 +57,7 @@ class IncrementalClicker:
             drawRect(self.x, self.y+self.buttonHeight + 2, self.buttonWidth, self.buttonHeight, DarkerLineColour)
             drawRect(self.x + self.buttonWidth + 2,self.y, self.buttonWidth*2, self.buttonHeight*2 + 2, DarkerLineColour)
             drawRect(self.x + self.buttonWidth + 6,self.y+4, self.buttonWidth*2 - 8, self.buttonHeight*2 + 2 - 8, DarkerBackGroundColour)
-            game.drawText(str(self.value), self.x + self.buttonWidth*2 + 2, self.y + self.buttonHeight, DarkerLineColour)
+            game.drawText(str(self.value), self.x + self.buttonWidth*2 + 2, self.y + self.buttonHeight, 55, DarkerLineColour)
     def checkForMouse(self):
         if self.visible:
             if game.mouseLeft and game.lastMouseLeft == False:
@@ -91,9 +91,9 @@ class TextBox:
         else:
             drawRect(self.x+4, self.y+4, self.width-8, self.height-8, BackGroundColour)
         if self.text == "" and self.inFocus == False:
-            game.drawText(self.name, self.x + self.width/2, self.y + self.height/2, LineColour)
+            game.drawText(self.name, self.x + self.width/2, self.y + self.height/2, 55, LineColour)
         else:
-            game.drawText(self.text, self.x + self.width/2, self.y + self.height/2, DarkerLineColour)
+            game.drawText(self.text, self.x + self.width/2, self.y + self.height/2, 55, DarkerLineColour)
     def checkForMouse(self):
         if game.mouseLeft and game.lastMouseLeft == False:
             if game.mouseX > self.x and game.mouseX < self.x + self.width and game.mouseY > self.y and game.mouseY < self.y + self.height:
@@ -130,11 +130,11 @@ class Toggle:
         if self.value == False:
             drawRect(self.x+4, self.y+4, self.width - 8, self.height - 8, BackGroundColour)
             drawRect(self.x+4 + (self.width - 8)/2, self.y+4, (self.width - 8)/2, self.height - 8, LineColour)
-            game.drawText("Off", self.x + self.width*2, self.y + self.height/2, DarkerLineColour)
+            game.drawText("Off", self.x + self.width*2, self.y + self.height/2, 55, DarkerLineColour)
         else:
             drawRect(self.x+4, self.y+4, self.width - 8, self.height - 8, BackGroundColour)
             drawRect(self.x+4, self.y+4, (self.width - 8)/2, self.height - 8, DarkerBackGroundColour)
-            game.drawText("On", self.x + self.width*2, self.y + self.height/2, DarkerLineColour)
+            game.drawText("On", self.x + self.width*2, self.y + self.height/2, 55, DarkerLineColour)
     def checkForMouse(self):
         if game.mouseLeft and game.lastMouseLeft == False:
             if game.mouseX > self.x and game.mouseX < self.x + self.width and game.mouseY > self.y and game.mouseY < self.y + self.height:
@@ -322,7 +322,7 @@ class SetupScreen(Screen):
         drawRect(0,0,game.screenWidth, game.screenHeight, BackGroundColour)
         drawRect(0,0,game.screenWidth,game.headerHeight, LineColour)
         drawRect(0,game.screenHeight - game.footerHeight,game.screenWidth,game.footerHeight, LineColour)
-        game.drawText("BestOf:", 240, 380, LineColour)
+        game.drawText("BestOf:", 240, 380, 55, LineColour)
 class GameScreen(Screen):
     def init(self):
         game.GUIElements.addButton("save", "centered" ,750)
@@ -341,8 +341,9 @@ class GameScreen(Screen):
                             game.turn = 2
                             game.lastTime = pygame.time.get_ticks()
             else:
-                game.runRandomAI()
-
+                #game.runRandomAI()
+                game.runMinMaxAI()
+                game.testForResult()
         elif game.mouseLeft == True and game.lastMouseLeft == False:
             roundedX = int(math.floor((game.mouseX-game.paddingX)/(game.lineWidth+game.spacingX)))
             roundedY = int(math.floor((game.mouseY-game.paddingY)/(game.lineHeight+game.spacingY)))
@@ -354,6 +355,7 @@ class GameScreen(Screen):
                     elif game.turn == 2:
                         game.grid[roundedX][roundedY] = 2
                         game.turn = 1
+        game.testForResult()
     def draw(self):
         drawRect(0,0,screenWidth,screenHeight, BackGroundColour)
 
@@ -371,13 +373,14 @@ class GameScreen(Screen):
                 elif game.grid[i][j] == 2:
                     gameDisplay.blit(game.imageO, (game.paddingX + 40 + i*(game.lineWidth+game.spacingX),game.paddingY + 40 + j*(game.lineHeight+game.spacingY)))
         if game.turn == 1:
-            game.drawText(game.player1Name + "'s turn", screenWidth/2, 710, DarkerLineColour)
+            game.drawText(game.player1Name + "'s turn", screenWidth/2, 710, 55, DarkerLineColour)
         else:
-            game.drawText(game.player2Name + "'s turn", screenWidth/2, 710, DarkerLineColour)
+            game.drawText(game.player2Name + "'s turn", screenWidth/2, 710, 55, DarkerLineColour)
         if game.bestOfMode:
-            game.drawText("Round: " + str(game.bestOfRound + 1) + " (Best of " + str(game.bestOfTotalRounds) + ")", screenWidth/2, 140, DarkerLineColour)
-        game.drawText(game.player1Name + ": " + str(game.bestOfScorePlayer1), screenWidth-140, 30, BackGroundColour)
-        game.drawText(game.player2Name + ": " + str(game.bestOfScorePlayer2), 140, 30, BackGroundColour)
+            game.drawText("Round: " + str(game.bestOfRound + 1) + " (Best of " + str(game.bestOfTotalRounds) + ")", screenWidth/2, 140, 55, DarkerLineColour)
+        if game.bestOfMode:
+            game.drawText(game.player1Name + ": " + str(game.bestOfScorePlayer1), screenWidth-210, 30, 35, BackGroundColour)
+            game.drawText(game.player2Name + ": " + str(game.bestOfScorePlayer2), 210, 30, 35, BackGroundColour)
 class GameOverScreen(Screen):
     def init(self):
         game.GUIElements.addButton("menu", "centered", screenHeight/2 + 100)
@@ -386,14 +389,14 @@ class GameOverScreen(Screen):
         drawRect(0,0,game.screenWidth,game.headerHeight, LineColour)
         drawRect(0,game.screenHeight - game.footerHeight,game.screenWidth,game.footerHeight, LineColour)
         if game.winner == 1:
-            game.drawText(game.player1Name + " wins", screenWidth/2, screenHeight/2 - 100, DarkerLineColour)
+            game.drawText(game.player1Name + " wins", screenWidth/2, screenHeight/2 - 100, 55, DarkerLineColour)
         else:
-            game.drawText(game.player2Name + " wins", screenWidth/2, screenHeight/2 - 100, DarkerLineColour)
+            game.drawText(game.player2Name + " wins", screenWidth/2, screenHeight/2 - 100, 55, DarkerLineColour)
         if game.bestOfMode:
             if game.winner == 1:
-                game.drawText(str(game.bestOfScorePlayer1) + " : " + str(game.bestOfScorePlayer2), screenWidth/2, screenHeight/2, DarkerLineColour)
+                game.drawText(str(game.bestOfScorePlayer1) + " : " + str(game.bestOfScorePlayer2), screenWidth/2, screenHeight/2, 55, DarkerLineColour)
             else:
-                game.drawText(str(game.bestOfScorePlayer2) + " : " + str(game.bestOfScorePlayer1), screenWidth/2, screenHeight/2, DarkerLineColour)
+                game.drawText(str(game.bestOfScorePlayer2) + " : " + str(game.bestOfScorePlayer1), screenWidth/2, screenHeight/2, 55, DarkerLineColour)
 class Game:
     screenWidth = 900
     screenHeight = 900
@@ -458,7 +461,142 @@ class Game:
     #Game images
     imageX = pygame.image.load('x.png')
     imageO = pygame.image.load('o.png')
+    #AI -------
+    DebugMode = False
+    gamenumber = 0
+    #rec_level = 0
+    #boardSize=3
+ 
+    #rows = boardSize
+    #columns=boardSize
+    #board = [[0 for row in range(rows)] for column in range(columns)]
+    #board = [[0,2,0],[2,2,1],[1,0,0]]
+    bestnextmove = copy.deepcopy(grid)
 
+
+
+    def gamecomplete(self, grid):
+        #checks if the board is fully populated
+        result=1
+        for i in range(0,self.boardSize):
+            for j in range(0,self.boardSize):
+                if grid[i][j] ==0:
+                    return 0
+        return result
+
+    def score(self, grid,boardSize):
+        #determines the score for a game state
+        #returns a score depending on which player wins or a draw.
+        #playerwinningscore = [0,10,-10]
+        #result=0
+        #player=2 
+        #for i in range(0,boardSize):
+        #    for j in range(0,boardSize):
+        #        if i < boardSize - 2:
+        #            if grid[i][j] == grid[i+1][j] == grid[i+2][j] == player:
+        #                return playerwinningscore[player]
+        #                result = -10;
+        #                if j < boardSize - 2:
+        #                    if grid[i][j] == grid[i+1][j+1] == grid[i+2][j+2] == player:
+        #                        return playerwinningscore[player]
+        #        if j < boardSize - 2:
+        #            if grid[i][j] == grid[i][j+1] == grid[i][j+2] == player:
+        #                result = playerwinningscore[player]
+        #        if j < boardSize - 2 and i > 1:
+        #            if grid[i][j] == grid[i-1][j+1] == grid[i-2][j+2] == player:
+        #                result = playerwinningscore[player] 
+        #player=1
+        #for i in range(0,boardSize):
+        #    for j in range(0,boardSize):
+        #        if i < boardSize - 2:
+        #            if grid[i][j] == grid[i+1][j] == grid[i+2][j] == player:
+        #                return playerwinningscore[player]
+        #                if j < boardSize - 2:
+        #                    if grid[i][j] == grid[i+1][j+1] == grid[i+2][j+2] == player:
+        #                        result = playerwinningscore[player]
+        #        if j < boardSize - 2:
+        #            if grid[i][j] == grid[i][j+1] == grid[i][j+2] == player:
+        #                result = playerwinningscore[player]
+        #        if j < boardSize - 2 and i > 1:
+        #            if grid[i][j] == grid[i-1][j+1] == grid[i-2][j+2] == player:
+        #                result = playerwinningscore[player]
+        winner = 0
+        for i in range(0,self.boardSize):
+            for j in range(0,self.boardSize):
+                if i < self.boardSize - 2:
+                    if grid[i][j] == grid[i+1][j] == grid[i+2][j] != 0:
+                        winner = grid[i][j]
+                    elif j < self.boardSize - 2:
+                        if grid[i][j] == grid[i+1][j+1] == grid[i+2][j+2] != 0:
+                            winner = grid[i][j]
+                if j < self.boardSize - 2:
+                    if grid[i][j] == grid[i][j+1] == grid[i][j+2] != 0:
+                        winner = grid[i][j]
+                if j < self.boardSize - 2 and i > 1:
+                    if grid[i][j] == grid[i-1][j+1] == grid[i-2][j+2] != 0:
+                        winner = grid[i][j]
+        if winner == 1:
+            result = 10
+        elif winner == 2:
+            result = -10
+        else:
+            result = 0
+        return result
+
+    def DebugPrint(self, message):
+
+        self.DebugMode
+        if self.DebugMode:
+            print(message)
+
+        return
+
+    def MiniMax(self, board,player,rec_level):
+    
+        blankspace = " "
+        #global gamenumber
+        self.gamenumber += 1
+        #rec_level = rec_level+1
+        bestscore= 0 #playerwinningscore[player]*-1
+        currentscore= self.score(board,self.boardSize)
+        #If game over
+        if currentscore !=0 or self.gamecomplete(board)==1:
+            bestscore = currentscore
+            #self.DebugPrint(blankspace.ljust(20*(rec_level-1)," ") + "| score for terminal game " + str(self.gamenumber) + " = " + str(currentscore) + "|")
+            #self.DebugPrint(blankspace.ljust(20*(rec_level-1)," ") + "-----------------------------------")   
+        else:
+            currentscore = 0
+            #Loop through every cell to find the next cell that has not been taken
+            for i in range(0,self.boardSize):
+                for j in range(0,self.boardSize):
+                    #Take a copy of the game state
+                    prospect = copy.deepcopy(board)
+                    if prospect[i][j] == 0:
+                        #If an empty cell is found we need to spawn another game
+                        self.gamenumber += 1
+                        #Set the next available cell to the current player
+                        prospect[i][j]=player
+                        #print(" ")
+                        #self.DebugPrint(blankspace.ljust(20*rec_level," ") + "recursion level " + str(rec_level) + "----spawns a prospect node for Player " + str(player) + "--------------> Game " + str(self.gamenumber))                        
+                        #self.DebugPrint(blankspace.ljust(20*rec_level," ") + str(prospect))
+                        #self.DebugPrint(blankspace.ljust(20*rec_level," ") + "------------------------------------------")    
+                        #finding the best move depends on whos turn it is
+                        if player == 2:
+                            #spawn off a new game for player 2
+                            prospectMiniMax = self.MiniMax(prospect,1,rec_level+1)
+                            if prospectMiniMax<=bestscore:
+                                bestscore = prospectMiniMax
+                                if rec_level == 0:
+                                    #record the current game state because this is the current best state for AI
+                                    self.bestnextmove =  copy.deepcopy(prospect)
+                        else:
+                            #spawn off a new game for player 1
+                            prospectMiniMax = self.MiniMax(prospect,2,rec_level+1)                      
+                            if prospectMiniMax>=bestscore:
+                                bestscore = prospectMiniMax 
+        
+        return bestscore                   
+    #AI -------
     
     #save file
     saveFile = open("save.txt", "r+")
@@ -526,11 +664,31 @@ class Game:
     def text_objects(self, _text, _font, _color):
         textSurface = _font.render(_text, True, _color)
         return textSurface, textSurface.get_rect()
-    def drawText(self, _string, _x, _y, _color):
-        largeText = pygame.font.Font('Roboto-thin.ttf',55)
+    def drawText(self, _string, _x, _y, _size, _color):
+        largeText = pygame.font.Font('Roboto-thin.ttf',_size)
         TextSurf, TextRect = self.text_objects(_string, largeText, _color)
         TextRect.center = ((_x),(_y))
         gameDisplay.blit(TextSurf, TextRect)
+    def runMinMaxAI(self):
+        cellsFilled = 0
+        for i in range(0,self.boardSize):
+            for j in range(0,self.boardSize):
+                if self.grid[i][j] != 0:
+                    cellsFilled += 1
+        if cellsFilled == 0:
+            self.wipeGrid()
+            self.grid =[[0,0,0],[0,2,0],[0,0,0]]
+        elif cellsFilled == 1:
+            if self.grid == [[0,0,0],[0,1,0],[0,0,0]]:
+                self.grid = [[0,0,0],[0,1,0],[2,0,0]]
+            else:
+                self.grid[1][1] = 2
+        else:
+            test = self.MiniMax(self.grid, 2, 0)
+            if self.grid == self.bestnextmove:
+                print "problem"
+            self.grid = self.bestnextmove
+        self.turn = 1
     def runRandomAI(self):
         if pygame.time.get_ticks() > self.lastTime+self.AIDelay:
             while True: 
@@ -561,7 +719,7 @@ class Game:
             for j in range(0,self.boardSize):
                 if self.grid[i][j] != 0:
                     cellsFilled += 1
-        if cellsFilled == 9:
+        if cellsFilled == 9 and result == 0:
             self.wipeGrid()
         elif result != 0:
             if self.bestOfMode:
