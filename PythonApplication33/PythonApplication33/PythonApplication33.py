@@ -376,6 +376,8 @@ class GameScreen(Screen):
             game.drawText(game.player2Name + "'s turn", screenWidth/2, 710, DarkerLineColour)
         if game.bestOfMode:
             game.drawText("Round: " + str(game.bestOfRound + 1) + " (Best of " + str(game.bestOfTotalRounds) + ")", screenWidth/2, 140, DarkerLineColour)
+        game.drawText(game.player1Name + ": " + str(game.bestOfScorePlayer1), screenWidth-140, 30, BackGroundColour)
+        game.drawText(game.player2Name + ": " + str(game.bestOfScorePlayer2), 140, 30, BackGroundColour)
 class GameOverScreen(Screen):
     def init(self):
         game.GUIElements.addButton("menu", "centered", screenHeight/2 + 100)
