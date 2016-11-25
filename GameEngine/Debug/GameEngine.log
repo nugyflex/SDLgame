@@ -1,11 +1,1 @@
-﻿  GameEngine.cpp
-c:\users\jack\documents\github\sdlgame\gameengine\gameengine.cpp(40): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdlgame\gameengine\gameengine.cpp(41): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\jack\documents\github\sdlgame\gameengine\gameengine.cpp(42): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\jack\documents\github\sdlgame\gameengine\gameengine.cpp(86): warning C4305: 'initializing': truncation from 'double' to 'float'
-LINK : warning LNK4068: /MACHINE not specified; defaulting to X86
-glew32.lib(glew32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
-glew32.lib(glew32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
-opengl32.lib(OPENGL32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
-opengl32.lib(OPENGL32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
-  GameEngine.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\GameEngine.lib
+﻿  GameEngine.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\GameEngine.lib

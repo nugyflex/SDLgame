@@ -5,16 +5,17 @@ import copy
 import random
 
 pygame.init()
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
+#set colours for use by functions that draw
 DarkerLineColour = (20, 70, 130)
 LineColour = (50, 110, 180)
 BackGroundColour = (100, 150, 210)
 DarkerBackGroundColour = (90, 140, 200)
+#setting the screen width and height
 screenWidth = 900
 screenHeight = 900
+#setting the screen width and height for the actually window with pygame
 gameDisplay = pygame.display.set_mode((screenWidth,screenHeight))
+#used to get the pixel length of a string with the right font/size
 def getTextLength(text, size, font):
     class SIZE(ctypes.Structure):
         _fields_ = [("cx", ctypes.c_long), ("cy", ctypes.c_long)]
@@ -26,8 +27,11 @@ def getTextLength(text, size, font):
     ctypes.windll.gdi32.SelectObject(hdc, hfont_old)
     ctypes.windll.gdi32.DeleteObject(hfont)
     return (size.cx, size.cy)
+# a simple draw rectangle function, easier to use than pygames draw.rect function in my opinion
 def drawRect(x, y, width, height, color):
     pygame.draw.rect(gameDisplay, color, [x, y,width ,height])
+###GUI ELEMENTS:-----------
+#class for the incrememtal clicker, only used to change the number of games played in the best-of mode,
 class IncrementalClicker:
     x = 0
     y = 0
@@ -181,6 +185,8 @@ class Button:
                 self.hoveredOver = True
         else:
             self.hoveredOver = False
+###BUTTONS:-----------
+#leads to the setup screen, but with player vs player mode on
 class pvpButton(Button):
     def __init__(self, _x, _y):
         Button.__init__(self, _x, _y, 400, 100, "pvpButtonMain.png", "pvpButtonAlt.png")
@@ -189,6 +195,7 @@ class pvpButton(Button):
         game.AIMode = 0
         #to prevent clicking into next screen
         game.lastMouseLeft = True
+#leads to the setup screen, but with player vs AI mode on
 class pvaiButton(Button):
     def __init__(self, _x, _y):
         Button.__init__(self, _x, _y, 400, 100, "pvcButtonMain.png", "pvcButtonAlt.png")
@@ -197,6 +204,7 @@ class pvaiButton(Button):
         game.AIMode = 1
         #to prevent clicking into next screen
         game.lastMouseLeft = True
+#closes the game
 class exitButton(Button):
     def __init__(self, _x, _y):
         Button.__init__(self, _x, _y, 400, 100, "exitButtonMain.png", "exitButtonAlt.png")
@@ -204,6 +212,7 @@ class exitButton(Button):
         game.running = False
         #to prevent clicking into next screen
         game.lastMouseLeft = True
+#goes back to the main menu
 class menuButton(Button):
     def __init__(self, _x, _y):
         Button.__init__(self, _x, _y, 400, 100, "menuButtonMain.png", "menuButtonAlt.png")
@@ -211,6 +220,7 @@ class menuButton(Button):
         game.gameState = 0
         #to prevent clicking into next screen
         game.lastMouseLeft = True
+#starts a game, usually switching from the setup screen to the game screen.
 class playButton(Button):
     def __init__(self, _x, _y):
         Button.__init__(self, _x, _y, 400, 100, "playButtonMain.png", "playButtonAlt.png")
@@ -235,6 +245,8 @@ class saveAndExitButton(Button):
         game.gameState = 0
         #to prevent clicking into next screen
         game.lastMouseLeft = True
+###/GUI ELEMENTS:-----------
+#this class manages all the gui elements, include drawing them, updating them, and the array that contains them
 class GUIElementWrapper:
     buttons = []
     def addButton(self, _type, _x, _y):
