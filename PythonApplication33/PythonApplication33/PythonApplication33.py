@@ -15,18 +15,10 @@ screenWidth = 900
 screenHeight = 900
 #setting the screen width and height for the actually window with pygame
 gameDisplay = pygame.display.set_mode((screenWidth,screenHeight))
-#used to get the pixel length of a string with the right font/size
-def getTextLength(text, size, font):
-    class SIZE(ctypes.Structure):
-        _fields_ = [("cx", ctypes.c_long), ("cy", ctypes.c_long)]
-    hdc = ctypes.windll.user32.GetDC(0)
-    hfont = ctypes.windll.gdi32.CreateFontA(-size, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, font)
-    hfont_old = ctypes.windll.gdi32.SelectObject(hdc, hfont)
-    size = SIZE(0, 0)
-    ctypes.windll.gdi32.GetTextExtentPoint32A(hdc, text, len(text), ctypes.byref(size))
-    ctypes.windll.gdi32.SelectObject(hdc, hfont_old)
-    ctypes.windll.gdi32.DeleteObject(hfont)
-    return (size.cx, size.cy)
+#setting the window's icon
+pygame.display.set_icon(pygame.image.load("icon.png"))
+#setting the title of the window
+pygame.display.set_caption('Tic Tac Toe')
 # a simple draw rectangle function, easier to use than pygames draw.rect function in my opinion
 def drawRect(x, y, width, height, color):
     pygame.draw.rect(gameDisplay, color, [x, y,width ,height])
@@ -41,8 +33,11 @@ class IncrementalClicker:
     increment = 0
     buttonWidth = 40
     buttonHeight = 50
+    #sometimes GUI elements can be invisible, This means they aren't drawn and are unable to be interacted with
     visible = True
+    #for all classes with the __init__() method, it is run when the class is first instantiated as an object
     def __init__(self, _x, _y, _minValue, _maxValue, _increment):
+        #this code is in lots of GUI element classes, just allows you to have "centered" as a parameter instead of manually setting the position to the center of the screen
         if _x == "centered":
             self.x  = screenWidth/2 - 68
         else:
@@ -55,6 +50,7 @@ class IncrementalClicker:
         self.minValue = _minValue
         self.maxValue = _maxValue
         self.increment = _increment
+    #draw method, all GUI elements have this method, it draws the element
     def draw(self):
         if self.visible:
             drawRect(self.x, self.y, self.buttonWidth, self.buttonHeight, DarkerLineColour)
@@ -62,6 +58,7 @@ class IncrementalClicker:
             drawRect(self.x + self.buttonWidth + 2,self.y, self.buttonWidth*2, self.buttonHeight*2 + 2, DarkerLineColour)
             drawRect(self.x + self.buttonWidth + 6,self.y+4, self.buttonWidth*2 - 8, self.buttonHeight*2 + 2 - 8, DarkerBackGroundColour)
             game.drawText(str(self.value), self.x + self.buttonWidth*2 + 2, self.y + self.buttonHeight, 55, DarkerLineColour)
+    #method for detecting if the mouse is interacting with the object
     def checkForMouse(self):
         if self.visible:
             if game.mouseLeft and game.lastMouseLeft == False:
@@ -69,13 +66,16 @@ class IncrementalClicker:
                     self.value += self.increment
                 elif game.mouseX > self.x and game.mouseX < self.x + self.buttonWidth and game.mouseY > self.y+self.buttonHeight + 2 and game.mouseY < self.y + self.buttonHeight*2 + 2 and self.value - self.increment >= self.minValue:
                     self.value -= self.increment
+#class for the text box seen on the setup screen
 class TextBox:
     text = ""
     x = 0
     y = 0
     width = 610
     height = 80
+    #when the textbox is in focus, much like how windows in OSX, linux and Windows
     inFocus = False
+    #name is the text displayed when the textbox as no text and is not in focus
     name = "DefaultName"
     def __init__(self, _x, _y, _name):
         if _x == "centered":
@@ -114,6 +114,7 @@ class TextBox:
                     self.text = self.text[:(len(self.text)-1)]
                 elif textWidth < 570:
                     self.text += game.keyDownString
+#Toggle element for letting the users toggle options, such as best-of mode
 class Toggle:
     value = False
     x = 0
@@ -146,6 +147,7 @@ class Toggle:
                     self.value = False
                 else:
                     self.value = True
+#Base class Button inherited by all button classes
 class Button:
     mainImage = 0
     altImage = 0
@@ -168,8 +170,10 @@ class Button:
         self.height = _height
         self.loadImages(_mainPath, _altPath)
     def loadImages(self, mainPath, altPath):
+        #needed to load the 2 different images, the main one, and the one displayed when hovered over by the mouse
         self.mainImage = pygame.image.load(mainPath)
         self.altImage = pygame.image.load(altPath)
+    #this method is replaced by the derived classes with methods than run the code that carries out the functionality of that specific button
     def run(self):
         print(self.x)
     def draw(self):
@@ -192,7 +196,7 @@ class pvpButton(Button):
         Button.__init__(self, _x, _y, 400, 100, "pvpButtonMain.png", "pvpButtonAlt.png")
     def run(self):
         game.gameState = 1
-        game.AIMode = 0
+        game.aiMode = 0
         #to prevent clicking into next screen
         game.lastMouseLeft = True
 #leads to the setup screen, but with player vs AI mode on
@@ -201,7 +205,7 @@ class pvaiButton(Button):
         Button.__init__(self, _x, _y, 400, 100, "pvcButtonMain.png", "pvcButtonAlt.png")
     def run(self):
         game.gameState = 1
-        game.AIMode = 1
+        game.aiMode = 1
         #to prevent clicking into next screen
         game.lastMouseLeft = True
 #closes the game
@@ -228,6 +232,7 @@ class playButton(Button):
         game.gameState = 2
         #to prevent clicking into next screen
         game.lastMouseLeft = True
+#loads the save game
 class loadSaveButton(Button):
     def __init__(self, _x, _y):
         Button.__init__(self, _x, _y, 400, 100, "loadButtonMain.png", "loadButtonAlt.png")
@@ -237,6 +242,7 @@ class loadSaveButton(Button):
         game.gameState = 2
         #to prevent clicking into next screen
         game.lastMouseLeft = True
+#saves the current game and exits to the menu
 class saveAndExitButton(Button):
     def __init__(self, _x, _y):
         Button.__init__(self, _x, _y, 400, 100, "s&qButtonMain.png", "s&qButtonAlt.png")
@@ -245,10 +251,13 @@ class saveAndExitButton(Button):
         game.gameState = 0
         #to prevent clicking into next screen
         game.lastMouseLeft = True
+###/BUTTONS:-----------
 ###/GUI ELEMENTS:-----------
 #this class manages all the gui elements, include drawing them, updating them, and the array that contains them
 class GUIElementWrapper:
     buttons = []
+    #method specifically for adding buttons
+    #NOTE ABOUT BUTTONS: I wish there was a nicer way to have inheritance for buttons, as I have to have many different classes that all work in a similar way. But that might be the way I have to have it as there run functions are all different
     def addButton(self, _type, _x, _y):
         if _type == "pvp":
             self.buttons.append(pvpButton(_x, _y))
@@ -264,12 +273,15 @@ class GUIElementWrapper:
             self.buttons.append(loadSaveButton(_x, _y))
         elif _type == "save":
             self.buttons.append(saveAndExitButton(_x, _y))
+    #method for adding a textbox, cant have one method for adding all types of GUI elements without having redundant parameters (name etc)
     def addTextBox(self, _x, _y, _name):
         self.buttons.append(TextBox(_x, _y, _name))
+    #method for adding a toggle
     def addToggle(self, _x, _y):
         self.buttons.append(Toggle(_x, _y))
     def addIncrimentalClicker(self, _x, _y, _minValue, _maxValue, _increment):
         self.buttons.append(IncrementalClicker(_x, _y, _minValue, _maxValue, _increment))
+    #draws all GUI elements
     def drawElements(self):
         for i in range(0, len(self.buttons)):
             self.buttons[i].draw()
@@ -278,17 +290,28 @@ class GUIElementWrapper:
             self.buttons[i].checkForMouse()
     def clear(self):
         self.buttons = []
+###SCREENS:-----------
+#Screen base class inherited by all screen derived clases
 class Screen:
+    #the init function is called when the game switches to this specific screen,
+    #it is different from a __Init__() method as it is not only run when the screen
+    #is instantiated, but everytime the game switches to this screen(code for this
+    #can be found in game's manageScreens method) this is required as the GUI elemnts
+    #are setup differently for each different screen, and the setup for that is in
+    #this method.
     def init(self):
         x = 0
+    #similar to init(), deInit is called when the current screen is changed from this one to another
     def deInit(self):
         x = 0
     def update(self):
         x = 0
     def draw(self):
         x = 0
+#The main menu screen first displayed when the game is started
 class MenuScreen(Screen):
     tileImage = 0
+    #the init function is called when the game switches to this specific screen, it is different from a __Init__() method as it is not only run when the screen instantiated, but everytime the game switches to this screen(code for this in game manageScreens method) 
     def init(self):
         game.GUIElements.addButton("pvp", "centered", 320)
         game.GUIElements.addButton("pvc", "centered", 440)
@@ -300,11 +323,12 @@ class MenuScreen(Screen):
         drawRect(0,0,game.screenWidth, game.headerHeight, LineColour)
         drawRect(0,game.screenHeight - game.footerHeight, game.screenWidth, game.footerHeight, LineColour)
         gameDisplay.blit(self.titleImage, (150, 100))
-
+#the setup screen, used for both AI mode games and player vs player games, (the setup and running of the object is different based on whether or not AI mode is on or not)
 class SetupScreen(Screen):
     def init(self):
-        if game.AIMode != 0:
+        if game.aiMode != 0:
             game.GUIElements.addTextBox("centered", 100, "Enter Player Name")
+            game.GUIElements.addToggle("centered", 230)
         else:
             game.GUIElements.addTextBox("centered", 100, "Enter Player1's Name")
             game.GUIElements.addTextBox("centered", 200, "Enter Player2's Name")
@@ -316,10 +340,14 @@ class SetupScreen(Screen):
         game.wipeGrid()
     def deInit(self):
         game.player1Name = game.GUIElements.buttons[0].text
-        if game.AIMode != 0:
+        if game.aiMode != 0:
             game.player2Name = "AI"
-            game.bestOfMode = game.GUIElements.buttons[1].value
-            game.bestOfTotalRounds = game.GUIElements.buttons[2].value
+            game.bestOfMode = game.GUIElements.buttons[2].value
+            if game.GUIElements.buttons[1].value:
+                game.aiMode = 2
+            else:
+                game.aiMode = 1
+            game.bestOfTotalRounds = game.GUIElements.buttons[3].value
         else:
             game.player2Name = game.GUIElements.buttons[1].text
             game.bestOfMode = game.GUIElements.buttons[2].value
@@ -328,46 +356,79 @@ class SetupScreen(Screen):
             game.player1Name = "Player 1"
         if game.player2Name == "":
             game.player2Name = "Player 2"
+        #too make sure player one goes first every time
+        game.turn = 1
     def update(self):
         game.GUIElements.buttons[3].visible = game.GUIElements.buttons[2].value
     def draw(self):
         drawRect(0,0,game.screenWidth, game.screenHeight, BackGroundColour)
         drawRect(0,0,game.screenWidth,game.headerHeight, LineColour)
         drawRect(0,game.screenHeight - game.footerHeight,game.screenWidth,game.footerHeight, LineColour)
-        game.drawText("BestOf:", 240, 380, 55, LineColour)
+        if game.aiMode != 0:
+            game.drawText("Never lose:", 240, 240, 55, LineColour)
+            game.drawText("BestOf:", 240, 320, 55, LineColour)
+        else:
+            game.drawText("BestOf:", 240, 380, 55, LineColour)
+#the screen used for the actually game, displaying the board. again much like the setup screen it is used for both player vs player games and player vs AI games
 class GameScreen(Screen):
     def init(self):
         game.GUIElements.addButton("save", "centered" ,750)
-        #game.resetBestOf()
     def update(self):
-        game.testForResult()
-        #game.buttonCollection.updateButtons()
-        if game.AIMode == 1:
+        if game.aiMode != 0:
             if game.turn == 1:
                 roundedX = int(math.floor((game.mouseX-game.paddingX)/(game.lineWidth+game.spacingX)))
                 roundedY = int(math.floor((game.mouseY-game.paddingY)/(game.lineHeight+game.spacingY)))
-                if roundedX > -1 and roundedX < 3 and roundedY > -1 and roundedY < 3 and game.mouseLeft == True and game.lastMouseLeft == False:
-                    if game.grid[roundedX][roundedY] == 0:
-                        if game.turn == 1:
-                            game.grid[roundedX][roundedY] = 1
-                            game.turn = 2
-                            game.lastTime = pygame.time.get_ticks()
+                if roundedX > -1 and roundedX < 3 and roundedY > -1 and roundedY < 3 and game.mouseLeft == True and game.lastMouseLeft == False and game.grid[roundedX][roundedY] == 0:
+                    game.grid[roundedX][roundedY] = 1
+                    game.turn = 2
             else:
-                #game.runRandomAI()
-                game.runMinMaxAI()
-                game.testForResult()
+                if game.aiMode == 1:
+                    game.runRandomAI()
+                if game.aiMode == 2:
+                    game.runMinMaxAI()
         elif game.mouseLeft == True and game.lastMouseLeft == False:
             roundedX = int(math.floor((game.mouseX-game.paddingX)/(game.lineWidth+game.spacingX)))
             roundedY = int(math.floor((game.mouseY-game.paddingY)/(game.lineHeight+game.spacingY)))
-            if roundedX > -1 and roundedX < 3 and roundedY > -1 and roundedY < 3:
-                if game.grid[roundedX][roundedY] == 0:
-                    if game.turn == 1:
-                        game.grid[roundedX][roundedY] = 1
-                        game.turn = 2
-                    elif game.turn == 2:
-                        game.grid[roundedX][roundedY] = 2
-                        game.turn = 1
-        game.testForResult()
+            if roundedX > -1 and roundedX < 3 and roundedY > -1 and roundedY < 3 and game.grid[roundedX][roundedY] == 0:
+                if game.turn == 1:
+                    game.grid[roundedX][roundedY] = 1
+                    game.turn = 2
+                elif game.turn == 2:
+                    game.grid[roundedX][roundedY] = 2
+                    game.turn = 1
+        result = game.testForResult(game.grid)
+        cellsFilled = 0
+        for i in range(0,game.boardSize):
+            for j in range(0,game.boardSize):
+                if game.grid[i][j] != 0:
+                    cellsFilled += 1
+        if cellsFilled == 9 and result == 0:
+            self.draw()
+            pygame.display.update()
+            pygame.time.delay(game.showResultDelay*1000)
+            game.wipeGrid()
+        elif result != 0:
+            self.draw()
+            game.drawStrike()
+            pygame.display.update()
+            pygame.time.delay(game.showResultDelay*1000)
+            if game.bestOfMode:
+                game.wipeGrid()
+                game.bestOfRound += 1
+                if result == 1:
+                    game.bestOfScorePlayer1 += 1
+                if result == 2:
+                    game.bestOfScorePlayer2 += 1
+                if game.bestOfScorePlayer1 > game.bestOfTotalRounds/2:
+                    game.gameState = 3
+                    game.winner = result
+                elif game.bestOfScorePlayer2 > game.bestOfTotalRounds/2:
+                    game.gameState = 3
+                    game.winner = result
+            else:
+                game.wipeGrid()
+                game.gameState = 3
+                game.winner = result
     def draw(self):
         drawRect(0,0,screenWidth,screenHeight, BackGroundColour)
 
@@ -409,7 +470,10 @@ class GameOverScreen(Screen):
                 game.drawText(str(game.bestOfScorePlayer1) + " : " + str(game.bestOfScorePlayer2), screenWidth/2, screenHeight/2, 55, DarkerLineColour)
             else:
                 game.drawText(str(game.bestOfScorePlayer2) + " : " + str(game.bestOfScorePlayer1), screenWidth/2, screenHeight/2, 55, DarkerLineColour)
+###/SCREENS:-----------
+#The main game vlass, most of the game is contained in here, including all screens, game logic, game variables, etc
 class Game:
+    #window variables
     screenWidth = 900
     screenHeight = 900
     running = True
@@ -431,9 +495,8 @@ class Game:
     bestOfRound = 0
     bestOfScorePlayer1 = 0
     bestOfScorePlayer2 = 0
-    AIMode = 1
-    lastTime = 0
-    AIDelay = 300
+    aiMode = 1
+    showResultDelay = 2 #seconds the board is shown for after the game has finished
 
     #Drawing variables
     paddingX = 200
@@ -473,144 +536,107 @@ class Game:
     #Game images
     imageX = pygame.image.load('x.png')
     imageO = pygame.image.load('o.png')
-    #AI -------
-    DebugMode = False
-    gamenumber = 0
-    #rec_level = 0
-    #boardSize=3
- 
-    #rows = boardSize
-    #columns=boardSize
-    #board = [[0 for row in range(rows)] for column in range(columns)]
-    #board = [[0,2,0],[2,2,1],[1,0,0]]
-    bestnextmove = copy.deepcopy(grid)
+    verticalStrike = pygame.image.load('verticalStrike.png')
+    horizontalStrike = pygame.image.load('horizontalStrike.png')
+    #top left to bottom right
+    imagediagonalStrike1 = pygame.image.load('diagonalStrike1.png')
+    #bottom left to top right
+    imagediagonalStrike2 = pygame.image.load('diagonalStrike2.png')
+    ###/AI -------
 
-
+    bestNextMove = copy.deepcopy(grid)
 
     def gamecomplete(self, grid):
         #checks if the board is fully populated
-        result=1
+        result = 1
         for i in range(0,self.boardSize):
             for j in range(0,self.boardSize):
-                if grid[i][j] ==0:
+                if grid[i][j] == 0:
                     return 0
         return result
 
     def score(self, grid,boardSize):
-        #determines the score for a game state
-        #returns a score depending on which player wins or a draw.
-        #playerwinningscore = [0,10,-10]
-        #result=0
-        #player=2 
-        #for i in range(0,boardSize):
-        #    for j in range(0,boardSize):
-        #        if i < boardSize - 2:
-        #            if grid[i][j] == grid[i+1][j] == grid[i+2][j] == player:
-        #                return playerwinningscore[player]
-        #                result = -10;
-        #                if j < boardSize - 2:
-        #                    if grid[i][j] == grid[i+1][j+1] == grid[i+2][j+2] == player:
-        #                        return playerwinningscore[player]
-        #        if j < boardSize - 2:
-        #            if grid[i][j] == grid[i][j+1] == grid[i][j+2] == player:
-        #                result = playerwinningscore[player]
-        #        if j < boardSize - 2 and i > 1:
-        #            if grid[i][j] == grid[i-1][j+1] == grid[i-2][j+2] == player:
-        #                result = playerwinningscore[player] 
-        #player=1
-        #for i in range(0,boardSize):
-        #    for j in range(0,boardSize):
-        #        if i < boardSize - 2:
-        #            if grid[i][j] == grid[i+1][j] == grid[i+2][j] == player:
-        #                return playerwinningscore[player]
-        #                if j < boardSize - 2:
-        #                    if grid[i][j] == grid[i+1][j+1] == grid[i+2][j+2] == player:
-        #                        result = playerwinningscore[player]
-        #        if j < boardSize - 2:
-        #            if grid[i][j] == grid[i][j+1] == grid[i][j+2] == player:
-        #                result = playerwinningscore[player]
-        #        if j < boardSize - 2 and i > 1:
-        #            if grid[i][j] == grid[i-1][j+1] == grid[i-2][j+2] == player:
-        #                result = playerwinningscore[player]
-        winner = 0
-        for i in range(0,self.boardSize):
-            for j in range(0,self.boardSize):
-                if i < self.boardSize - 2:
-                    if grid[i][j] == grid[i+1][j] == grid[i+2][j] != 0:
-                        winner = grid[i][j]
-                    elif j < self.boardSize - 2:
-                        if grid[i][j] == grid[i+1][j+1] == grid[i+2][j+2] != 0:
-                            winner = grid[i][j]
-                if j < self.boardSize - 2:
-                    if grid[i][j] == grid[i][j+1] == grid[i][j+2] != 0:
-                        winner = grid[i][j]
-                if j < self.boardSize - 2 and i > 1:
-                    if grid[i][j] == grid[i-1][j+1] == grid[i-2][j+2] != 0:
-                        winner = grid[i][j]
+        winner = self.testForResult(grid)
+        testResult = 0
         if winner == 1:
-            result = 10
+            result = 1000
         elif winner == 2:
-            result = -10
+            result = -1000
         else:
             result = 0
         return result
-
-    def DebugPrint(self, message):
-
-        self.DebugMode
-        if self.DebugMode:
-            print(message)
-
-        return
-
-    def MiniMax(self, board,player,rec_level):
-    
+    def miniMax(self, board,player,rec_level):
         blankspace = " "
-        #global gamenumber
-        self.gamenumber += 1
-        #rec_level = rec_level+1
-        bestscore= 0 #playerwinningscore[player]*-1
-        currentscore= self.score(board,self.boardSize)
+        if player == 1:
+            bestscore = -100
+        else:
+            bestscore = 100
+        currentscore = self.score(board,self.boardSize)
         #If game over
         if currentscore !=0 or self.gamecomplete(board)==1:
-            bestscore = currentscore
-            #self.DebugPrint(blankspace.ljust(20*(rec_level-1)," ") + "| score for terminal game " + str(self.gamenumber) + " = " + str(currentscore) + "|")
-            #self.DebugPrint(blankspace.ljust(20*(rec_level-1)," ") + "-----------------------------------")   
+            bestscore = currentscore*(1+(10-rec_level)//100)
         else:
             currentscore = 0
             #Loop through every cell to find the next cell that has not been taken
             for i in range(0,self.boardSize):
                 for j in range(0,self.boardSize):
-                    #Take a copy of the game state
-                    prospect = copy.deepcopy(board)
-                    if prospect[i][j] == 0:
+                    #Take a copy of the game state                    
+                    if board[i][j] == 0:
+                        prospect = copy.deepcopy(board)
                         #If an empty cell is found we need to spawn another game
-                        self.gamenumber += 1
                         #Set the next available cell to the current player
                         prospect[i][j]=player
-                        #print(" ")
-                        #self.DebugPrint(blankspace.ljust(20*rec_level," ") + "recursion level " + str(rec_level) + "----spawns a prospect node for Player " + str(player) + "--------------> Game " + str(self.gamenumber))                        
-                        #self.DebugPrint(blankspace.ljust(20*rec_level," ") + str(prospect))
-                        #self.DebugPrint(blankspace.ljust(20*rec_level," ") + "------------------------------------------")    
                         #finding the best move depends on whos turn it is
                         if player == 2:
                             #spawn off a new game for player 2
-                            prospectMiniMax = self.MiniMax(prospect,1,rec_level+1)
-                            if prospectMiniMax<=bestscore:
+                            prospectMiniMax = self.miniMax(prospect,1,rec_level+1)
+                            if prospectMiniMax<bestscore:
                                 bestscore = prospectMiniMax
                                 if rec_level == 0:
                                     #record the current game state because this is the current best state for AI
-                                    self.bestnextmove =  copy.deepcopy(prospect)
+                                    self.bestNextMove =  copy.deepcopy(prospect)
                         else:
                             #spawn off a new game for player 1
-                            prospectMiniMax = self.MiniMax(prospect,2,rec_level+1)                      
-                            if prospectMiniMax>=bestscore:
+                            prospectMiniMax = self.miniMax(prospect,2,rec_level+1)                      
+                            if prospectMiniMax>bestscore:
                                 bestscore = prospectMiniMax 
-        
-        return bestscore                   
-    #AI -------
+        #returning the score of the game jsut evaluation (only useful on recursion levels other than 1) the idea of the function is the change the self.bestnextmove variable to the best result, not return a variable(it's just needed for recursion to work)
+        return bestscore 
+    def runMinMaxAI(self):
+        cellsFilled = 0
+        for i in range(0,self.boardSize):
+            for j in range(0,self.boardSize):
+                if self.grid[i][j] != 0:
+                    cellsFilled += 1
+        #some pre-defined moved for early in the game to greatly improve time, the minimax algorithm would actually make the same moves but it would take a long time as it has to evaluation all 9 or 8 squares in the boar
+        if cellsFilled == 0:
+            self.wipeGrid()
+            self.grid =[[0,0,0],[0,2,0],[0,0,0]]
+        elif cellsFilled == 1:
+            if self.grid == [[0,0,0],[0,1,0],[0,0,0]]:
+                self.grid = [[0,0,0],[0,1,0],[2,0,0]]
+            else:
+                self.grid[1][1] = 2
+        else:
+            #the miniMax algorithm actually returns a value, although is it only relevant to the recursion
+            self.miniMax(self.grid, 2, 0)
+            #self.bestNextMove has already been set by slef.miniMax
+            self.grid = self.bestNextMove
+        #switching the turn back to the player
+        self.turn = 1
+    def runRandomAI(self):
+        #small delay added to make it feel like you are playing a real player
+        pygame.time.delay(300)
+        while True: 
+            x = random.randint(0, 2)
+            y = random.randint(0, 2)
+            if self.grid[x][y] == 0:
+                self.grid[x][y] = 2
+                break
+        self.turn = 1                  
+    ###/AI -------
     
-    #save file
+    ###saving code -------
     saveFile = open("save.txt", "r+")
     def wipeSave(self):
         self.saveFile = open("save.txt", "r+")
@@ -628,7 +654,7 @@ class Game:
         self.saveFile.write(str(self.bestOfScorePlayer2))
         self.saveFile.write(str(self.bestOfRound))
         self.saveFile.write(str(self.turn))
-        self.saveFile.write(str(self.AIMode))
+        self.saveFile.write(str(self.aiMode))
         self.saveFile.close()
     def isInt(self, _string):
         try: 
@@ -665,14 +691,15 @@ class Game:
         else:
             self.bestOfMode = False
         self.turn = int(string[22])
-        self.AIMode = int(string[23])
-        if self.AIMode != 0:
+        self.aiMode = int(string[23])
+        if self.aiMode != 0:
             self.player2Name = "AI"
-
+    ###/saving code -------
     def resetBestOf(self):
         self.bestOfRound = 0
         self.bestOfScorePlayer1 = 0
         self.bestOfScorePlayer2 = 0
+    ###Text drawing
     def text_objects(self, _text, _font, _color):
         textSurface = _font.render(_text, True, _color)
         return textSurface, textSurface.get_rect()
@@ -681,82 +708,60 @@ class Game:
         TextSurf, TextRect = self.text_objects(_string, largeText, _color)
         TextRect.center = ((_x),(_y))
         gameDisplay.blit(TextSurf, TextRect)
-    def runMinMaxAI(self):
-        cellsFilled = 0
+    ###/Text drawing
+    #method for drawing the red strike through the board when a player wins
+    def drawStrike(self):
+        winType = self.getWinType()
+        if winType == 1:
+            gameDisplay.blit(self.horizontalStrike, (self.paddingX,self.paddingY-self.spacingY))
+        if winType == 2:
+            gameDisplay.blit(self.horizontalStrike, (self.paddingX,self.paddingY))
+        if winType == 3:
+            gameDisplay.blit(self.horizontalStrike, (self.paddingX,self.paddingY+self.spacingY))
+        if winType == 4:
+            gameDisplay.blit(self.verticalStrike, (self.paddingX-self.spacingX,self.paddingY))
+        if winType == 5:
+            gameDisplay.blit(self.verticalStrike, (self.paddingX,self.paddingY))
+        if winType == 6:
+            gameDisplay.blit(self.verticalStrike, (self.paddingX+self.spacingX,self.paddingY))
+        if winType == 7:
+            gameDisplay.blit(self.imagediagonalStrike1, (self.paddingX,self.paddingY))
+        if winType == 8:
+            gameDisplay.blit(self.imagediagonalStrike2, (self.paddingX,self.paddingY))
+    #method used to find the type of win, (diagonal top left to bottom right, horizontal bottomrow, etc)
+    def getWinType(self):
         for i in range(0,self.boardSize):
-            for j in range(0,self.boardSize):
-                if self.grid[i][j] != 0:
-                    cellsFilled += 1
-        if cellsFilled == 0:
-            self.wipeGrid()
-            self.grid =[[0,0,0],[0,2,0],[0,0,0]]
-        elif cellsFilled == 1:
-            if self.grid == [[0,0,0],[0,1,0],[0,0,0]]:
-                self.grid = [[0,0,0],[0,1,0],[2,0,0]]
-            else:
-                self.grid[1][1] = 2
-        else:
-            test = self.MiniMax(self.grid, 2, 0)
-            if self.grid == self.bestnextmove:
-                print "problem"
-            self.grid = self.bestnextmove
-        self.turn = 1
-    def runRandomAI(self):
-        if pygame.time.get_ticks() > self.lastTime+self.AIDelay:
-            while True: 
-                x = random.randint(0, 2)
-                y = random.randint(0, 2)
-                if self.grid[x][y] == 0:
-                    self.grid[x][y] = 2
-                    break
-            self.turn = 1
-    def testForResult(self):
-        result = 0
+            if self.grid[0][i] == self.grid[1][i] == self.grid[2][i] and self.grid[0][i] != 0:
+                return i + 1
+            if self.grid[i][0] == self.grid[i][1] == self.grid[i][2] and self.grid[i][0] != 0:
+                return 4 + i
+        if self.grid != 0:
+            if self.grid[0][0] == self.grid[1][1] == self.grid[2][2]:
+                return 7
+            if self.grid[2][0] == self.grid[1][1] == self.grid[0][2]:
+                return 8
+        return 0
+    #test the grid to see if a player/AI has won, returns 1 for player 1, 2 for player 2/AI and 0 if nobody has won
+    def testForResult(self, grid):
         for i in range(0,self.boardSize):
-            for j in range(0,self.boardSize):
-                if i < self.boardSize - 2:
-                    if self.grid[i][j] == self.grid[i+1][j] == self.grid[i+2][j] != 0:
-                        result = self.grid[i][j]
-                    elif j < self.boardSize - 2:
-                        if self.grid[i][j] == self.grid[i+1][j+1] == self.grid[i+2][j+2] != 0:
-                            result = self.grid[i][j]
-                if j < self.boardSize - 2:
-                    if self.grid[i][j] == self.grid[i][j+1] == self.grid[i][j+2] != 0:
-                        result = self.grid[i][j]
-                if j < self.boardSize - 2 and i > 1:
-                    if self.grid[i][j] == self.grid[i-1][j+1] == self.grid[i-2][j+2] != 0:
-                        result = self.grid[i][j]
-        cellsFilled = 0
-        for i in range(0,self.boardSize):
-            for j in range(0,self.boardSize):
-                if self.grid[i][j] != 0:
-                    cellsFilled += 1
-        if cellsFilled == 9 and result == 0:
-            self.wipeGrid()
-        elif result != 0:
-            if self.bestOfMode:
-                self.wipeGrid()
-                game.bestOfRound += 1
-                if result == 1:
-                    game.bestOfScorePlayer1 += 1
-                if result == 2:
-                    game.bestOfScorePlayer2 += 1
-                if self.bestOfScorePlayer1 > self.bestOfTotalRounds/2:
-                    self.gameState = 3
-                    self.winner = result
-                elif self.bestOfScorePlayer2 > self.bestOfTotalRounds/2:
-                    self.gameState = 3
-                    self.winner = result
-            else:
-                self.wipeGrid()
-                game.gameState = 3
-                self.winner = result
+            if grid[0][i] == grid[1][i] == grid[2][i] and grid[0][i] != 0:
+                return grid[0][i]
+            if grid[i][0] == grid[i][1] == grid[i][2] and grid[i][0] != 0:
+                return grid[i][0]
+        if grid != 0:
+            if grid[0][0] == grid[1][1] == grid[2][2]:
+                return grid[0][0]
+            if grid[2][0] == grid[1][1] == grid[0][2]:
+                return grid[2][0]
+        return 0
+    #methof used to completely clear the grid
     def wipeGrid(self):
      for i in range(0, 3):
         for j in range(0, 3):
             self.grid[i][j] = 0
+    
     def pollForInputs(self):
-        self.keyDownString = "temp"
+        self.keyDownString = "default"
         self.lastKeyDownString = self.keyDownString
         self.lastMouseLeft = self.mouseLeft
         for event in pygame.event.get():
@@ -804,17 +809,15 @@ class Game:
     
         self.lastGameState = self.gameState  
     def update(self):
-        self.GUIElements.updateElements()
-        if self.gameState == 0:
+        if self.gameState == 3:
+            self.gameOverScreen.update()
+        elif self.gameState == 0:
             self.menuScreen.update()
         elif self.gameState == 1:
             self.setupScreen.update()
         elif self.gameState == 2:
             self.gameScreen.update()
-        elif self.gameState == 3:
-            self.gameOverScreen.update()
-        elif self.gameState == 4:
-            self.setupScreenPvAi.update()
+        self.GUIElements.updateElements()
     def draw(self):
         if self.gameState == 0:
             self.menuScreen.draw()
@@ -824,8 +827,6 @@ class Game:
             self.gameScreen.draw()
         elif self.gameState == 3:
             self.gameOverScreen.draw()
-        elif self.gameState == 4:
-            self.setupScreenPvAi.draw()
         self.GUIElements.drawElements()
     def mainLoop(self):      
         self.pollForInputs()
