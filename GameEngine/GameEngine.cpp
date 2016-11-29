@@ -16,6 +16,10 @@ namespace GameEngine {
 	void drawRect(int x, int y, int width, int height, float _lightAlpha, Color color, SpriteBatch* spriteBatch) {
 		spriteBatch->draw(glm::vec4(x, y, width, height), glm::vec4(1, 1, 1, 1), NULL, 0.0f, color, _lightAlpha);
 	}
+	void drawRect(int x, int y, int width, int height, Color color, SpriteBatch* spriteBatch) {
+		//spriteBatch->draw(glm::vec4(x, y, width, height), glm::vec4(1, 1, 1, 1), NULL, 0.0f, color, _lightAlpha);
+		spriteBatch->draw(glm::vec4(x, y, width, height), glm::vec4(1, 1, 1, 1), NULL, 1.0f, color);
+	}
 	void drawLine(glm::vec2 point1, glm::vec2 point2, glm::mat4 cameraMatrix) {
 		glBegin(GL_LINES);
 		glm::vec4 test1 = cameraMatrix * glm::vec4(point1.x, point1.y, 1, 1);

@@ -50,7 +50,7 @@ private:
     GameEngine::GLSLProgram _colorProgram;
     GameEngine::Camera2D _camera;
 
-    GameEngine::SpriteBatch _spriteBatch;
+    GameEngine::SpriteBatch spriteBatch;
 
     GameEngine::InputManager _inputManager;
     GameEngine::FpsLimiter _fpsLimiter;

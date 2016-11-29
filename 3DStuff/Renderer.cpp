@@ -44,7 +44,7 @@ glm::vec3 Renderer::convertVertex(glm::vec3 _v)
 void Renderer::drawLine(glm::vec3 _v1, glm::vec3 _v2)
 {
 	clipEdgeNear(&_v1, &_v2);
-	GameEngine::drawBasicLine(convertVertex(_v1), convertVertex(_v2), 1.5, 0, 0, 0);
+	GameEngine::drawBasicLine(convertVertex(_v1), convertVertex(_v2), 1.5, 1, 0, 1);
 }
 void Renderer::drawBox(Box* _box)
 {
@@ -275,20 +275,42 @@ void Renderer::orderFaces()
 
 void Renderer::drawGrid()
 {
-	int w = 10;
-	int am = 50;
+	int w = 2;
+	int am = 400;
 	for (int i = 0; i < am; i++) {
-		//GameEngine::drawBasicLine(convertVertex(glm::vec3(-am * w / 2, 0, -am * w / 2)), convertVertex(glm::vec3(-am * w / 2 + am * w, 0, -am * w / 2 + i*w)), 1, 0.2, 0.3, 1);
+		drawLine2(glm::vec3(i*w,0,0), glm::vec3(i * w, 0, am*w), 1);
 	}
-	GameEngine::drawBasicLine(convertVertex(glm::vec3(1, 1, 1)), convertVertex(glm::vec3(6, 6, 6)), 1, 1, 0, 1);
-	//drawLine(glm::vec3(6, 6, 6), glm::vec3(200, 200, 200));
-	drawLine(glm::vec3(10, 10, 10), glm::vec3(-10, -10, 1));
+	for (int i = 0; i < am; i++) {
+		drawLine2(glm::vec3(0, 0, i*w), glm::vec3(am*w, 0, i * w), 1);
+	}
+
+
+	for (int i = 0; i < am; i++) {
+		drawLine2(glm::vec3(i*w, 10, 0), glm::vec3(i * w, 10, am*w), 1);
+	}
+	for (int i = 0; i < am; i++) {
+		drawLine2(glm::vec3(0, 10, i*w), glm::vec3(am*w, 10, i * w), 1);
+	}
 }
 
 void Renderer::setScreenSize(float _x, float _y)
 {
 	screenSize.x = _x;
 	screenSize.y = _y;
+}
+
+void Renderer::drawLine2(glm::vec3 _p2, glm::vec3 _p1, float _thickness)
+{
+	_p1 = Transformations::translateVertex(_p1, -cameraPosition);
+	_p2 = Transformations::translateVertex(_p2, -cameraPosition);
+	glm::vec3 p1 = Transformations::rotateVertexPitch(glm::vec3(0,0,0), _p1, cameraPitch);
+	p1 = Transformations::rotateVertexRoll(glm::vec3(0, 0, 0), p1, cameraRoll);
+	p1 = Transformations::rotateVertexYaw(glm::vec3(0, 0, 0), p1, cameraYaw);
+
+	glm::vec3 p2 = Transformations::rotateVertexPitch(glm::vec3(0, 0, 0), _p2, cameraPitch);
+	p2 = Transformations::rotateVertexRoll(glm::vec3(0, 0, 0), p2, cameraRoll);
+	p2 = Transformations::rotateVertexYaw(glm::vec3(0, 0, 0), p2, cameraYaw);
+	drawLine(p1, p2);
 }
 
 Face::Face(glm::vec3 _p1, glm::vec3 _p2, glm::vec3 _p3, float _distFromCamera)

@@ -46,13 +46,13 @@ void MainGame::initSystems() {
 
     initShaders();
 
-    _spriteBatch.init();
+    spriteBatch.init();
     _fpsLimiter.init(_maxFPS);
 	//drawText.init(&_spriteBatch);
 	_camera.setScreenShakeIntensity(10);
-	grid = new Grid(&_spriteBatch);
+	grid = new Grid(&spriteBatch);
 	grid->runAI();
-	testGuy = new CrewMember(&_spriteBatch, grid, 20, 20);
+	testGuy = new CrewMember(&spriteBatch, grid, 20, 20);
 	
 }
 
@@ -233,13 +233,13 @@ void MainGame::drawGame() {
     glm::mat4 cameraMatrix = _camera.getCameraMatrix();
 
     glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
-    _spriteBatch.begin();
+    spriteBatch.begin();
     grid->draw(0, 0);
 	testGuy->draw();
 
-	_spriteBatch.end();
+	spriteBatch.end();
 	
-    _spriteBatch.renderBatch();
+    spriteBatch.renderBatch();
 
     //unbind the texture
     glBindTexture(GL_TEXTURE_2D, 0);

@@ -1,5 +1,4 @@
-﻿  main.cpp
-  MainGame.cpp
+﻿  MainGame.cpp
 c:\users\jack\documents\github\sdlgame\shipgame\maingame.cpp(78): warning C4305: '+=': truncation from 'double' to 'float'
 c:\users\jack\documents\github\sdlgame\shipgame\maingame.cpp(120): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
 c:\users\jack\documents\github\sdlgame\shipgame\maingame.cpp(154): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
@@ -11,10 +10,16 @@ c:\users\jack\documents\github\sdlgame\shipgame\maingame.cpp(179): warning C4244
 c:\users\jack\documents\github\sdlgame\shipgame\maingame.cpp(184): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 c:\users\jack\documents\github\sdlgame\shipgame\maingame.cpp(192): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 c:\users\jack\documents\github\sdlgame\shipgame\maingame.cpp(198): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  main.cpp
   Grid.cpp
 c:\users\jack\documents\github\sdlgame\shipgame\grid.cpp(255): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
 c:\users\jack\documents\github\sdlgame\shipgame\grid.cpp(380): warning C4018: '<': signed/unsigned mismatch
 c:\users\jack\documents\github\sdlgame\shipgame\grid.cpp(570): warning C4018: '<': signed/unsigned mismatch
+  Fire.cpp
+c:\users\jack\documents\github\sdlgame\shipgame\fire.cpp(13): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\jack\documents\github\sdlgame\shipgame\fire.cpp(14): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\shipgame\fire.cpp(15): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\shipgame\fire.cpp(31): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   CrewMember.cpp
 c:\users\jack\documents\github\sdlgame\shipgame\crewmember.cpp(7): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 c:\users\jack\documents\github\sdlgame\shipgame\crewmember.cpp(8): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
@@ -25,5 +30,4 @@ c:\users\jack\documents\github\sdlgame\shipgame\crewmember.cpp(91): warning C424
 c:\users\jack\documents\github\sdlgame\shipgame\crewmember.cpp(109): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   Generating Code...
 c:\users\jack\documents\github\sdlgame\shipgame\grid.cpp(681): warning C4715: 'Grid::setEnd': not all control paths return a value
-  shipGame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\shipGame.exe
-  shipGame.vcxproj -> C:\Users\jack\Documents\GitHub\SDLgame\Debug\shipGame.pdb (Partial PDB)
+LINK : fatal error LNK1104: cannot open file 'GameEngine.lib'

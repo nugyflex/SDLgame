@@ -14,6 +14,7 @@ namespace GameEngine {
 	};
 	extern int init();
 	extern void drawRect(int x, int y, int width, int height, float _lightAlpha, Color color, SpriteBatch* spriteBatch);
+	extern void drawRect(int x, int y, int width, int height, Color color, SpriteBatch* spriteBatch);
 	extern void drawLine(glm::vec2 point1, glm::vec2 point2, glm::mat4 cameraMatrix);
 	extern void drawBasicLine(glm::vec2 _point1, glm::vec2 _point2, float _thickness, float _r, float _g, float _b);
 	extern void drawBasicLine(glm::vec3 _point1, glm::vec3 _point2, float _thickness, float _r, float _g, float _b);

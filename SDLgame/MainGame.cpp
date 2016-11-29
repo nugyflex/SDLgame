@@ -43,9 +43,9 @@ void MainGame::initSystems() {
 
     initShaders();
 
-    _spriteBatch.init();
+    spriteBatch.init();
     _fpsLimiter.init(_maxFPS);
-	projectiles.init(&_spriteBatch);
+	projectiles.init(&spriteBatch);
 	Lights.setMaxLights(200);
 	Lights.addLight(-400, -7100, 0.2, 0.2, 1, 100);
 	Lights.addLight(0, 10000, 1, 1, 1, 15000);
@@ -75,14 +75,14 @@ void MainGame::initSystems() {
 	Platforms.addPlatform(-800, -6000, 800, 16);
 	Platforms.addPlatform(0, -6600, 800, 16);
 	Platforms.addPlatform(-800, -7200, 800, 16);
-	player.init(360, 3400, &WorldItems, &_spriteBatch, &drawText, &projectiles, &cd, &_camera);
-	WorldItems.init(&Lights, &_spriteBatch);
-	drawText.init(&_spriteBatch);
+	player.init(360, 3400, &WorldItems, &spriteBatch, &drawText, &projectiles, &cd, &_camera);
+	WorldItems.init(&Lights, &spriteBatch);
+	drawText.init(&spriteBatch);
 	_camera.setScreenShakeIntensity(10);
-	drones.init(&_spriteBatch, &WorldItems, &_camera, &Lights, &projectiles);
+	drones.init(&spriteBatch, &WorldItems, &_camera, &Lights, &projectiles);
 	drones.add(0, 3200);
 	drones.addTarget(player.getBoundingBox());
-	walkers.init(&_spriteBatch, &WorldItems, &_camera, &Lights, &projectiles);
+	walkers.init(&spriteBatch, &WorldItems, &_camera, &Lights, &projectiles);
 	walkers.add(200, 3200);
 	walkers.addTarget(player.getBoundingBox());
 }
@@ -311,7 +311,7 @@ void MainGame::drawGame() {
 	//-----------------PASSING LIGHTS INTO SHADER-----------------//
 	Lights.addLightsToShader(&_colorProgram);
 	//------------------------------------------------------------//
-    _spriteBatch.begin();
+    spriteBatch.begin();
     glm::vec4 pos(-100.0f, -100.0f, 500.0f, 500.0f);
     glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
 	static GameEngine::GLTexture texture = GameEngine::ResourceManager::getTexture("Textures/jimmyJump_pack/PNG/CharacterRight_Standing.png");
@@ -330,17 +330,17 @@ void MainGame::drawGame() {
 	//_spriteBatch.draw(pos1, uv1, newTexture1.id, 0.0f, color, 0.5);
 	//_spriteBatch.draw(pos1, uv1, newTexture.id, 0.0f, color, 1);
 	
-	_spriteBatch.draw(glm::vec4(-6500 / 2, -6500 / 2, 6500, 6500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.8, 0.8, 0, 0), uv1, db.id, 0.0f, color, 0);
+	spriteBatch.draw(glm::vec4(-6500 / 2, -6500 / 2, 6500, 6500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.8, 0.8, 0, 0), uv1, db.id, 0.0f, color, 0);
 	//_spriteBatch.draw(glm::vec4(-9500 / 2, -5500 / 2, 9500, 5500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.6, 0.7, 0, 0), uv1, mb.id, 0.0f, color, 0.5);
-	_spriteBatch.draw(glm::vec4(-9500 / 2, -5500 / 2, 9500, 5500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.6, 0.6, 0, 0), uv1, mb.id, 0.0f, color, 0.3);
-	_spriteBatch.draw(glm::vec4(-9500 / 2, -5500 / 2, 9500, 5500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.6, 0.6, 0, 0) + glm::vec4(3, 3, 0, 0), uv1, mb.id, 0.0f, color, 0.4);
-	_spriteBatch.draw(glm::vec4(0.0f, 3000.0f, 28 * 2, 67 * 2), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), test.id, 0.0f, color, 1);
+	spriteBatch.draw(glm::vec4(-9500 / 2, -5500 / 2, 9500, 5500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.6, 0.6, 0, 0), uv1, mb.id, 0.0f, color, 0.3);
+	spriteBatch.draw(glm::vec4(-9500 / 2, -5500 / 2, 9500, 5500) + glm::vec4(_camera.getPosition().x - _camera.getVelocity().x, _camera.getPosition().y - _camera.getVelocity().y, 0, 0)*glm::vec4(0.6, 0.6, 0, 0) + glm::vec4(3, 3, 0, 0), uv1, mb.id, 0.0f, color, 0.4);
+	spriteBatch.draw(glm::vec4(0.0f, 3000.0f, 28 * 2, 67 * 2), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), test.id, 0.0f, color, 1);
 
-    _spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
-	GameEngine::drawRect(300, 0, 600, 600, 1, color, &_spriteBatch);
+    spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
+	GameEngine::drawRect(300, 0, 600, 600, 1, color, &spriteBatch);
 	//_spriteBatch.drawLine(glm::vec2(0, 3200), glm::vec2(100, 3100), 255, 150, 0, 255);
 	//_spriteBatch.drawLine(glm::vec2(0, 3200), glm::vec2(100, 3100), color);
-	Platforms.drawPlatforms(&_spriteBatch);
+	Platforms.drawPlatforms(&spriteBatch);
 	player.draw();
 	projectiles.draw();
 	//drawText.draw(-30, 3100, "a", 1);
@@ -350,9 +350,9 @@ void MainGame::drawGame() {
 	if (_inputManager.isKeyPressed(SDLK_TAB)) {
 		player.drawInventory(_camera.getPosition() - _camera.getVelocity());
 	}
-	_spriteBatch.end();
+	spriteBatch.end();
 	
-    _spriteBatch.renderBatch();
+    spriteBatch.renderBatch();
 
     //unbind the texture
     glBindTexture(GL_TEXTURE_2D, 0);

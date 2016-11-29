@@ -1,10 +1,38 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (water and gas.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Transformations.cpp
+c:\users\jack\documents\github\sdlgame\3dstuff\transformations.h(19): warning C4091: 'static ': ignored on left of 'Transformations' when no variable is declared
   Renderer.cpp
 c:\users\jack\documents\github\sdlgame\3dstuff\transformations.h(19): warning C4091: 'static ': ignored on left of 'Transformations' when no variable is declared
 c:\users\jack\documents\github\sdlgame\3dstuff\renderer.cpp(123): warning C4305: '=': truncation from 'double' to 'float'
 c:\users\jack\documents\github\sdlgame\3dstuff\renderer.cpp(189): warning C4930: 'Face newFace(void)': prototyped function not called (was a variable definition intended?)
 c:\users\jack\documents\github\sdlgame\3dstuff\renderer.cpp(225): warning C4018: '<': signed/unsigned mismatch
 c:\users\jack\documents\github\sdlgame\3dstuff\renderer.cpp(228): warning C4305: 'argument': truncation from 'double' to 'float'
+  MainGame.cpp
+c:\users\jack\documents\github\sdlgame\3dstuff\transformations.h(19): warning C4091: 'static ': ignored on left of 'Transformations' when no variable is declared
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(70): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(98): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(138): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(165): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(167): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(171): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(177): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(179): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(183): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(189): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(191): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(195): warning C4018: '<': signed/unsigned mismatch
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(209): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(212): warning C4305: '-=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(220): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(226): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(233): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(237): warning C4305: '-=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(241): warning C4305: '-=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(245): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\3dstuff\maingame.cpp(252): warning C4018: '<': signed/unsigned mismatch
+  main.cpp
+  Box.cpp
+c:\users\jack\documents\github\sdlgame\3dstuff\transformations.h(19): warning C4091: 'static ': ignored on left of 'Transformations' when no variable is declared
+  Generating Code...
 c:\users\jack\documents\github\sdlgame\3dstuff\renderer.cpp(165): warning C4715: 'Renderer::getClipEdgeNear': not all control paths return a value
-  3DStuff.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\3DStuff.exe
-  3DStuff.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\3DStuff.pdb (Partial PDB)
+LINK : fatal error LNK1104: cannot open file 'GameEngine.lib'

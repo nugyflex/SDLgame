@@ -43,14 +43,14 @@ void MainGame::initSystems() {
 
     initShaders();
 
-    _spriteBatch.init();
+    spriteBatch.init();
     _fpsLimiter.init(_maxFPS);
 	//glEnable(GL_DEPTH_TEST);
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_TRUE);
 	glDepthFunc(GL_LEQUAL);
 	glDepthRange(0.0f, 1.0f);
-	glClearColor(1, 1, 1, 1);
+	glClearColor(0, 0, 0, 1);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -72,7 +72,7 @@ void MainGame::initSystems() {
 	//Boxes.push_back(new Box(0, 1.980, 0, 2.000, 0.020, 2.000));
 	//Boxes.push_back(new Box(1.980, 0, 0, 0.02, 2.000, 2.000));
 	
-	renderer = new Renderer(&_spriteBatch);
+	renderer = new Renderer(&spriteBatch);
 	renderer->setScreenSize(800, 800);
 }
 

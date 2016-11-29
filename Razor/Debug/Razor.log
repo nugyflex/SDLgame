@@ -1,0 +1,5 @@
+﻿  MainGame.cpp
+c:\users\jack\documents\github\sdlgame\razor\maingame.cpp(69): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdlgame\razor\maingame.cpp(100): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
+  Razor.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\Razor.exe
+  Razor.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\Razor.pdb (Partial PDB)

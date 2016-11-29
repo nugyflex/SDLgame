@@ -48,6 +48,7 @@ public:
 	glm::vec2 screenSize;
 	void setScreenSize(float _x, float _y);
 	glm::vec3 cameraPosition = glm::vec3(0, 0, 0);
+	void drawLine2(glm::vec3 _p2, glm::vec3 _p1, float _thickness);
 private:
 	std::vector<Face> Faces;
 	GameEngine::SpriteBatch* sb;
