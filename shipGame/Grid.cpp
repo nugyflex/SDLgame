@@ -29,7 +29,7 @@ void Grid::draw(int _x, int _y)
 		{
 			GameEngine::Color color;
 			color.r = 10;
-			color.g = 220;
+			color.g = 40;
 			color.b = 10;/*
 			if (grid[i][j].direction == left)
 			{
@@ -58,7 +58,7 @@ void Grid::draw(int _x, int _y)
 			if (grid[i][j].direction == finished1)
 			{
 				color.r = 10;
-				color.g = 220;
+				color.g = 40;
 				color.b = 10;
 			}
 			if (grid[i][j].isWall) {

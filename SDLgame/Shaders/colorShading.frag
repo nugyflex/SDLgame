@@ -56,6 +56,6 @@ void main() {
 	
 	float dv = distance(fragmentPosition.xy, vignette);
 	//vignette testing
-	color.a -= dv/1000;
+	//color.a -= dv/1000;
 
 }

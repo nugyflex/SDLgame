@@ -33,7 +33,6 @@ void MainGame::run() {
 	//This only returns when the game ends
 	gameLoop();
 }
-//Initialize SDL and Opengl and whatever else we need
 void MainGame::initSystems() {
 
 	GameEngine::init();
@@ -135,7 +134,7 @@ void MainGame::processInput() {
 		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
 		//grid->reducePressure(floor(((10 * 50 + 50) / 2 + mouseCoords.x) / 11), floor(((10 * 50 + 50) / 2 + -mouseCoords.y) / 11), 30);
 	}
-	if (_inputManager.isKeyPressed(SDL_BUTTON_MIDDLE)) {
+	if (_inputManager.isKeyPressed(SDLK_f)) {
 		grid->reset();
 		if (_inputManager.isKeyPressed(SDLK_LCTRL))
 		{
@@ -152,7 +151,6 @@ void MainGame::processInput() {
 	}
 }
 
-//Draws the game using the almighty OpenGL
 void MainGame::drawGame() {
 	//Set the base depth to 1.0
 	glClearDepth(1.0);
@@ -198,6 +196,6 @@ void MainGame::drawGame() {
 	//disable the shader
 	_colorProgram.unuse();
 
-	//Swap our buffer and draw everything to the screen!
+	//Swap the buffer
 	_window.swapBuffer();
 }

@@ -1,5 +1,8 @@
-﻿  MainGame.cpp
+﻿  main.cpp
+  MainGame.cpp
 c:\users\jack\documents\github\sdlgame\razor\maingame.cpp(69): warning C4305: '+=': truncation from 'double' to 'float'
 c:\users\jack\documents\github\sdlgame\razor\maingame.cpp(100): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
+  Generating Code...
+  LINK : C:\Users\Jack\Documents\GitHub\SDLgame\Debug\Razor.exe not found or not built by the last incremental link; performing full link
   Razor.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\Razor.exe
   Razor.vcxproj -> C:\Users\Jack\Documents\GitHub\SDLgame\Debug\Razor.pdb (Partial PDB)

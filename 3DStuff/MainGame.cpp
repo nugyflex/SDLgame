@@ -50,7 +50,7 @@ void MainGame::initSystems() {
 	glDepthMask(GL_TRUE);
 	glDepthFunc(GL_LEQUAL);
 	glDepthRange(0.0f, 1.0f);
-	glClearColor(0, 0, 0, 1);
+	glClearColor(1, 1, 1, 1);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -247,7 +247,6 @@ void MainGame::processInput() {
 	}
 }
 
-//Draws the game using the almighty OpenGL
 void MainGame::drawGame() {
 	for (int i = 0; i < Boxes.size(); i++) {
 		renderer->drawBox(Boxes[i]);
@@ -260,7 +259,6 @@ void MainGame::drawGame() {
 	renderer->collisionDetection3D(Boxes[1], Boxes[0]);
 	renderer->drawAllFaces();
 	renderer->resetFaces();
-    //Swap our buffer and draw everything to the screen!
     _window.swapBuffer();
 	glClearDepth(1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

@@ -41,10 +41,10 @@ glm::vec3 Renderer::convertVertex(glm::vec3 _v)
 	return tempv;
 }
 
-void Renderer::drawLine(glm::vec3 _v1, glm::vec3 _v2)
+void Renderer::drawLine(glm::vec3 _v1, glm::vec3 _v2, float _r, float _g, float _b)
 {
 	clipEdgeNear(&_v1, &_v2);
-	GameEngine::drawBasicLine(convertVertex(_v1), convertVertex(_v2), 1.5, 1, 0, 1);
+	GameEngine::drawBasicLine(convertVertex(_v1), convertVertex(_v2), 1, _r, _g,_b);
 }
 void Renderer::drawBox(Box* _box)
 {
@@ -90,18 +90,18 @@ void Renderer::drawBox(Box* _box)
 	//7 2 6
 	if (box->vertices[7].z > clippingPlaneZ || box->vertices[2].z > clippingPlaneZ || box->vertices[6].z > clippingPlaneZ) addNewFace(box->vertices[7], box->vertices[2], box->vertices[6]);
 	//LINES
-	if (box->vertices[0].z > clippingPlaneZ || box->vertices[1].z > clippingPlaneZ) drawLine(box->vertices[0], box->vertices[1]);
-	if (box->vertices[1].z > clippingPlaneZ || box->vertices[2].z > clippingPlaneZ)drawLine(box->vertices[1], box->vertices[2]);
-	if (box->vertices[2].z > clippingPlaneZ || box->vertices[3].z > clippingPlaneZ)drawLine(box->vertices[2], box->vertices[3]);
-	if (box->vertices[3].z > clippingPlaneZ || box->vertices[0].z > clippingPlaneZ)drawLine(box->vertices[3], box->vertices[0]);
-	if (box->vertices[4].z > clippingPlaneZ || box->vertices[5].z > clippingPlaneZ)drawLine(box->vertices[4], box->vertices[5]);
-	if (box->vertices[5].z > clippingPlaneZ || box->vertices[6].z > clippingPlaneZ)drawLine(box->vertices[5], box->vertices[6]);
-	if (box->vertices[6].z > clippingPlaneZ || box->vertices[7].z > clippingPlaneZ)drawLine(box->vertices[6], box->vertices[7]);
-	if (box->vertices[7].z > clippingPlaneZ || box->vertices[4].z > clippingPlaneZ)drawLine(box->vertices[7], box->vertices[4]);
-	if (box->vertices[0].z > clippingPlaneZ || box->vertices[4].z > clippingPlaneZ)drawLine(box->vertices[0], box->vertices[4]);
-	if (box->vertices[1].z > clippingPlaneZ || box->vertices[5].z > clippingPlaneZ)drawLine(box->vertices[1], box->vertices[5]);
-	if (box->vertices[2].z > clippingPlaneZ || box->vertices[6].z > clippingPlaneZ)drawLine(box->vertices[2], box->vertices[6]);
-	if (box->vertices[3].z > clippingPlaneZ || box->vertices[7].z > clippingPlaneZ)drawLine(box->vertices[3], box->vertices[7]);
+	if (box->vertices[0].z > clippingPlaneZ || box->vertices[1].z > clippingPlaneZ) drawLine(box->vertices[0], box->vertices[1], 0, 0, 0);
+	if (box->vertices[1].z > clippingPlaneZ || box->vertices[2].z > clippingPlaneZ)drawLine(box->vertices[1], box->vertices[2], 0, 0, 0);
+	if (box->vertices[2].z > clippingPlaneZ || box->vertices[3].z > clippingPlaneZ)drawLine(box->vertices[2], box->vertices[3], 0, 0, 0);
+	if (box->vertices[3].z > clippingPlaneZ || box->vertices[0].z > clippingPlaneZ)drawLine(box->vertices[3], box->vertices[0], 0, 0, 0);
+	if (box->vertices[4].z > clippingPlaneZ || box->vertices[5].z > clippingPlaneZ)drawLine(box->vertices[4], box->vertices[5], 0, 0, 0);
+	if (box->vertices[5].z > clippingPlaneZ || box->vertices[6].z > clippingPlaneZ)drawLine(box->vertices[5], box->vertices[6], 0, 0, 0);
+	if (box->vertices[6].z > clippingPlaneZ || box->vertices[7].z > clippingPlaneZ)drawLine(box->vertices[6], box->vertices[7], 0, 0, 0);
+	if (box->vertices[7].z > clippingPlaneZ || box->vertices[4].z > clippingPlaneZ)drawLine(box->vertices[7], box->vertices[4], 0, 0, 0);
+	if (box->vertices[0].z > clippingPlaneZ || box->vertices[4].z > clippingPlaneZ)drawLine(box->vertices[0], box->vertices[4], 0, 0, 0);
+	if (box->vertices[1].z > clippingPlaneZ || box->vertices[5].z > clippingPlaneZ)drawLine(box->vertices[1], box->vertices[5], 0, 0, 0);
+	if (box->vertices[2].z > clippingPlaneZ || box->vertices[6].z > clippingPlaneZ)drawLine(box->vertices[2], box->vertices[6], 0, 0, 0);
+	if (box->vertices[3].z > clippingPlaneZ || box->vertices[7].z > clippingPlaneZ)drawLine(box->vertices[3], box->vertices[7], 0, 0, 0);
 }
 
 void Renderer::setCameraPosition(float _x, float _y)
@@ -285,12 +285,12 @@ void Renderer::drawGrid()
 	}
 
 
-	for (int i = 0; i < am; i++) {
-		drawLine2(glm::vec3(i*w, 10, 0), glm::vec3(i * w, 10, am*w), 1);
-	}
-	for (int i = 0; i < am; i++) {
-		drawLine2(glm::vec3(0, 10, i*w), glm::vec3(am*w, 10, i * w), 1);
-	}
+	//for (int i = 0; i < am; i++) {
+	//	drawLine2(glm::vec3(i*w, 10, 0), glm::vec3(i * w, 10, am*w), 1);
+	//}
+	//for (int i = 0; i < am; i++) {
+	//	drawLine2(glm::vec3(0, 10, i*w), glm::vec3(am*w, 10, i * w), 1);
+	//}
 }
 
 void Renderer::setScreenSize(float _x, float _y)
@@ -310,7 +310,7 @@ void Renderer::drawLine2(glm::vec3 _p2, glm::vec3 _p1, float _thickness)
 	glm::vec3 p2 = Transformations::rotateVertexPitch(glm::vec3(0, 0, 0), _p2, cameraPitch);
 	p2 = Transformations::rotateVertexRoll(glm::vec3(0, 0, 0), p2, cameraRoll);
 	p2 = Transformations::rotateVertexYaw(glm::vec3(0, 0, 0), p2, cameraYaw);
-	drawLine(p1, p2);
+	drawLine(p1, p2, 0, 1, 0);
 }
 
 Face::Face(glm::vec3 _p1, glm::vec3 _p2, glm::vec3 _p3, float _distFromCamera)

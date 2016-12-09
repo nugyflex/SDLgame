@@ -25,7 +25,7 @@ public:
 	void drawBackGround();
 	float getDist(float _x1, float _y1, float _x2, float _y2);
 	glm::vec3 convertVertex(glm::vec3 _v);
-	void drawLine(glm::vec3 _v1, glm::vec3 _v2);
+	void drawLine(glm::vec3 _v1, glm::vec3 _v2, float _r, float _g, float _b);
 	void drawBox(Box* _box);
 	void setCameraPosition(float _x, float _y);
 	void addToCameraPosition(float _x, float _y, float _z);
@@ -44,7 +44,7 @@ public:
 	float cameraPitch;
 	float cameraYaw;
 	float cameraRoll;
-	float clippingPlaneZ = 1;
+	float clippingPlaneZ = 6;
 	glm::vec2 screenSize;
 	void setScreenSize(float _x, float _y);
 	glm::vec3 cameraPosition = glm::vec3(0, 0, 0);

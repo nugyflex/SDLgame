@@ -175,7 +175,8 @@ void Grid::runAI()
 		while (searched.size() > 0 && steps < 10)
 		{
 			steps++;
-			//std::sort(searched.begin(), searched.end(), cmd);
+			//enable for proper A*
+			std::sort(searched.begin(), searched.end(), cmd);
 			if (!searched[i]->finished && !searched[i]->isNew) {
 				if (searched[i]->isEnd)
 				{
